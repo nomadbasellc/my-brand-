@@ -1,0 +1,207 @@
+{% comment %}
+  NOMADBASE features grid. Intro block on top, then a responsive grid of
+  feature cards. Each card is a section block with an optional image that
+  reveals on hover. (Scroll parallax / interactive renders can layer on later.)
+{% endcomment %}
+
+<div class="nb-features full-width nb-section">
+  <div class="nb-container">
+    <div class="nb-features__head">
+      {% if section.settings.eyebrow != blank %}
+        <p class="nb-eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h2 class="nb-h2 nb-features__title">{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.intro != blank %}
+        <p class="nb-lead nb-features__intro">{{ section.settings.intro }}</p>
+      {% endif %}
+    </div>
+
+    <div class="nb-features__grid">
+      {% for block in section.blocks %}
+        <article class="nb-feature" {{ block.shopify_attributes }}>
+          {% if block.settings.image != blank %}
+            <div class="nb-feature__media">
+              {{ block.settings.image | image_url: width: 700 | image_tag: class: 'nb-feature__img', loading: 'lazy', widths: '400, 600, 700', sizes: '(max-width: 700px) 100vw, 33vw', alt: block.settings.title }}
+            </div>
+          {% endif %}
+          {% if block.settings.label != blank %}
+            <p class="nb-feature__label">{{ block.settings.label }}</p>
+          {% endif %}
+          <h3 class="nb-feature__title">{{ block.settings.title }}</h3>
+          {% if block.settings.body != blank %}
+            <p class="nb-feature__body">{{ block.settings.body }}</p>
+          {% endif %}
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .nb-features__head {
+    max-width: 60ch;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .nb-features__title {
+    margin-top: 1rem;
+  }
+  .nb-features__intro {
+    margin-top: 1.25rem;
+  }
+  .nb-features__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--nb-line);
+    border: 1px solid var(--nb-line);
+    border-radius: var(--nb-radius-lg);
+    overflow: hidden;
+  }
+  .nb-feature {
+    background: var(--nb-bg);
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    transition: background 0.2s ease;
+  }
+  .nb-feature:hover {
+    background: var(--nb-surface);
+  }
+  .nb-feature__media {
+    aspect-ratio: 16 / 10;
+    border-radius: var(--nb-radius);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    background: var(--nb-surface-2);
+  }
+  .nb-feature__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+  .nb-feature:hover .nb-feature__img {
+    transform: scale(1.04);
+  }
+  .nb-feature__label {
+    font-family: var(--nb-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.68rem;
+    margin: 0 0 0.6rem;
+    color: var(--nb-a3);
+  }
+  .nb-feature__title {
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    font-size: 1.15rem;
+    line-height: 1.1;
+    margin: 0 0 0.6rem;
+  }
+  .nb-feature__body {
+    color: var(--nb-muted);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nb-feature:hover .nb-feature__img {
+      transform: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Features",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "What makes it work"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Solid where there is no desk."
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro",
+      "default": "A normal lapboard is just a flat sheet — tilt it and your keyboard creeps, your mouse slides off. NOMADBASE clamps everything to one frame, so it holds anywhere a desk isn't."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image (optional)" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Locks any board" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Clamps, not a cutout" },
+        { "type": "textarea", "id": "body", "label": "Body", "default": "Adjustable locks grip your keyboard instead of a fixed slot. 60% to full-size, mechanical or membrane — held tight even when the surface tilts." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Features",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "label": "Locks any board",
+            "title": "Clamps, not a cutout",
+            "body": "Adjustable locks grip your keyboard instead of a fixed slot. 60% to full-size, mechanical or membrane — held tight even when the surface tilts."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "label": "Magnetic hold",
+            "title": "The mouse stays put too",
+            "body": "A slim magnet puck rides under your mouse so it won't slide off an angled board. Tune the pull from 'rests there' to 'locked down.'"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "label": "Works anywhere",
+            "title": "No flat surface needed",
+            "body": "Couch, bed, hammock, plane tray, passenger seat, a chair in a crowded room — if you can sit, you have a workstation."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "label": "Built your way",
+            "title": "Modular plates",
+            "body": "Right-handed, left-handed, or extended — same kit, rearranged. The mouse side goes wherever your hand does."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "label": "Handle = mount",
+            "title": "Carry it, then hang it",
+            "body": "One part does double duty: a grip to move it and a hook to store it. Wall-mounted when idle, your space stays clear."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "label": "Stash it",
+            "title": "A home for the small stuff",
+            "body": "Built-in pockets for dongles, battery packs, and cables — so your whole kit travels as one object, not a handful of loose parts."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

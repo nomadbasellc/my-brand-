@@ -1,0 +1,119 @@
+{% comment %}
+  NOMADBASE announcement / promo colorband.
+  Rendered at the very top of every page via the header group.
+{% endcomment %}
+
+{% if section.settings.message != blank %}
+  <div class="nb-anno full-width" data-style="{{ section.settings.bg_style }}">
+    <div class="nb-container nb-anno__inner">
+      <p class="nb-anno__text">
+        {% if section.settings.badge != blank %}
+          <span class="nb-anno__badge">{{ section.settings.badge }}</span>
+        {% endif %}
+        <span class="nb-anno__message">{{ section.settings.message }}</span>
+        {% if section.settings.link_text != blank and section.settings.link_url != blank %}
+          <a class="nb-anno__link" href="{{ section.settings.link_url }}">
+            {{ section.settings.link_text }}
+            <span aria-hidden="true">&rarr;</span>
+          </a>
+        {% endif %}
+      </p>
+    </div>
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .nb-anno {
+    font-size: 0.82rem;
+    border-bottom: 1px solid var(--nb-line);
+  }
+  .nb-anno[data-style="gradient"] {
+    background: var(--nb-gradient);
+    color: #fff;
+    border-bottom-color: transparent;
+  }
+  .nb-anno[data-style="surface"] {
+    background: var(--nb-surface);
+    color: var(--nb-text);
+  }
+  .nb-anno__inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 2.5rem;
+    padding-block: 0.4rem;
+    text-align: center;
+  }
+  .nb-anno__text {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem 0.75rem;
+    margin: 0;
+  }
+  .nb-anno__badge {
+    font-family: var(--nb-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.66rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.28);
+  }
+  .nb-anno[data-style="surface"] .nb-anno__badge {
+    background: var(--nb-gradient);
+    color: #fff;
+  }
+  .nb-anno__link {
+    color: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 1px solid currentcolor;
+    padding-bottom: 1px;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "settings": [
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Badge",
+      "default": "Drop 02"
+    },
+    {
+      "type": "text",
+      "id": "message",
+      "label": "Message",
+      "default": "Made-to-order boards ship in ~2 weeks. Free shipping over $59."
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link text",
+      "default": "Get on the next drop"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    },
+    {
+      "type": "select",
+      "id": "bg_style",
+      "label": "Background style",
+      "options": [
+        { "value": "gradient", "label": "Gradient" },
+        { "value": "surface", "label": "Dark surface" }
+      ],
+      "default": "gradient"
+    }
+  ]
+}
+{% endschema %}

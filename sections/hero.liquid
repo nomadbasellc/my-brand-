@@ -1,0 +1,197 @@
+{% comment %}
+  NOMADBASE hero. Text on the left, product media on the right.
+  Media priority: video setting > image setting > placeholder.
+  Swap the image for a video later with zero layout changes.
+{% endcomment %}
+
+<div class="nb-hero full-width">
+  <div class="nb-container nb-hero__grid">
+    <div class="nb-hero__copy">
+      {% if section.settings.eyebrow != blank %}
+        <p class="nb-eyebrow nb-hero__eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+
+      <h1 class="nb-display nb-hero__title">{{ section.settings.heading }}</h1>
+
+      {% if section.settings.subheading != blank %}
+        <p class="nb-lead nb-hero__lead">{{ section.settings.subheading }}</p>
+      {% endif %}
+
+      <div class="nb-hero__actions">
+        {% if section.settings.primary_text != blank %}
+          <a class="nb-btn nb-btn--primary" href="{{ section.settings.primary_url | default: '#' }}">
+            {{ section.settings.primary_text }}
+          </a>
+        {% endif %}
+        {% if section.settings.secondary_text != blank %}
+          <a class="nb-btn nb-btn--ghost" href="{{ section.settings.secondary_url | default: '#' }}">
+            {{ section.settings.secondary_text }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="nb-hero__media">
+      {% if section.settings.video != blank %}
+        {{ section.settings.video | video_tag: image_size: '1100x', loop: true, autoplay: true, muted: true, controls: false, class: 'nb-hero__asset' }}
+      {% elsif section.settings.image != blank %}
+        {{ section.settings.image | image_url: width: 1400 | image_tag: class: 'nb-hero__asset', widths: '600, 900, 1200, 1400', sizes: '(max-width: 900px) 100vw, 50vw', alt: section.settings.heading }}
+      {% else %}
+        <div class="nb-hero__placeholder">
+          {{ 'product-1' | placeholder_svg_tag: 'nb-hero__asset nb-hero__placeholder-svg' }}
+          <span class="nb-hero__placeholder-note">Add a product image or video</span>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .nb-hero {
+    position: relative;
+    overflow: hidden;
+  }
+  .nb-hero::before {
+    content: "";
+    position: absolute;
+    inset: -20% 40% auto -10%;
+    height: 60%;
+    background: var(--nb-gradient);
+    filter: blur(140px);
+    opacity: 0.22;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .nb-hero__grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    padding-block: clamp(3rem, 7vw, 6rem);
+  }
+  .nb-hero__eyebrow {
+    margin-bottom: 1.5rem;
+  }
+  .nb-hero__title {
+    font-size: clamp(2.75rem, 7vw, 5.5rem);
+  }
+  .nb-hero__lead {
+    margin-top: 1.75rem;
+    max-width: 44ch;
+  }
+  .nb-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2.25rem;
+  }
+  .nb-hero__media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--nb-radius-lg);
+    overflow: hidden;
+    background: var(--nb-surface);
+    border: 1px solid var(--nb-line);
+  }
+  .nb-hero__asset {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .nb-hero__placeholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+  .nb-hero__placeholder-svg {
+    width: 100%;
+    height: 100%;
+    opacity: 0.35;
+  }
+  .nb-hero__placeholder-note {
+    position: absolute;
+    font-family: var(--nb-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.7rem;
+    color: var(--nb-faint);
+  }
+
+  @media (max-width: 900px) {
+    .nb-hero__grid {
+      grid-template-columns: 1fr;
+    }
+    .nb-hero__media {
+      order: -1;
+      aspect-ratio: 16 / 10;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Made to order · Printed by hand · One at a time"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Take your whole setup off the wall."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "A modular lapboard that clamps your keyboard and pins your mouse with magnets — so nothing slides, even when the surface isn't flat. A real desk, wherever you are."
+    },
+    {
+      "type": "text",
+      "id": "primary_text",
+      "label": "Primary button text",
+      "default": "Build yours — from $100"
+    },
+    {
+      "type": "url",
+      "id": "primary_url",
+      "label": "Primary button URL"
+    },
+    {
+      "type": "text",
+      "id": "secondary_text",
+      "label": "Secondary button text",
+      "default": "See it move"
+    },
+    {
+      "type": "url",
+      "id": "secondary_url",
+      "label": "Secondary button URL"
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Product image"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Product video (overrides image)"
+    }
+  ],
+  "presets": [
+    { "name": "Hero" }
+  ]
+}
+{% endschema %}

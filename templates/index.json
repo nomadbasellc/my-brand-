@@ -9,12 +9,34 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "hello-world",
+    "hero": {
+      "type": "hero",
       "settings": {}
+    },
+    "usp": {
+      "type": "usp-bar",
+      "settings": {},
+      "blocks": {
+        "u1": { "type": "usp", "settings": { "icon": "return", "title": "30-day returns", "subtitle": "Love it or send it back" } },
+        "u2": { "type": "usp", "settings": { "icon": "ship", "title": "Free shipping over $59", "subtitle": "Flat rate under that" } },
+        "u3": { "type": "usp", "settings": { "icon": "handmade", "title": "Made by hand", "subtitle": "Printed one at a time" } },
+        "u4": { "type": "usp", "settings": { "icon": "shield", "title": "1-year warranty", "subtitle": "We stand behind every board" } }
+      },
+      "block_order": ["u1", "u2", "u3", "u4"]
+    },
+    "features": {
+      "type": "features",
+      "settings": {},
+      "blocks": {
+        "f1": { "type": "feature", "settings": { "label": "Locks any board", "title": "Clamps, not a cutout", "body": "Adjustable locks grip your keyboard instead of a fixed slot. 60% to full-size, mechanical or membrane — held tight even when the surface tilts." } },
+        "f2": { "type": "feature", "settings": { "label": "Magnetic hold", "title": "The mouse stays put too", "body": "A slim magnet puck rides under your mouse so it won't slide off an angled board. Tune the pull from 'rests there' to 'locked down.'" } },
+        "f3": { "type": "feature", "settings": { "label": "Works anywhere", "title": "No flat surface needed", "body": "Couch, bed, hammock, plane tray, passenger seat, a chair in a crowded room — if you can sit, you have a workstation." } },
+        "f4": { "type": "feature", "settings": { "label": "Built your way", "title": "Modular plates", "body": "Right-handed, left-handed, or extended — same kit, rearranged. The mouse side goes wherever your hand does." } },
+        "f5": { "type": "feature", "settings": { "label": "Handle = mount", "title": "Carry it, then hang it", "body": "One part does double duty: a grip to move it and a hook to store it. Wall-mounted when idle, your space stays clear." } },
+        "f6": { "type": "feature", "settings": { "label": "Stash it", "title": "A home for the small stuff", "body": "Built-in pockets for dongles, battery packs, and cables — so your whole kit travels as one object, not a handful of loose parts." } }
+      },
+      "block_order": ["f1", "f2", "f3", "f4", "f5", "f6"]
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["hero", "usp", "features"]
 }

@@ -1,0 +1,152 @@
+{% comment %}
+  NOMADBASE USP / trust bar. A row of short value props with icons.
+  Each item is a section block so merchants can add/remove/reorder.
+{% endcomment %}
+
+<div class="nb-usp full-width">
+  <div class="nb-container nb-usp__row">
+    {% for block in section.blocks %}
+      <div class="nb-usp__item" {{ block.shopify_attributes }}>
+        <span class="nb-usp__icon">
+          {%- case block.settings.icon -%}
+            {%- when 'return' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+            {%- when 'ship' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4h13v11H1z"/><path d="M14 8h4l3 3v4h-7z"/><circle cx="5.5" cy="18" r="2"/><circle cx="17.5" cy="18" r="2"/></svg>
+            {%- when 'shield' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 8 8 11 4.5-3 8-6 8-11V5z"/><path d="m9 12 2 2 4-4"/></svg>
+            {%- when 'handmade' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M5 5l2.5 2.5M2 12h4M19 5l-2.5 2.5M22 12h-4"/><path d="M8 21h8l-1-6H9z"/></svg>
+            {%- else -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+          {%- endcase -%}
+        </span>
+        <div class="nb-usp__text">
+          <span class="nb-usp__title">{{ block.settings.title }}</span>
+          {% if block.settings.subtitle != blank %}
+            <span class="nb-usp__subtitle">{{ block.settings.subtitle }}</span>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .nb-usp {
+    border-block: 1px solid var(--nb-line);
+    background: var(--nb-surface);
+  }
+  .nb-usp__row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem 2rem;
+    padding-block: 1.5rem;
+  }
+  .nb-usp__item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  .nb-usp__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: var(--nb-lime);
+  }
+  .nb-usp__icon svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .nb-usp__text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    line-height: 1.25;
+  }
+  .nb-usp__title {
+    font-weight: 700;
+    font-size: 0.92rem;
+  }
+  .nb-usp__subtitle {
+    color: var(--nb-muted);
+    font-size: 0.8rem;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "USP bar",
+  "blocks": [
+    {
+      "type": "usp",
+      "name": "Value prop",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "return", "label": "Return / refresh" },
+            { "value": "ship", "label": "Shipping" },
+            { "value": "shield", "label": "Guarantee" },
+            { "value": "handmade", "label": "Handmade" },
+            { "value": "check", "label": "Check" }
+          ],
+          "default": "check"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Value prop"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "USP bar",
+      "blocks": [
+        {
+          "type": "usp",
+          "settings": {
+            "icon": "return",
+            "title": "30-day returns",
+            "subtitle": "Love it or send it back"
+          }
+        },
+        {
+          "type": "usp",
+          "settings": {
+            "icon": "ship",
+            "title": "Free shipping over $59",
+            "subtitle": "Flat rate under that"
+          }
+        },
+        {
+          "type": "usp",
+          "settings": {
+            "icon": "handmade",
+            "title": "Made by hand",
+            "subtitle": "Printed one at a time"
+          }
+        },
+        {
+          "type": "usp",
+          "settings": {
+            "icon": "shield",
+            "title": "1-year warranty",
+            "subtitle": "We stand behind every board"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
