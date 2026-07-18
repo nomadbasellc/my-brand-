@@ -1,0 +1,153 @@
+{% comment %}
+  NOMADBASE keyboard compatibility — reassures buyers their board fits.
+  Sizes row + a grid of brand chips. Brands are section blocks.
+{% endcomment %}
+
+<div class="nb-kbc full-width nb-scheme nb-scheme--{{ section.settings.color_scheme }} nb-section">
+  <div class="nb-container nb-kbc__grid">
+    <div class="nb-kbc__intro">
+      {% if section.settings.eyebrow != blank %}
+        <p class="nb-eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h2 class="nb-h2 nb-kbc__title">{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.body != blank %}
+        <p class="nb-lead nb-kbc__body">{{ section.settings.body }}</p>
+      {% endif %}
+
+      {% if section.settings.sizes != blank %}
+        <ul class="nb-kbc__sizes">
+          {% assign sizes = section.settings.sizes | split: ',' %}
+          {% for size in sizes %}
+            <li class="nb-kbc__size">{{ size | strip }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+
+    <div class="nb-kbc__brands">
+      <p class="nb-kbc__brands-label">{{ section.settings.brands_label }}</p>
+      <div class="nb-kbc__chips">
+        {% for block in section.blocks %}
+          <span class="nb-kbc__chip" {{ block.shopify_attributes }}>{{ block.settings.name }}</span>
+        {% endfor %}
+      </div>
+      {% if section.settings.footnote != blank %}
+        <p class="nb-kbc__footnote">{{ section.settings.footnote }}</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .nb-kbc__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+  .nb-kbc__title {
+    margin-top: 1rem;
+  }
+  .nb-kbc__body {
+    margin-top: 1.25rem;
+  }
+  .nb-kbc__sizes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    list-style: none;
+    padding: 0;
+    margin: 1.75rem 0 0;
+  }
+  .nb-kbc__size {
+    font-family: var(--nb-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid var(--nb-teal);
+    color: var(--nb-label);
+  }
+  .nb-kbc__brands-label {
+    font-family: var(--nb-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.7rem;
+    color: var(--nb-muted);
+    margin: 0 0 1.25rem;
+  }
+  .nb-kbc__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .nb-kbc__chip {
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.7rem 1.1rem;
+    border-radius: var(--nb-radius);
+    background: var(--nb-surface);
+    border: 1px solid var(--nb-line);
+  }
+  .nb-kbc__footnote {
+    margin: 1.5rem 0 0;
+    color: var(--nb-muted);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 820px) {
+    .nb-kbc__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Keyboard compatibility",
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        { "value": "light", "label": "Light" },
+        { "value": "dark", "label": "Dark" }
+      ],
+      "default": "dark"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Fits your board" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Made for the keyboard you already love." },
+    { "type": "textarea", "id": "body", "label": "Body", "default": "The clamp grips any board from 60% to full-size — mechanical or membrane, wired or wireless. If it sits on a desk, it locks to NOMADBASE." },
+    { "type": "text", "id": "sizes", "label": "Sizes (comma-separated)", "default": "60%, 65%, 75%, TKL, Full-size" },
+    { "type": "text", "id": "brands_label", "label": "Brands label", "default": "Tested with boards from" },
+    { "type": "textarea", "id": "footnote", "label": "Footnote", "default": "Not an exhaustive list — the adjustable clamp isn't brand-specific. Yours almost certainly fits." }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Brand name", "default": "Keychron" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Keyboard compatibility",
+      "blocks": [
+        { "type": "brand", "settings": { "name": "Keychron" } },
+        { "type": "brand", "settings": { "name": "Apple Magic Keyboard" } },
+        { "type": "brand", "settings": { "name": "Logitech" } },
+        { "type": "brand", "settings": { "name": "NuPhy" } },
+        { "type": "brand", "settings": { "name": "Ducky" } },
+        { "type": "brand", "settings": { "name": "Royal Kludge" } },
+        { "type": "brand", "settings": { "name": "Corsair" } },
+        { "type": "brand", "settings": { "name": "HHKB" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

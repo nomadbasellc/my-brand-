@@ -1,0 +1,164 @@
+{% comment %}
+  NOMADBASE how-to / use-case section. A numbered step flow plus a row of
+  "works here" use-case chips. Steps are section blocks.
+{% endcomment %}
+
+<div class="nb-how full-width nb-scheme nb-scheme--{{ section.settings.color_scheme }} nb-section">
+  <div class="nb-container nb-how__head">
+    {% if section.settings.eyebrow != blank %}
+      <p class="nb-eyebrow">{{ section.settings.eyebrow }}</p>
+    {% endif %}
+    {% if section.settings.heading != blank %}
+      <h2 class="nb-h2 nb-how__title">{{ section.settings.heading }}</h2>
+    {% endif %}
+    {% if section.settings.intro != blank %}
+      <p class="nb-lead nb-how__intro">{{ section.settings.intro }}</p>
+    {% endif %}
+  </div>
+
+  <div class="nb-container">
+    <ol class="nb-how__steps">
+      {% for block in section.blocks %}
+        <li class="nb-how__step" {{ block.shopify_attributes }}>
+          <span class="nb-how__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <h3 class="nb-how__step-title">{{ block.settings.title }}</h3>
+          {% if block.settings.body != blank %}
+            <p class="nb-how__step-body">{{ block.settings.body }}</p>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+
+    {% if section.settings.use_cases != blank %}
+      <div class="nb-how__cases">
+        <p class="nb-how__cases-label">{{ section.settings.use_cases_label }}</p>
+        <div class="nb-how__chips">
+          {% assign cases = section.settings.use_cases | split: ',' %}
+          {% for c in cases %}
+            <span class="nb-how__chip">{{ c | strip }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .nb-how__head {
+    max-width: 60ch;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .nb-how__title {
+    margin-top: 1rem;
+  }
+  .nb-how__intro {
+    margin-top: 1.25rem;
+  }
+  .nb-how__steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: var(--nb-line);
+    border: 1px solid var(--nb-line);
+    border-radius: var(--nb-radius-lg);
+    overflow: hidden;
+  }
+  .nb-how__step {
+    background: var(--nb-bg);
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .nb-how__num {
+    font-family: var(--nb-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    color: var(--nb-label);
+    margin-bottom: 0.75rem;
+  }
+  .nb-how__step-title {
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    font-size: 1.2rem;
+    line-height: 1.05;
+    margin: 0;
+  }
+  .nb-how__step-body {
+    color: var(--nb-muted);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+  .nb-how__cases {
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  }
+  .nb-how__cases-label {
+    font-family: var(--nb-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.7rem;
+    color: var(--nb-muted);
+    margin: 0 0 1.1rem;
+  }
+  .nb-how__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .nb-how__chip {
+    font-weight: 600;
+    font-size: 0.92rem;
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--nb-line-strong);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "How to use",
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        { "value": "light", "label": "Light" },
+        { "value": "dark", "label": "Dark" }
+      ],
+      "default": "light"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Off the wall, into anywhere" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "One object. Grab it and go." },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Your keyboard, mouse, dongles and battery packs live on one board. It hangs on the wall between sessions, then comes with you in a single lift." },
+    { "type": "text", "id": "use_cases_label", "label": "Use cases label", "default": "Works here" },
+    { "type": "text", "id": "use_cases", "label": "Use cases (comma-separated)", "default": "Couch, Bed, Hammock, Plane tray, Passenger seat, Standing, Packed cafe, Wall-mounted" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Lives on a hook" },
+        { "type": "textarea", "id": "body", "label": "Body", "default": "The handle doubles as a wall mount. Off your desk, out of the way, charged and ready." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "How to use",
+      "blocks": [
+        { "type": "step", "settings": { "title": "Lives on a hook", "body": "The handle doubles as a wall mount. Off your desk, out of the way, charged and ready." } },
+        { "type": "step", "settings": { "title": "Everything comes", "body": "One handle, one motion. Board, keys, mouse, and the little stuff that always goes missing." } },
+        { "type": "step", "settings": { "title": "Drop in anywhere", "body": "Lap, couch, hammock — tilt it any way you like. Magnets hold the mouse so nothing slides off the edge." } },
+        { "type": "step", "settings": { "title": "Back on the hook", "body": "Hang it up and your desk, lap, or table is instantly clear again. No teardown." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

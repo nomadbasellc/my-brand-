@@ -1,0 +1,129 @@
+{% comment %}
+  NOMADBASE reviews. Manual testimonial blocks with star ratings.
+  Can be swapped for a reviews app (Judge.me / Loox) later.
+{% endcomment %}
+
+<div class="nb-rev full-width nb-scheme nb-scheme--{{ section.settings.color_scheme }} nb-section">
+  <div class="nb-container nb-rev__head">
+    {% if section.settings.eyebrow != blank %}
+      <p class="nb-eyebrow">{{ section.settings.eyebrow }}</p>
+    {% endif %}
+    {% if section.settings.heading != blank %}
+      <h2 class="nb-h2 nb-rev__title">{{ section.settings.heading }}</h2>
+    {% endif %}
+  </div>
+
+  <div class="nb-container nb-rev__grid">
+    {% for block in section.blocks %}
+      <figure class="nb-rev__card" {{ block.shopify_attributes }}>
+        <div class="nb-rev__stars" aria-label="{{ block.settings.rating }} out of 5">
+          {% for i in (1..5) %}
+            <span class="nb-rev__star{% if i > block.settings.rating %} is-empty{% endif %}" aria-hidden="true">★</span>
+          {% endfor %}
+        </div>
+        <blockquote class="nb-rev__quote">{{ block.settings.quote }}</blockquote>
+        <figcaption class="nb-rev__by">
+          <span class="nb-rev__name">{{ block.settings.author }}</span>
+          {% if block.settings.detail != blank %}
+            <span class="nb-rev__detail">{{ block.settings.detail }}</span>
+          {% endif %}
+        </figcaption>
+      </figure>
+    {% endfor %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .nb-rev__head {
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .nb-rev__title {
+    margin-top: 1rem;
+  }
+  .nb-rev__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+  .nb-rev__card {
+    margin: 0;
+    padding: clamp(1.5rem, 3vw, 2rem);
+    border: 1px solid var(--nb-line);
+    border-radius: var(--nb-radius-lg);
+    background: var(--nb-surface);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .nb-rev__stars {
+    display: flex;
+    gap: 0.15rem;
+    color: var(--nb-teal);
+    font-size: 1rem;
+  }
+  .nb-rev__star.is-empty {
+    color: var(--nb-line-strong);
+  }
+  .nb-rev__quote {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    font-weight: 500;
+  }
+  .nb-rev__by {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin-top: auto;
+  }
+  .nb-rev__name {
+    font-weight: 700;
+    font-size: 0.92rem;
+  }
+  .nb-rev__detail {
+    color: var(--nb-muted);
+    font-size: 0.82rem;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Reviews",
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        { "value": "light", "label": "Light" },
+        { "value": "dark", "label": "Dark" }
+      ],
+      "default": "light"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "From the field" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Working from places desks can't reach." }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "range", "id": "rating", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "textarea", "id": "quote", "label": "Quote", "default": "Wrote half a launch from a hammock. The mouse didn't move once." },
+        { "type": "text", "id": "author", "label": "Author", "default": "Alex R." },
+        { "type": "text", "id": "detail", "label": "Detail", "default": "Remote founder" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews",
+      "blocks": [
+        { "type": "review", "settings": { "rating": 5, "quote": "Wrote half a launch from a hammock. The mouse didn't move once.", "author": "Alex R.", "detail": "Remote founder" } },
+        { "type": "review", "settings": { "rating": 5, "quote": "I fly weekly. A real keyboard on the tray table, then it hangs by the door at home. Sold.", "author": "Priya M.", "detail": "Consultant" } },
+        { "type": "review", "settings": { "rating": 5, "quote": "The clamp holding my TKL on a couch shouldn't work this well. It does.", "author": "Dan K.", "detail": "Developer" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

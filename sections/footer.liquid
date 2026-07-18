@@ -1,39 +1,145 @@
-<footer>
-  <div class="footer__copyright">
-    &copy;
-    {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url }}, {{ powered_by_link }}
+<footer class="nb-foot full-width nb-scheme nb-scheme--dark">
+  <div class="nb-container nb-foot__inner">
+    <div class="nb-foot__lead">
+      {% if section.settings.newsletter_heading != blank %}
+        <h2 class="nb-h2 nb-foot__heading">{{ section.settings.newsletter_heading }}</h2>
+      {% endif %}
+      {% if section.settings.newsletter_text != blank %}
+        <p class="nb-lead nb-foot__text">{{ section.settings.newsletter_text }}</p>
+      {% endif %}
+
+      {% form 'customer', class: 'nb-foot__news' %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="nb-foot__news-row">
+          <input
+            type="email"
+            name="contact[email]"
+            class="nb-foot__email"
+            placeholder="{{ section.settings.newsletter_placeholder }}"
+            aria-label="Email address"
+            required
+          >
+          <button type="submit" class="nb-btn nb-btn--primary">{{ section.settings.newsletter_button }}</button>
+        </div>
+        {% if form.posted_successfully? %}
+          <p class="nb-foot__ok">Thanks — you're on the list.</p>
+        {% endif %}
+      {% endform %}
+    </div>
+
+    <nav class="nb-foot__nav">
+      <img class="nb-foot__logo" src="{{ 'nomadbase-logo.png' | asset_url }}" alt="{{ shop.name }}" width="200" height="52">
+      <div class="nb-foot__links">
+        {% for link in section.settings.menu.links %}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {% endfor %}
+        {% if section.settings.instagram_url != blank %}<a href="{{ section.settings.instagram_url }}">Instagram</a>{% endif %}
+        {% if section.settings.youtube_url != blank %}<a href="{{ section.settings.youtube_url }}">YouTube</a>{% endif %}
+        {% if section.settings.tiktok_url != blank %}<a href="{{ section.settings.tiktok_url }}">TikTok</a>{% endif %}
+        {% if section.settings.discord_url != blank %}<a href="{{ section.settings.discord_url }}">Discord</a>{% endif %}
+      </div>
+    </nav>
   </div>
 
-  <div class="footer__links">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
-
-  <div class="footer__payment">
+  <div class="nb-container nb-foot__bar">
+    <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ section.settings.tagline }}</span>
     {% if section.settings.show_payment_icons %}
-      {% for type in shop.enabled_payment_types %}
-        {{ type | payment_type_svg_tag }}
-      {% endfor %}
+      <span class="nb-foot__pay">
+        {% for type in shop.enabled_payment_types %}
+          {{ type | payment_type_svg_tag }}
+        {% endfor %}
+      </span>
     {% endif %}
   </div>
 </footer>
 
 {% stylesheet %}
-  footer {
-    display: flex;
-    justify-content: space-between;
+  .nb-foot {
+    margin-top: 0;
+    border-top: 1px solid var(--nb-line);
+  }
+  .nb-foot__inner {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    padding-block: clamp(3.5rem, 7vw, 6rem);
+  }
+  .nb-foot__text {
+    margin-top: 1rem;
+    max-width: 42ch;
+  }
+  .nb-foot__news {
     margin-top: 2rem;
+    max-width: 30rem;
   }
-  footer a {
-    text-decoration: none;
-    color: var(--color-foreground);
-  }
-  footer .footer__links,
-  footer .footer__payment {
+  .nb-foot__news-row {
     display: flex;
+    gap: 0.6rem;
+  }
+  .nb-foot__email {
+    flex: 1;
+    padding: 0.9rem 1rem;
+    background: var(--nb-surface);
+    border: 1px solid var(--nb-line-strong);
+    border-radius: 12px;
+    color: var(--nb-text);
+  }
+  .nb-foot__email::placeholder {
+    color: var(--nb-faint);
+  }
+  .nb-foot__ok {
+    margin-top: 0.75rem;
+    color: var(--nb-teal-light);
+    font-size: 0.9rem;
+  }
+  .nb-foot__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+  .nb-foot__logo {
+    width: auto;
+    height: 1.4rem;
+  }
+  .nb-foot__links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .nb-foot__links a {
+    color: var(--nb-muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.15s ease;
+  }
+  .nb-foot__links a:hover {
+    color: var(--nb-text);
+  }
+  .nb-foot__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 1rem;
+    flex-wrap: wrap;
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--nb-line);
+    color: var(--nb-muted);
+    font-size: 0.82rem;
+  }
+  .nb-foot__pay {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .nb-foot__pay svg {
+    height: 1.5rem;
+    width: auto;
+  }
+
+  @media (max-width: 820px) {
+    .nb-foot__inner {
+      grid-template-columns: 1fr;
+    }
   }
 {% endstylesheet %}
 
@@ -41,17 +147,19 @@
 {
   "name": "t:general.footer",
   "settings": [
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_payment_icons",
-      "label": "t:labels.show_payment_icons",
-      "default": true
-    }
+    { "type": "text", "id": "newsletter_heading", "label": "Newsletter heading", "default": "Get the next drop." },
+    { "type": "textarea", "id": "newsletter_text", "label": "Newsletter text", "default": "We make boards in small batches and open ordering in drops. Leave your email and we'll tell you the moment the next one opens — and what colors are in it." },
+    { "type": "text", "id": "newsletter_placeholder", "label": "Email placeholder", "default": "you@email.com" },
+    { "type": "text", "id": "newsletter_button", "label": "Button text", "default": "Notify me" },
+    { "type": "link_list", "id": "menu", "label": "t:labels.menu" },
+    { "type": "header", "content": "Social" },
+    { "type": "url", "id": "instagram_url", "label": "Instagram URL" },
+    { "type": "url", "id": "youtube_url", "label": "YouTube URL" },
+    { "type": "url", "id": "tiktok_url", "label": "TikTok URL" },
+    { "type": "url", "id": "discord_url", "label": "Discord URL" },
+    { "type": "header", "content": "Bottom bar" },
+    { "type": "text", "id": "tagline", "label": "Tagline", "default": "Off the wall, into anywhere." },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "t:labels.show_payment_icons", "default": true }
   ]
 }
 {% endschema %}

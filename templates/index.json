@@ -36,7 +36,60 @@
         "f6": { "type": "feature", "settings": { "label": "Stash it", "title": "A home for the small stuff", "body": "Built-in pockets for dongles, battery packs, and cables — so your whole kit travels as one object, not a handful of loose parts." } }
       },
       "block_order": ["f1", "f2", "f3", "f4", "f5", "f6"]
+    },
+    "keyboard": {
+      "type": "keyboard-compat",
+      "settings": {},
+      "blocks": {
+        "b1": { "type": "brand", "settings": { "name": "Keychron" } },
+        "b2": { "type": "brand", "settings": { "name": "Apple Magic Keyboard" } },
+        "b3": { "type": "brand", "settings": { "name": "Logitech" } },
+        "b4": { "type": "brand", "settings": { "name": "NuPhy" } },
+        "b5": { "type": "brand", "settings": { "name": "Ducky" } },
+        "b6": { "type": "brand", "settings": { "name": "Royal Kludge" } },
+        "b7": { "type": "brand", "settings": { "name": "Corsair" } },
+        "b8": { "type": "brand", "settings": { "name": "HHKB" } }
+      },
+      "block_order": ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8"]
+    },
+    "how": {
+      "type": "how-to",
+      "settings": {},
+      "blocks": {
+        "s1": { "type": "step", "settings": { "title": "Lives on a hook", "body": "The handle doubles as a wall mount. Off your desk, out of the way, charged and ready." } },
+        "s2": { "type": "step", "settings": { "title": "Everything comes", "body": "One handle, one motion. Board, keys, mouse, and the little stuff that always goes missing." } },
+        "s3": { "type": "step", "settings": { "title": "Drop in anywhere", "body": "Lap, couch, hammock — tilt it any way you like. Magnets hold the mouse so nothing slides off the edge." } },
+        "s4": { "type": "step", "settings": { "title": "Back on the hook", "body": "Hang it up and your desk, lap, or table is instantly clear again. No teardown." } }
+      },
+      "block_order": ["s1", "s2", "s3", "s4"]
+    },
+    "configurator": {
+      "type": "product-configurator",
+      "settings": {}
+    },
+    "reviews": {
+      "type": "reviews",
+      "settings": {},
+      "blocks": {
+        "r1": { "type": "review", "settings": { "rating": 5, "quote": "Wrote half a launch from a hammock. The mouse didn't move once.", "author": "Alex R.", "detail": "Remote founder" } },
+        "r2": { "type": "review", "settings": { "rating": 5, "quote": "I fly weekly. A real keyboard on the tray table, then it hangs by the door at home. Sold.", "author": "Priya M.", "detail": "Consultant" } },
+        "r3": { "type": "review", "settings": { "rating": 5, "quote": "The clamp holding my TKL on a couch shouldn't work this well. It does.", "author": "Dan K.", "detail": "Developer" } }
+      },
+      "block_order": ["r1", "r2", "r3"]
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {},
+      "blocks": {
+        "q1": { "type": "qa", "settings": { "question": "How long until it ships?", "answer": "Every board is printed to order, so there's a short wait — usually about two weeks. You're not getting one off a shelf; you're getting yours." } },
+        "q2": { "type": "qa", "settings": { "question": "Will my keyboard fit?", "answer": "Almost certainly. The clamp is adjustable from 60% to full-size and isn't brand-specific — mechanical or membrane, wired or wireless." } },
+        "q3": { "type": "qa", "settings": { "question": "How does the mouse stay put?", "answer": "A slim magnet puck rides under your mouse and pulls to the board. You can tune the strength from 'rests there' to 'locked down' for fast flicks." } },
+        "q4": { "type": "qa", "settings": { "question": "What's your return policy?", "answer": "30 days. If it doesn't work for how you work, send it back for a full refund." } },
+        "q5": { "type": "qa", "settings": { "question": "Curated vs Custom — what's the difference?", "answer": "Curated is a color and finish combo we've already dialed in. Custom lets you choose color, material, finish, hand, and plate layout. Both are made to order." } },
+        "q6": { "type": "qa", "settings": { "question": "Is it covered by a warranty?", "answer": "Yes — one year against defects. We make each board by hand and stand behind it." } }
+      },
+      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6"]
     }
   },
-  "order": ["hero", "usp", "features"]
+  "order": ["hero", "usp", "features", "keyboard", "how", "configurator", "reviews", "faq"]
 }
