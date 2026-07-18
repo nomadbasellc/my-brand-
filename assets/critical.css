@@ -241,8 +241,40 @@ body {
 }
 
 ::selection {
-  background: var(--nb-a2);
+  background: var(--nb-teal);
   color: #fff;
+}
+
+/* Section color schemes — a section opts into light or dark and its
+   children read the scheme's tokens. Accents (teal) work in both. */
+:root {
+  --nb-label: var(--nb-teal-light); /* eyebrow/label accent on dark */
+}
+.nb-scheme {
+  background: var(--nb-bg);
+  color: var(--nb-text);
+}
+.nb-scheme--dark {
+  --nb-bg: #0b0b0c;
+  --nb-text: #f4f3ee;
+  --nb-surface: #151517;
+  --nb-surface-2: #1d1d20;
+  --nb-muted: rgba(244, 243, 238, 0.62);
+  --nb-faint: rgba(244, 243, 238, 0.4);
+  --nb-line: rgba(244, 243, 238, 0.12);
+  --nb-line-strong: rgba(244, 243, 238, 0.24);
+  --nb-label: var(--nb-teal-light);
+}
+.nb-scheme--light {
+  --nb-bg: #f4f3ee;
+  --nb-text: #12100c;
+  --nb-surface: #ffffff;
+  --nb-surface-2: #e9e6dc;
+  --nb-muted: rgba(18, 16, 12, 0.6);
+  --nb-faint: rgba(18, 16, 12, 0.4);
+  --nb-line: rgba(18, 16, 12, 0.12);
+  --nb-line-strong: rgba(18, 16, 12, 0.24);
+  --nb-label: var(--nb-teal-deep);
 }
 
 @media (prefers-reduced-motion: reduce) {

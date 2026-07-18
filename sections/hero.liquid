@@ -37,7 +37,14 @@
       {% elsif section.settings.image != blank %}
         {{ section.settings.image | image_url: width: 1400 | image_tag: class: 'nb-hero__asset', widths: '600, 900, 1200, 1400', sizes: '(max-width: 900px) 100vw, 50vw', alt: section.settings.heading }}
       {% else %}
-        {{ 'nomadbase-product-hero.jpg' | asset_url | image_tag: class: 'nb-hero__asset', alt: 'NOMADBASE lapboard' }}
+        <img
+          class="nb-hero__asset"
+          src="{{ 'nomadbase-product-hero.jpg' | asset_url }}"
+          alt="NOMADBASE lapboard"
+          width="1536"
+          height="1024"
+          fetchpriority="high"
+        >
       {% endif %}
     </div>
   </div>

@@ -1,48 +1,65 @@
 {% comment %}
-  NOMADBASE features grid. Intro block on top, then a responsive grid of
-  feature cards. Each card is a section block with an optional image that
-  reveals on hover. (Scroll parallax / interactive renders can layer on later.)
+  NOMADBASE features — the core of the homepage.
+  Large alternating rows: a big media panel (render) beside the copy.
+  Media parallaxes on scroll via CSS scroll-driven animations, with a
+  static fallback for unsupported browsers and reduced-motion users.
+  Each feature is a section block; add a per-feature render in the editor.
 {% endcomment %}
 
-<div class="nb-features full-width nb-section">
-  <div class="nb-container">
-    <div class="nb-features__head">
-      {% if section.settings.eyebrow != blank %}
-        <p class="nb-eyebrow">{{ section.settings.eyebrow }}</p>
-      {% endif %}
-      {% if section.settings.heading != blank %}
-        <h2 class="nb-h2 nb-features__title">{{ section.settings.heading }}</h2>
-      {% endif %}
-      {% if section.settings.intro != blank %}
-        <p class="nb-lead nb-features__intro">{{ section.settings.intro }}</p>
-      {% endif %}
-    </div>
+<div class="nb-features full-width nb-scheme nb-scheme--{{ section.settings.color_scheme }} nb-section">
+  <div class="nb-container nb-features__head">
+    {% if section.settings.eyebrow != blank %}
+      <p class="nb-eyebrow">{{ section.settings.eyebrow }}</p>
+    {% endif %}
+    {% if section.settings.heading != blank %}
+      <h2 class="nb-h2 nb-features__title">{{ section.settings.heading }}</h2>
+    {% endif %}
+    {% if section.settings.intro != blank %}
+      <p class="nb-lead nb-features__intro">{{ section.settings.intro }}</p>
+    {% endif %}
+  </div>
 
-    <div class="nb-features__grid">
-      {% for block in section.blocks %}
-        <article class="nb-feature" {{ block.shopify_attributes }}>
+  <div class="nb-container nb-features__rows">
+    {% for block in section.blocks %}
+      <article class="nb-frow" {{ block.shopify_attributes }}>
+        <div class="nb-frow__media">
           {% if block.settings.image != blank %}
-            <div class="nb-feature__media">
-              {{ block.settings.image | image_url: width: 700 | image_tag: class: 'nb-feature__img', loading: 'lazy', widths: '400, 600, 700', sizes: '(max-width: 700px) 100vw, 33vw', alt: block.settings.title }}
+            {{
+              block.settings.image
+              | image_url: width: 1200
+              | image_tag:
+                class: 'nb-frow__img',
+                loading: 'lazy',
+                widths: '600, 900, 1200',
+                sizes: '(max-width: 900px) 100vw, 55vw',
+                alt: block.settings.title
+            }}
+          {% else %}
+            <div class="nb-frow__ph">
+              <span class="nb-frow__ph-index">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+              <img class="nb-frow__ph-mark" src="{{ 'nomadbase-symbol.svg' | asset_url }}" alt="" aria-hidden="true" width="120" height="130">
             </div>
           {% endif %}
+        </div>
+
+        <div class="nb-frow__body">
           {% if block.settings.label != blank %}
-            <p class="nb-feature__label">{{ block.settings.label }}</p>
+            <p class="nb-frow__label">{{ block.settings.label }}</p>
           {% endif %}
-          <h3 class="nb-feature__title">{{ block.settings.title }}</h3>
+          <h3 class="nb-frow__title">{{ block.settings.title }}</h3>
           {% if block.settings.body != blank %}
-            <p class="nb-feature__body">{{ block.settings.body }}</p>
+            <p class="nb-frow__text">{{ block.settings.body }}</p>
           {% endif %}
-        </article>
-      {% endfor %}
-    </div>
+        </div>
+      </article>
+    {% endfor %}
   </div>
 </div>
 
 {% stylesheet %}
   .nb-features__head {
-    max-width: 60ch;
-    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    max-width: 62ch;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
   }
   .nb-features__title {
     margin-top: 1rem;
@@ -50,65 +67,121 @@
   .nb-features__intro {
     margin-top: 1.25rem;
   }
-  .nb-features__grid {
+
+  .nb-features__rows {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(4rem, 9vw, 8rem);
+  }
+
+  .nb-frow {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1px;
-    background: var(--nb-line);
-    border: 1px solid var(--nb-line);
+    grid-template-columns: 55fr 45fr;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4.5rem);
+  }
+  /* Alternate the media side on every other row */
+  .nb-frow:nth-child(even) .nb-frow__media {
+    order: 2;
+  }
+
+  .nb-frow__media {
+    position: relative;
+    overflow: hidden;
     border-radius: var(--nb-radius-lg);
-    overflow: hidden;
-  }
-  .nb-feature {
-    background: var(--nb-bg);
-    padding: clamp(1.5rem, 3vw, 2.25rem);
-    transition: background 0.2s ease;
-  }
-  .nb-feature:hover {
-    background: var(--nb-surface);
-  }
-  .nb-feature__media {
-    aspect-ratio: 16 / 10;
-    border-radius: var(--nb-radius);
-    overflow: hidden;
-    margin-bottom: 1.5rem;
+    aspect-ratio: 4 / 3;
     background: var(--nb-surface-2);
+    border: 1px solid var(--nb-line);
   }
-  .nb-feature__img {
+  .nb-frow__img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
   }
-  .nb-feature:hover .nb-feature__img {
-    transform: scale(1.04);
+
+  /* Elegant placeholder "render slot" */
+  .nb-frow__ph {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background:
+      radial-gradient(120% 90% at 70% 20%, rgba(94, 139, 149, 0.28), transparent 60%),
+      #101012;
   }
-  .nb-feature__label {
+  .nb-frow__ph-index {
+    position: absolute;
+    top: 1.25rem;
+    left: 1.5rem;
+    font-family: var(--nb-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    color: var(--nb-teal-light);
+  }
+  .nb-frow__ph-mark {
+    width: clamp(64px, 12vw, 120px);
+    height: auto;
+    opacity: 0.5;
+  }
+
+  .nb-frow__label {
     font-family: var(--nb-mono);
     text-transform: uppercase;
     letter-spacing: 0.18em;
-    font-size: 0.68rem;
-    margin: 0 0 0.6rem;
-    color: var(--nb-a3);
+    font-size: 0.72rem;
+    margin: 0 0 0.85rem;
+    color: var(--nb-label);
   }
-  .nb-feature__title {
+  .nb-frow__title {
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: -0.01em;
-    font-size: 1.15rem;
-    line-height: 1.1;
-    margin: 0 0 0.6rem;
+    letter-spacing: -0.015em;
+    line-height: 1.02;
+    font-size: clamp(1.8rem, 3.5vw, 2.9rem);
+    margin: 0 0 1rem;
+    color: var(--nb-text);
   }
-  .nb-feature__body {
+  .nb-frow__text {
     color: var(--nb-muted);
-    font-size: 0.92rem;
-    line-height: 1.5;
+    font-size: clamp(1rem, 1.3vw, 1.12rem);
+    line-height: 1.55;
     margin: 0;
+    max-width: 46ch;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .nb-feature:hover .nb-feature__img {
-      transform: none;
+  /* Parallax: media content drifts as the row scrolls through the viewport. */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .nb-frow__img,
+      .nb-frow__ph-mark {
+        animation: nb-parallax linear both;
+        animation-timeline: view();
+        animation-range: entry 0% exit 100%;
+        will-change: transform;
+      }
+      .nb-frow__img {
+        transform: scale(1.14);
+      }
+      @keyframes nb-parallax {
+        from {
+          translate: 0 -7%;
+        }
+        to {
+          translate: 0 7%;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 900px) {
+    .nb-frow {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+    .nb-frow:nth-child(even) .nb-frow__media {
+      order: 0;
     }
   }
 {% endstylesheet %}
@@ -117,6 +190,16 @@
 {
   "name": "Features",
   "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        { "value": "light", "label": "Light" },
+        { "value": "dark", "label": "Dark" }
+      ],
+      "default": "light"
+    },
     {
       "type": "text",
       "id": "eyebrow",
@@ -141,7 +224,7 @@
       "type": "feature",
       "name": "Feature",
       "settings": [
-        { "type": "image_picker", "id": "image", "label": "Image (optional)" },
+        { "type": "image_picker", "id": "image", "label": "Render / photo" },
         { "type": "text", "id": "label", "label": "Label", "default": "Locks any board" },
         { "type": "text", "id": "title", "label": "Title", "default": "Clamps, not a cutout" },
         { "type": "textarea", "id": "body", "label": "Body", "default": "Adjustable locks grip your keyboard instead of a fixed slot. 60% to full-size, mechanical or membrane — held tight even when the surface tilts." }
@@ -152,54 +235,12 @@
     {
       "name": "Features",
       "blocks": [
-        {
-          "type": "feature",
-          "settings": {
-            "label": "Locks any board",
-            "title": "Clamps, not a cutout",
-            "body": "Adjustable locks grip your keyboard instead of a fixed slot. 60% to full-size, mechanical or membrane — held tight even when the surface tilts."
-          }
-        },
-        {
-          "type": "feature",
-          "settings": {
-            "label": "Magnetic hold",
-            "title": "The mouse stays put too",
-            "body": "A slim magnet puck rides under your mouse so it won't slide off an angled board. Tune the pull from 'rests there' to 'locked down.'"
-          }
-        },
-        {
-          "type": "feature",
-          "settings": {
-            "label": "Works anywhere",
-            "title": "No flat surface needed",
-            "body": "Couch, bed, hammock, plane tray, passenger seat, a chair in a crowded room — if you can sit, you have a workstation."
-          }
-        },
-        {
-          "type": "feature",
-          "settings": {
-            "label": "Built your way",
-            "title": "Modular plates",
-            "body": "Right-handed, left-handed, or extended — same kit, rearranged. The mouse side goes wherever your hand does."
-          }
-        },
-        {
-          "type": "feature",
-          "settings": {
-            "label": "Handle = mount",
-            "title": "Carry it, then hang it",
-            "body": "One part does double duty: a grip to move it and a hook to store it. Wall-mounted when idle, your space stays clear."
-          }
-        },
-        {
-          "type": "feature",
-          "settings": {
-            "label": "Stash it",
-            "title": "A home for the small stuff",
-            "body": "Built-in pockets for dongles, battery packs, and cables — so your whole kit travels as one object, not a handful of loose parts."
-          }
-        }
+        { "type": "feature", "settings": { "label": "Locks any board", "title": "Clamps, not a cutout", "body": "Adjustable locks grip your keyboard instead of a fixed slot. 60% to full-size, mechanical or membrane — held tight even when the surface tilts." } },
+        { "type": "feature", "settings": { "label": "Magnetic hold", "title": "The mouse stays put too", "body": "A slim magnet puck rides under your mouse so it won't slide off an angled board. Tune the pull from 'rests there' to 'locked down.'" } },
+        { "type": "feature", "settings": { "label": "Works anywhere", "title": "No flat surface needed", "body": "Couch, bed, hammock, plane tray, passenger seat, a chair in a crowded room — if you can sit, you have a workstation." } },
+        { "type": "feature", "settings": { "label": "Built your way", "title": "Modular plates", "body": "Right-handed, left-handed, or extended — same kit, rearranged. The mouse side goes wherever your hand does." } },
+        { "type": "feature", "settings": { "label": "Handle = mount", "title": "Carry it, then hang it", "body": "One part does double duty: a grip to move it and a hook to store it. Wall-mounted when idle, your space stays clear." } },
+        { "type": "feature", "settings": { "label": "Stash it", "title": "A home for the small stuff", "body": "Built-in pockets for dongles, battery packs, and cables — so your whole kit travels as one object, not a handful of loose parts." } }
       ]
     }
   ]
