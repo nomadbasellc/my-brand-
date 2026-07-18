@@ -15,3 +15,6 @@ node_modules/
 ## Release files
 release
 *.zip
+
+# Original brand source assets (kept local, not synced to theme)
+brand-source/

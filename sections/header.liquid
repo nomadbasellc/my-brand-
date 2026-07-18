@@ -1,10 +1,10 @@
 <header class="nb-header full-width">
   <div class="nb-container nb-header__inner">
-    <a class="nb-header__brand" href="{{ routes.root_url }}">
+    <a class="nb-header__brand" href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
       {% if section.settings.logo != blank %}
-        {{ section.settings.logo | image_url: width: 300 | image_tag: alt: shop.name, class: 'nb-header__logo' }}
+        {{ section.settings.logo | image_url: width: 400 | image_tag: alt: shop.name, class: 'nb-header__logo' }}
       {% else %}
-        {{ shop.name }}
+        <img class="nb-header__logo" src="{{ 'nomadbase-logo.png' | asset_url }}" alt="{{ shop.name }}" width="230" height="60">
       {% endif %}
     </a>
 
@@ -54,17 +54,16 @@
     min-height: 4.5rem;
   }
   .nb-header__brand {
-    font-weight: 800;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    font-size: 1.15rem;
+    display: inline-flex;
+    align-items: center;
     text-decoration: none;
     color: var(--nb-text);
     flex-shrink: 0;
   }
   .nb-header__logo {
     width: auto;
-    height: 1.6rem;
+    height: 1.5rem;
+    display: block;
   }
   .nb-header__nav {
     display: flex;

@@ -133,12 +133,17 @@ body {
   --nb-line: rgba(244, 243, 238, 0.12);
   --nb-line-strong: rgba(244, 243, 238, 0.24);
 
-  /* Accents */
-  --nb-a1: #ff6a3d;
-  --nb-a2: #e4409a;
-  --nb-a3: #8b5cf6;
-  --nb-lime: #c9f24e;
-  --nb-gradient: linear-gradient(100deg, var(--nb-a1), var(--nb-a2) 55%, var(--nb-a3));
+  /* Accents — NOMADBASE brand teal */
+  --nb-teal: #5e8b95; /* brand mid teal */
+  --nb-teal-light: #86b0b8; /* light tint — readable text/labels on dark */
+  --nb-teal-deep: #2f5a63; /* deep teal — solid fills with white text */
+  /* Aliases so section CSS stays declarative */
+  --nb-a1: var(--nb-teal);
+  --nb-a2: var(--nb-teal-light);
+  --nb-a3: var(--nb-teal-light);
+  --nb-lime: var(--nb-teal);
+  --nb-gradient: linear-gradient(100deg, var(--nb-teal-deep), var(--nb-teal) 55%, var(--nb-teal-light));
+  --nb-fill: linear-gradient(100deg, #2f5a63, #43727c); /* buttons/bands: white text passes AA */
 
   /* Type */
   --nb-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Menlo, monospace;
@@ -220,7 +225,7 @@ body {
   transform: translateY(-1px);
 }
 .nb-btn--primary {
-  background: var(--nb-gradient);
+  background: var(--nb-fill);
   color: #fff;
 }
 .nb-btn--primary:hover {
