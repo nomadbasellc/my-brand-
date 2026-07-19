@@ -36,7 +36,7 @@
           {% if block.settings.logo != blank %}
             {{ block.settings.logo | image_url: width: 300 | image_tag: class: 'nb-kbc__logo-img', loading: 'lazy', alt: block.settings.name }}
           {% elsif block.settings.logo_asset != blank %}
-            <img class="nb-kbc__logo-img" src="{{ block.settings.logo_asset | asset_url }}" alt="{{ block.settings.name }}" loading="lazy">
+            <img class="nb-kbc__logo-img" src="{{ block.settings.logo_asset | asset_url }}" alt="{{ block.settings.name }}" width="500" height="156" loading="lazy">
           {% else %}
             <span class="nb-kbc__logo-name">{{ block.settings.name }}</span>
           {% endif %}
