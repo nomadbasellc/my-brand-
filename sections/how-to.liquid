@@ -28,25 +28,16 @@
         </li>
       {% endfor %}
     </ol>
-
-    {% if section.settings.use_cases != blank %}
-      <div class="nb-how__cases">
-        <p class="nb-how__cases-label">{{ section.settings.use_cases_label }}</p>
-        <div class="nb-how__chips">
-          {% assign cases = section.settings.use_cases | split: ',' %}
-          {% for c in cases %}
-            <span class="nb-how__chip">{{ c | strip }}</span>
-          {% endfor %}
-        </div>
-      </div>
-    {% endif %}
   </div>
 </div>
 
 {% stylesheet %}
   .nb-how__head {
-    max-width: 60ch;
+    max-width: 46rem;
     margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .nb-how__intro {
+    max-width: 46rem;
   }
   .nb-how__title {
     margin-top: 1rem;
@@ -134,9 +125,7 @@
     },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Off the wall, into anywhere" },
     { "type": "textarea", "id": "heading", "label": "Heading", "default": "One object. Grab it and go." },
-    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Your keyboard, mouse, dongles and battery packs live on one board. It hangs on the wall between sessions, then comes with you in a single lift." },
-    { "type": "text", "id": "use_cases_label", "label": "Use cases label", "default": "Works here" },
-    { "type": "text", "id": "use_cases", "label": "Use cases (comma-separated)", "default": "Couch, Bed, Hammock, Plane tray, Passenger seat, Standing, Packed cafe, Wall-mounted" }
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Your keyboard, mouse, dongles and battery packs live on one board. It hangs on the wall between sessions, then comes with you in a single lift." }
   ],
   "blocks": [
     {

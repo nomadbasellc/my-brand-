@@ -63,6 +63,19 @@
       },
       "block_order": ["s1", "s2", "s3", "s4"]
     },
+    "usecases": {
+      "type": "use-cases",
+      "settings": {},
+      "blocks": {
+        "c1": { "type": "use_case", "settings": { "label": "On the couch", "sub": "Feet up, real keyboard down." } },
+        "c2": { "type": "use_case", "settings": { "label": "In a hammock", "sub": "Tilt it — the mouse holds." } },
+        "c3": { "type": "use_case", "settings": { "label": "On a plane tray", "sub": "A real desk at 30,000 ft." } },
+        "c4": { "type": "use_case", "settings": { "label": "Passenger seat", "sub": "Ship it on the drive." } },
+        "c5": { "type": "use_case", "settings": { "label": "In bed", "sub": "Propped up, locked in." } },
+        "c6": { "type": "use_case", "settings": { "label": "Packed cafe", "sub": "No table? No problem." } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4", "c5", "c6"]
+    },
     "configurator": {
       "type": "product-configurator",
       "settings": {}
@@ -91,5 +104,5 @@
       "block_order": ["q1", "q2", "q3", "q4", "q5", "q6"]
     }
   },
-  "order": ["hero", "usp", "features", "keyboard", "how", "configurator", "reviews", "faq"]
+  "order": ["hero", "usp", "features", "keyboard", "how", "usecases", "configurator", "reviews", "faq"]
 }

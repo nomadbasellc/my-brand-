@@ -1,0 +1,244 @@
+{% comment %}
+  NOMADBASE "works here" carousel. Shows 3 lifestyle cards at a time with
+  prev/next controls and swipe/scroll. Each card is a section block with a
+  lifestyle image (or an elegant placeholder) and a caption.
+{% endcomment %}
+
+<div class="nb-uc full-width nb-scheme nb-scheme--{{ section.settings.color_scheme }} nb-section" data-nb-uc>
+  <div class="nb-container nb-uc__head">
+    <div>
+      {% if section.settings.eyebrow != blank %}
+        <p class="nb-eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h2 class="nb-h2 nb-uc__title">{{ section.settings.heading }}</h2>
+      {% endif %}
+    </div>
+    <div class="nb-uc__nav">
+      <button type="button" class="nb-uc__arrow" data-nb-prev aria-label="Previous">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <button type="button" class="nb-uc__arrow" data-nb-next aria-label="Next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="nb-container">
+    <div class="nb-uc__track" data-nb-track>
+      {% for block in section.blocks %}
+        <article class="nb-uc__card" {{ block.shopify_attributes }}>
+          <div class="nb-uc__media">
+            {% if block.settings.image != blank %}
+              {{ block.settings.image | image_url: width: 800 | image_tag: class: 'nb-uc__img', loading: 'lazy', widths: '400, 600, 800', sizes: '(max-width: 700px) 80vw, 33vw', alt: block.settings.label }}
+            {% else %}
+              <div class="nb-uc__ph">
+                <img class="nb-uc__ph-mark" src="{{ 'nomadbase-symbol.svg' | asset_url }}" alt="" aria-hidden="true" width="56" height="60">
+                <span class="nb-uc__ph-note">Lifestyle photo</span>
+              </div>
+            {% endif %}
+          </div>
+          <div class="nb-uc__cap">
+            <span class="nb-uc__label">{{ block.settings.label }}</span>
+            {% if block.settings.sub != blank %}
+              <span class="nb-uc__sub">{{ block.settings.sub }}</span>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .nb-uc__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .nb-uc__title {
+    margin-top: 1rem;
+  }
+  .nb-uc__nav {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+  .nb-uc__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--nb-line-strong);
+    background: transparent;
+    color: var(--nb-text);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .nb-uc__arrow:hover {
+    border-color: var(--nb-teal);
+    background: color-mix(in srgb, var(--nb-teal) 12%, transparent);
+  }
+  .nb-uc__arrow svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .nb-uc__track {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.5rem;
+  }
+  .nb-uc__track::-webkit-scrollbar {
+    display: none;
+  }
+  .nb-uc__card {
+    flex: 0 0 calc((100% - 2rem) / 3);
+    scroll-snap-align: start;
+  }
+  .nb-uc__media {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--nb-radius-lg);
+    overflow: hidden;
+    background: var(--nb-surface-2);
+    border: 1px solid var(--nb-line);
+  }
+  .nb-uc__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .nb-uc__ph {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    gap: 0.6rem;
+    background: radial-gradient(120% 90% at 50% 25%, rgba(94, 139, 149, 0.24), transparent 62%);
+  }
+  .nb-uc__ph-mark {
+    width: 46px;
+    height: auto;
+    opacity: 0.5;
+  }
+  .nb-uc__ph-note {
+    font-family: var(--nb-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.62rem;
+    color: var(--nb-faint);
+  }
+  .nb-uc__cap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin-top: 1rem;
+  }
+  .nb-uc__label {
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .nb-uc__sub {
+    color: var(--nb-muted);
+    font-size: 0.88rem;
+  }
+
+  @media (max-width: 900px) {
+    .nb-uc__card {
+      flex-basis: calc((100% - 1rem) / 2);
+    }
+  }
+  @media (max-width: 600px) {
+    .nb-uc__card {
+      flex-basis: 82%;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    function initCarousel(root) {
+      var track = root.querySelector('[data-nb-track]');
+      var prev = root.querySelector('[data-nb-prev]');
+      var next = root.querySelector('[data-nb-next]');
+      if (!track) return;
+
+      function step() {
+        var card = track.querySelector('.nb-uc__card');
+        if (!card) return track.clientWidth;
+        var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || 16) || 16;
+        return card.getBoundingClientRect().width + gap;
+      }
+      if (prev) prev.addEventListener('click', function () {
+        track.scrollBy({ left: -step(), behavior: 'smooth' });
+      });
+      if (next) next.addEventListener('click', function () {
+        track.scrollBy({ left: step(), behavior: 'smooth' });
+      });
+    }
+
+    function initAll() {
+      document.querySelectorAll('[data-nb-uc]').forEach(initCarousel);
+    }
+
+    if (document.readyState !== 'loading') {
+      initAll();
+    } else {
+      document.addEventListener('DOMContentLoaded', initAll);
+    }
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Use cases carousel",
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        { "value": "light", "label": "Light" },
+        { "value": "dark", "label": "Dark" }
+      ],
+      "default": "dark"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Works here" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "A workstation wherever you land." }
+  ],
+  "blocks": [
+    {
+      "type": "use_case",
+      "name": "Use case",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Lifestyle photo" },
+        { "type": "text", "id": "label", "label": "Label", "default": "On the couch" },
+        { "type": "text", "id": "sub", "label": "Sub-label", "default": "Feet up, real keyboard down." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Use cases carousel",
+      "blocks": [
+        { "type": "use_case", "settings": { "label": "On the couch", "sub": "Feet up, real keyboard down." } },
+        { "type": "use_case", "settings": { "label": "In a hammock", "sub": "Tilt it — the mouse holds." } },
+        { "type": "use_case", "settings": { "label": "On a plane tray", "sub": "A real desk at 30,000 ft." } },
+        { "type": "use_case", "settings": { "label": "Passenger seat", "sub": "Ship it on the drive." } },
+        { "type": "use_case", "settings": { "label": "In bed", "sub": "Propped up, locked in." } },
+        { "type": "use_case", "settings": { "label": "Packed cafe", "sub": "No table? No problem." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

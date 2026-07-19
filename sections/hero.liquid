@@ -40,10 +40,10 @@
       {% else %}
         <img
           class="nb-hero__asset"
-          src="{{ 'nomadbase-product-hero.jpg' | asset_url }}"
+          src="{{ 'nomadbase-product-hero.png' | asset_url }}"
           alt="NOMADBASE lapboard"
-          width="1536"
-          height="1024"
+          width="1500"
+          height="699"
           fetchpriority="high"
         >
       {% endif %}
@@ -55,6 +55,10 @@
   .nb-hero {
     position: relative;
     overflow: hidden;
+    background:
+      radial-gradient(58% 72% at 72% 42%, rgba(150, 184, 191, 0.22), rgba(120, 160, 168, 0.06) 42%, transparent 66%),
+      radial-gradient(90% 120% at 50% -10%, rgba(94, 139, 149, 0.1), transparent 55%),
+      var(--nb-bg);
   }
   .nb-hero__grid {
     position: relative;
@@ -83,25 +87,12 @@
     margin-top: 2.25rem;
   }
 
-  /* Media: large floating product on a soft light */
+  /* Media: large transparent product; the light lives on the section bg */
   .nb-hero__media {
     position: relative;
     display: grid;
     place-items: center;
-    min-height: 340px;
-  }
-  .nb-hero__media::before {
-    content: "";
-    position: absolute;
-    z-index: 0;
-    width: 78%;
-    aspect-ratio: 1;
-    left: 50%;
-    top: 48%;
-    transform: translate(-50%, -50%);
-    background: radial-gradient(circle, rgba(134, 176, 184, 0.4), rgba(134, 176, 184, 0.12) 42%, transparent 68%);
-    filter: blur(50px);
-    pointer-events: none;
+    min-height: 300px;
   }
   .nb-hero__asset {
     position: relative;
@@ -111,10 +102,6 @@
     height: auto;
     margin-inline: -11%;
     object-fit: contain;
-    /* Feather the rectangular edges so a render's background melts into the page */
-    -webkit-mask-image: radial-gradient(ellipse 74% 74% at 50% 50%, #000 56%, transparent 82%);
-    mask-image: radial-gradient(ellipse 74% 74% at 50% 50%, #000 56%, transparent 82%);
-    filter: drop-shadow(0 34px 64px rgba(0, 0, 0, 0.55));
   }
 
   @media (max-width: 900px) {

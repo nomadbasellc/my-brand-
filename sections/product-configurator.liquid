@@ -98,7 +98,7 @@
     </script>
   {% else %}
     <div class="nb-container nb-pdp__empty">
-      <img class="nb-pdp__empty-img" src="{{ 'nomadbase-product-hero.jpg' | asset_url }}" alt="NOMADBASE lapboard" width="1536" height="1024">
+      <img class="nb-pdp__empty-img" src="{{ 'nomadbase-product-hero.png' | asset_url }}" alt="NOMADBASE lapboard" width="1500" height="699">
       <div class="nb-pdp__empty-copy">
         <p class="nb-eyebrow">Almost ready</p>
         <p class="nb-pdp__empty-title">Connect a product to open checkout.</p>
@@ -110,8 +110,11 @@
 
 {% stylesheet %}
   .nb-pdp__head {
-    max-width: 58ch;
+    max-width: 46rem;
     margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .nb-pdp__intro {
+    max-width: 46rem;
   }
   .nb-pdp__title {
     margin-top: 1rem;

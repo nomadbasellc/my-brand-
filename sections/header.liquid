@@ -43,11 +43,17 @@
   </div>
 </header>
 
-{% stylesheet %}
-  .nb-header {
+{% comment %} Make the section wrapper itself sticky so the header holds through full-page scroll {% endcomment %}
+{% style %}
+  #shopify-section-{{ section.id }} {
     position: sticky;
     top: 0;
     z-index: 50;
+  }
+{% endstyle %}
+
+{% stylesheet %}
+  .nb-header {
     background: color-mix(in srgb, var(--nb-bg) 60%, transparent);
     backdrop-filter: blur(22px) saturate(165%);
     -webkit-backdrop-filter: blur(22px) saturate(165%);
