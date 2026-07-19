@@ -12,6 +12,7 @@
     "hero": {
       "type": "hero",
       "settings": {
+        "style": "bold",
         "layout": "stacked",
         "eyebrow": "",
         "heading": "Take your whole setup off the wall.",
