@@ -1,11 +1,11 @@
 {% comment %}
-  NOMADBASE hero. Copy on the left, a large "floating" product on the right
-  with a soft light behind it. Media priority: video > image > default render.
-  The asset edges are feathered so a render with a background melts into the page;
-  for the cleanest look, supply a transparent PNG (or a video).
+  NOMADBASE hero. Two layouts via the "layout" setting:
+    - stacked: copy + buttons on top, large product below (centered)
+    - split:   copy left, product right (two columns)
+  Media priority: video > image > default transparent render.
 {% endcomment %}
 
-<div class="nb-hero full-width">
+<div class="nb-hero nb-hero--{{ section.settings.layout }} full-width">
   <div class="nb-container nb-hero__grid">
     <div class="nb-hero__copy">
       {% if section.settings.eyebrow != blank %}
@@ -55,30 +55,19 @@
   .nb-hero {
     position: relative;
     overflow: hidden;
-    background:
-      radial-gradient(58% 72% at 72% 42%, rgba(150, 184, 191, 0.22), rgba(120, 160, 168, 0.06) 42%, transparent 66%),
-      radial-gradient(90% 120% at 50% -10%, rgba(94, 139, 149, 0.1), transparent 55%),
-      var(--nb-bg);
   }
   .nb-hero__grid {
     position: relative;
     z-index: 1;
-    display: grid;
-    grid-template-columns: 0.92fr 1.18fr;
-    align-items: center;
-    gap: clamp(1.5rem, 4vw, 3.5rem);
-    padding-block: clamp(3.5rem, 8vw, 7rem);
   }
   .nb-hero__eyebrow {
     margin-bottom: 1.5rem;
   }
   .nb-hero__title {
     font-size: clamp(1.85rem, 3.4vw, 2.9rem);
-    max-width: 15ch;
   }
   .nb-hero__lead {
     margin-top: 1.5rem;
-    max-width: 42ch;
   }
   .nb-hero__actions {
     display: flex;
@@ -86,39 +75,106 @@
     gap: 0.75rem;
     margin-top: 2.25rem;
   }
-
-  /* Media: large transparent product; the light lives on the section bg */
   .nb-hero__media {
     position: relative;
-    display: grid;
-    place-items: center;
-    min-height: 300px;
   }
   .nb-hero__asset {
     position: relative;
     z-index: 1;
-    width: 122%;
-    max-width: 122%;
     height: auto;
-    margin-inline: -11%;
     object-fit: contain;
   }
 
+  /* ---- Split layout (copy left, product right) ---- */
+  .nb-hero--split {
+    background:
+      radial-gradient(58% 72% at 72% 42%, rgba(150, 184, 191, 0.22), rgba(120, 160, 168, 0.06) 42%, transparent 66%),
+      radial-gradient(90% 120% at 50% -10%, rgba(94, 139, 149, 0.1), transparent 55%),
+      var(--nb-bg);
+  }
+  .nb-hero--split .nb-hero__grid {
+    display: grid;
+    grid-template-columns: 0.92fr 1.18fr;
+    align-items: center;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    padding-block: clamp(3.5rem, 8vw, 7rem);
+  }
+  .nb-hero--split .nb-hero__title {
+    max-width: 15ch;
+  }
+  .nb-hero--split .nb-hero__lead {
+    max-width: 42ch;
+  }
+  .nb-hero--split .nb-hero__media {
+    display: grid;
+    place-items: center;
+    min-height: 300px;
+  }
+  .nb-hero--split .nb-hero__asset {
+    width: 122%;
+    max-width: 122%;
+    margin-inline: -11%;
+  }
+
+  /* ---- Stacked layout (copy on top, product below) ---- */
+  .nb-hero--stacked {
+    background:
+      radial-gradient(52% 46% at 50% 74%, rgba(150, 184, 191, 0.24), rgba(120, 160, 168, 0.06) 45%, transparent 68%),
+      radial-gradient(90% 60% at 50% -8%, rgba(94, 139, 149, 0.09), transparent 55%),
+      var(--nb-bg);
+  }
+  .nb-hero--stacked .nb-hero__grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: clamp(2rem, 5vw, 3.5rem);
+    padding-block: clamp(3rem, 6vw, 5rem) 0;
+  }
+  .nb-hero--stacked .nb-hero__copy {
+    max-width: 40rem;
+  }
+  .nb-hero--stacked .nb-hero__title {
+    font-size: clamp(2rem, 4.5vw, 3.4rem);
+    margin-inline: auto;
+    max-width: 20ch;
+  }
+  .nb-hero--stacked .nb-hero__lead {
+    margin-inline: auto;
+    max-width: 52ch;
+  }
+  .nb-hero--stacked .nb-hero__actions {
+    justify-content: center;
+  }
+  .nb-hero--stacked .nb-hero__media {
+    width: 100%;
+    display: grid;
+    place-items: center;
+  }
+  .nb-hero--stacked .nb-hero__asset {
+    width: min(112%, 1120px);
+    max-width: 112%;
+  }
+
   @media (max-width: 900px) {
-    .nb-hero__grid {
+    .nb-hero--split .nb-hero__grid {
       grid-template-columns: 1fr;
     }
-    .nb-hero__media {
+    .nb-hero--split .nb-hero__media {
       order: -1;
       min-height: 0;
     }
-    .nb-hero__asset {
+    .nb-hero--split .nb-hero__asset {
       width: 108%;
       max-width: 108%;
       margin-inline: -4%;
     }
-    .nb-hero__title {
+    .nb-hero--split .nb-hero__title {
       max-width: 20ch;
+    }
+    .nb-hero--stacked .nb-hero__asset {
+      width: 118%;
+      max-width: 118%;
     }
   }
 {% endstylesheet %}
@@ -127,6 +183,16 @@
 {
   "name": "Hero",
   "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "stacked", "label": "Stacked (product below)" },
+        { "value": "split", "label": "Split (product beside)" }
+      ],
+      "default": "stacked"
+    },
     {
       "type": "text",
       "id": "eyebrow",
