@@ -90,18 +90,23 @@
     margin: 0 0 1.25rem;
   }
   .nb-kbc__logos {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     align-items: center;
-    gap: clamp(1.75rem, 4vw, 3rem) clamp(2.25rem, 5vw, 4rem);
-    max-width: 64rem;
+    justify-items: center;
+    gap: clamp(2.5rem, 5vw, 4rem) clamp(1.5rem, 4vw, 3rem);
+    max-width: 58rem;
     margin-inline: auto;
   }
   .nb-kbc__logo {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+  }
+  @media (max-width: 680px) {
+    .nb-kbc__logos {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
   .nb-kbc__logo-name {
     font-weight: 600;
@@ -111,9 +116,9 @@
   /* Logos share a uniform canvas, so a fixed height renders them all the
      same size. object-fit keeps them crisp and centered. */
   .nb-kbc__logo-img {
-    height: 52px;
+    height: 68px;
     width: auto;
-    max-width: 210px;
+    max-width: 100%;
     object-fit: contain;
     opacity: 0.72;
     transition: opacity 0.15s ease;
