@@ -1,0 +1,191 @@
+{% comment %}
+  Nomadbase design system — a LIVE mirror of the theme's shared tokens and
+  components. Everything here renders from the same CSS custom properties and
+  .nb-* classes defined in assets/critical.css that the rest of the site uses.
+  Change a token or a component there and BOTH this page and the whole website
+  update together. Internal use (site is password protected).
+{% endcomment %}
+
+<div class="nb-ds full-width nb-scheme nb-scheme--dark nb-section">
+  <div class="nb-container">
+    <p class="nb-eyebrow">Internal · Living document</p>
+    <h1 class="nb-display nb-ds__title">Nomadbase design system</h1>
+    <p class="nb-lead nb-ds__intro">Every element below is rendered from the shared tokens and components in <code>critical.css</code>. This page and the live website read the same source — edit a token or a component and both update at once.</p>
+
+    {% comment %} COLORS {% endcomment %}
+    <section class="nb-ds__section">
+      <h2 class="nb-h2 nb-ds__h">Colors</h2>
+      <div class="nb-ds__grid">
+        <div class="nb-ds__swatch"><div class="nb-ds__chip" style="background: var(--nb-bg)"></div><div class="nb-ds__meta"><span class="nb-ds__name">Background</span><span class="nb-ds__val">--nb-bg · #0B0B0C</span></div></div>
+        <div class="nb-ds__swatch"><div class="nb-ds__chip" style="background: var(--nb-surface)"></div><div class="nb-ds__meta"><span class="nb-ds__name">Surface</span><span class="nb-ds__val">--nb-surface · #151517</span></div></div>
+        <div class="nb-ds__swatch"><div class="nb-ds__chip" style="background: var(--nb-surface-2)"></div><div class="nb-ds__meta"><span class="nb-ds__name">Surface 2</span><span class="nb-ds__val">--nb-surface-2 · #1D1D20</span></div></div>
+        <div class="nb-ds__swatch"><div class="nb-ds__chip" style="background: var(--nb-text)"></div><div class="nb-ds__meta"><span class="nb-ds__name">Text</span><span class="nb-ds__val">--nb-text · #F4F3EE</span></div></div>
+        <div class="nb-ds__swatch"><div class="nb-ds__chip" style="background: var(--nb-teal)"></div><div class="nb-ds__meta"><span class="nb-ds__name">Teal (accent)</span><span class="nb-ds__val" data-token="teal">--nb-teal</span></div></div>
+        <div class="nb-ds__swatch"><div class="nb-ds__chip" style="background: var(--nb-teal-light)"></div><div class="nb-ds__meta"><span class="nb-ds__name">Teal light</span><span class="nb-ds__val" data-token="teal-light">--nb-teal-light</span></div></div>
+        <div class="nb-ds__swatch"><div class="nb-ds__chip" style="background: var(--nb-teal-deep)"></div><div class="nb-ds__meta"><span class="nb-ds__name">Teal deep</span><span class="nb-ds__val" data-token="teal-deep">--nb-teal-deep</span></div></div>
+        <div class="nb-ds__swatch"><div class="nb-ds__chip" style="background: var(--nb-fill)"></div><div class="nb-ds__meta"><span class="nb-ds__name">Button fill</span><span class="nb-ds__val">--nb-fill</span></div></div>
+      </div>
+    </section>
+
+    {% comment %} TYPOGRAPHY {% endcomment %}
+    <section class="nb-ds__section">
+      <h2 class="nb-h2 nb-ds__h">Typography — Satoshi</h2>
+      <div class="nb-ds__type-row">
+        <span class="nb-ds__tag">Display · .nb-display</span>
+        <p class="nb-display" style="font-size: clamp(2rem, 4vw, 3.2rem); margin-top: .6rem;">Take your setup off the wall.</p>
+      </div>
+      <div class="nb-ds__type-row">
+        <span class="nb-ds__tag">Heading · .nb-h2</span>
+        <h3 class="nb-h2" style="margin-top: .6rem;">Solid where there is no desk.</h3>
+      </div>
+      <div class="nb-ds__type-row">
+        <span class="nb-ds__tag">Lead · .nb-lead</span>
+        <p class="nb-lead" style="margin-top: .6rem; max-width: 52ch;">A modular lapboard that clamps your keyboard and pins your mouse with magnets.</p>
+      </div>
+      <div class="nb-ds__type-row">
+        <span class="nb-ds__tag">Body</span>
+        <p style="margin-top: .6rem; max-width: 52ch; line-height: 1.6;">Regular body copy uses Satoshi at 400. This is how paragraph text reads across the site — comfortable measure, relaxed line height.</p>
+      </div>
+      <div class="nb-ds__type-row">
+        <span class="nb-ds__tag">Eyebrow / label · .nb-eyebrow</span>
+        <p class="nb-eyebrow" style="margin-top: .6rem;">What makes it work</p>
+      </div>
+    </section>
+
+    {% comment %} BUTTONS {% endcomment %}
+    <section class="nb-ds__section">
+      <h2 class="nb-h2 nb-ds__h">Buttons <span class="nb-ds__hint">— hover to see the animation</span></h2>
+      <div class="nb-ds__row">
+        <a class="nb-btn nb-btn--primary" href="#" onclick="return false">Get Yours</a>
+        <a class="nb-btn nb-btn--ghost" href="#" onclick="return false">See how it works</a>
+      </div>
+      <p class="nb-ds__note">Primary and ghost are the two global button styles (<code>.nb-btn--primary</code>, <code>.nb-btn--ghost</code>). Change them once in <code>critical.css</code> and every button on the site follows.</p>
+    </section>
+
+    {% comment %} COMPONENTS {% endcomment %}
+    <section class="nb-ds__section">
+      <h2 class="nb-h2 nb-ds__h">Components</h2>
+      <div class="nb-ds__grid">
+        <div class="nb-ds__card">
+          <span class="nb-ds__tag">Stat</span>
+          <div style="margin-top: .75rem;">
+            <span style="display:block; font-family: var(--nb-mono); font-weight:700; font-size:1.75rem; color: var(--nb-teal-light);">~12h</span>
+            <span style="display:block; font-family: var(--nb-mono); text-transform:uppercase; letter-spacing:.14em; font-size:.66rem; color: var(--nb-muted); margin-top:.4rem;">Print time / board</span>
+          </div>
+        </div>
+        <div class="nb-ds__card">
+          <span class="nb-ds__tag">Chip / pill</span>
+          <div class="nb-ds__row" style="margin-top: .75rem; gap:.5rem;">
+            <span class="nb-ds__pill">Keychron</span>
+            <span class="nb-ds__pill">Logitech</span>
+          </div>
+        </div>
+        <div class="nb-ds__card">
+          <span class="nb-ds__tag">Rating</span>
+          <div style="margin-top: .75rem; color: var(--nb-teal); font-size: 1.05rem; letter-spacing:.1rem;">★★★★★</div>
+        </div>
+        <div class="nb-ds__card">
+          <span class="nb-ds__tag">Surface card</span>
+          <p style="margin-top:.6rem; color: var(--nb-muted); font-size:.9rem;">Uses --nb-surface, --nb-line, --nb-radius.</p>
+        </div>
+      </div>
+    </section>
+
+    {% comment %} RADIUS + SCHEMES {% endcomment %}
+    <section class="nb-ds__section">
+      <h2 class="nb-h2 nb-ds__h">Radius &amp; schemes</h2>
+      <div class="nb-ds__row" style="gap: 1.5rem; align-items: flex-end;">
+        <div style="text-align:center;"><div style="width:72px;height:72px;background:var(--nb-surface-2);border:1px solid var(--nb-line);border-radius:8px;"></div><span class="nb-ds__val" style="display:block;margin-top:.5rem;">button · 8px</span></div>
+        <div style="text-align:center;"><div style="width:72px;height:72px;background:var(--nb-surface-2);border:1px solid var(--nb-line);border-radius:var(--nb-radius);"></div><span class="nb-ds__val" style="display:block;margin-top:.5rem;">--nb-radius</span></div>
+        <div style="text-align:center;"><div style="width:72px;height:72px;background:var(--nb-surface-2);border:1px solid var(--nb-line);border-radius:var(--nb-radius-lg);"></div><span class="nb-ds__val" style="display:block;margin-top:.5rem;">--nb-radius-lg</span></div>
+      </div>
+      <div class="nb-ds__row" style="margin-top: 1.5rem; gap: 1rem;">
+        <div class="nb-scheme nb-scheme--dark nb-ds__scheme">Dark scheme<span>--nb-scheme--dark</span></div>
+        <div class="nb-scheme nb-scheme--light nb-ds__scheme">Light scheme<span>--nb-scheme--light</span></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+{% stylesheet %}
+  .nb-ds__title { font-size: clamp(2rem, 4vw, 3rem); margin-top: 1rem; }
+  .nb-ds__intro { margin-top: 1.25rem; max-width: 60ch; }
+  .nb-ds__section { margin-top: clamp(3rem, 6vw, 5rem); }
+  .nb-ds__h {
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--nb-line);
+  }
+  .nb-ds__hint,
+  .nb-ds__note {
+    color: var(--nb-muted);
+    font-size: 0.85rem;
+    font-weight: 400;
+  }
+  .nb-ds__note { margin-top: 1rem; }
+  .nb-ds code {
+    font-family: var(--nb-mono);
+    font-size: 0.85em;
+    background: var(--nb-surface);
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+  }
+  .nb-ds__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 1rem;
+  }
+  .nb-ds__swatch,
+  .nb-ds__card {
+    border: 1px solid var(--nb-line);
+    border-radius: var(--nb-radius);
+    overflow: hidden;
+    background: var(--nb-surface);
+  }
+  .nb-ds__card { padding: 1rem 1.1rem; }
+  .nb-ds__chip { height: 88px; }
+  .nb-ds__meta { padding: 0.75rem 0.9rem; display: flex; flex-direction: column; gap: 0.2rem; }
+  .nb-ds__name { font-weight: 600; font-size: 0.92rem; }
+  .nb-ds__val { font-family: var(--nb-mono); font-size: 0.72rem; color: var(--nb-muted); }
+  .nb-ds__tag {
+    font-family: var(--nb-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.66rem;
+    color: var(--nb-muted);
+  }
+  .nb-ds__type-row {
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--nb-line);
+  }
+  .nb-ds__row { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
+  .nb-ds__pill {
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--nb-line-strong);
+  }
+  .nb-ds__scheme {
+    flex: 1;
+    min-width: 200px;
+    padding: 1.5rem;
+    border: 1px solid var(--nb-line);
+    border-radius: var(--nb-radius);
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .nb-ds__scheme span { font-family: var(--nb-mono); font-size: 0.7rem; color: var(--nb-muted); font-weight: 400; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Design system",
+  "settings": [],
+  "presets": [
+    { "name": "Design system" }
+  ]
+}
+{% endschema %}

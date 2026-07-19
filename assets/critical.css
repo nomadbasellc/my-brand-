@@ -133,17 +133,17 @@ body {
   --nb-line: rgba(244, 243, 238, 0.12);
   --nb-line-strong: rgba(244, 243, 238, 0.24);
 
-  /* Accents — NOMADBASE brand teal */
-  --nb-teal: #5e8b95; /* brand mid teal */
-  --nb-teal-light: #86b0b8; /* light tint — readable text/labels on dark */
-  --nb-teal-deep: #2f5a63; /* deep teal — solid fills with white text */
+  /* Accents — NOMADBASE brand teal (slightly more vibrant) */
+  --nb-teal: #4f9aa6; /* brand mid teal */
+  --nb-teal-light: #83c2cd; /* light tint — readable text/labels on dark */
+  --nb-teal-deep: #285f6b; /* deep teal — solid fills with white text */
   /* Aliases so section CSS stays declarative */
   --nb-a1: var(--nb-teal);
   --nb-a2: var(--nb-teal-light);
   --nb-a3: var(--nb-teal-light);
   --nb-lime: var(--nb-teal);
   --nb-gradient: linear-gradient(100deg, var(--nb-teal-deep), var(--nb-teal) 55%, var(--nb-teal-light));
-  --nb-fill: linear-gradient(100deg, #2f5a63, #43727c); /* buttons/bands: white text passes AA */
+  --nb-fill: linear-gradient(100deg, #214f5a, #2f7482); /* buttons/bands: white text passes AA */
 
   /* Type */
   --nb-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Menlo, monospace;
@@ -187,15 +187,15 @@ html {
   margin: 0;
 }
 .nb-display {
-  font-weight: 700;
-  line-height: 1.06;
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
   margin: 0;
 }
 .nb-h2 {
-  font-weight: 700;
-  line-height: 1.12;
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
   font-size: clamp(1.5rem, 2.6vw, 2.1rem);
   margin: 0;
 }
@@ -222,22 +222,26 @@ html {
   font-size: 0.95rem;
   line-height: 1;
   padding: 1rem 1.5rem;
-  border-radius: 12px;
+  border-radius: 8px;
   border: 1px solid transparent;
   text-decoration: none;
   color: var(--nb-text);
   cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.15s ease, border-color 0.15s ease;
+  transition: transform 0.2s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.2s ease,
+    background 0.2s ease, border-color 0.2s ease;
 }
 .nb-btn:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+}
+.nb-btn:active {
+  transform: translateY(0);
 }
 .nb-btn--primary {
   background: var(--nb-fill);
   color: #fff;
 }
 .nb-btn--primary:hover {
-  opacity: 0.92;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--nb-teal) 40%, transparent);
 }
 .nb-btn--ghost {
   background: transparent;
@@ -245,7 +249,8 @@ html {
   color: var(--nb-text);
 }
 .nb-btn--ghost:hover {
-  border-color: var(--nb-text);
+  border-color: var(--nb-teal-light);
+  background: color-mix(in srgb, var(--nb-teal) 10%, transparent);
 }
 
 ::selection {
