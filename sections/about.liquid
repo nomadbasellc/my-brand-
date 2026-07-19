@@ -1,0 +1,128 @@
+{% comment %}
+  NOMADBASE about / brand story section. Used by the About page template.
+  Intro + story copy + a row of value blocks.
+{% endcomment %}
+
+<div class="nb-about full-width nb-scheme nb-scheme--{{ section.settings.color_scheme }} nb-section">
+  <div class="nb-container nb-about__intro">
+    {% if section.settings.eyebrow != blank %}
+      <p class="nb-eyebrow">{{ section.settings.eyebrow }}</p>
+    {% endif %}
+    {% if section.settings.heading != blank %}
+      <h1 class="nb-display nb-about__title">{{ section.settings.heading }}</h1>
+    {% endif %}
+    {% if section.settings.lead != blank %}
+      <p class="nb-lead nb-about__lead">{{ section.settings.lead }}</p>
+    {% endif %}
+  </div>
+
+  <div class="nb-container nb-about__grid">
+    <div class="nb-about__story rte">
+      {{ section.settings.story }}
+    </div>
+
+    <div class="nb-about__values">
+      {% for block in section.blocks %}
+        <div class="nb-about__value" {{ block.shopify_attributes }}>
+          <p class="nb-about__value-title">{{ block.settings.title }}</p>
+          <p class="nb-about__value-body">{{ block.settings.body }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .nb-about__intro {
+    max-width: 24ch;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .nb-about__title {
+    font-size: clamp(1.9rem, 3.6vw, 3rem);
+    margin-top: 1rem;
+  }
+  .nb-about__lead {
+    margin-top: 1.5rem;
+    max-width: 52ch;
+  }
+  .nb-about__grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+  .nb-about__story {
+    font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+    line-height: 1.65;
+    color: var(--nb-muted);
+  }
+  .nb-about__story p + p {
+    margin-top: 1.25rem;
+  }
+  .nb-about__values {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .nb-about__value {
+    border-top: 1px solid var(--nb-line);
+    padding-top: 1.25rem;
+  }
+  .nb-about__value-title {
+    font-weight: 700;
+    margin: 0 0 0.4rem;
+  }
+  .nb-about__value-body {
+    color: var(--nb-muted);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  @media (max-width: 820px) {
+    .nb-about__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "About",
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        { "value": "light", "label": "Light" },
+        { "value": "dark", "label": "Dark" }
+      ],
+      "default": "dark"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "About NOMADBASE" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Desks for people who don't have one." },
+    { "type": "textarea", "id": "lead", "label": "Lead", "default": "NOMADBASE started with a simple problem: a real keyboard and mouse don't work on a couch, a bed, or a plane tray. So we built something that does." },
+    { "type": "richtext", "id": "story", "label": "Story", "default": "<p>Every board is printed and assembled by hand, one at a time, in small batches. There's no warehouse of finished units — when you order, we make yours.</p><p>That's slower. It's also the point. You're not getting one of ten thousand identical parts. You're getting a tool built to fit the exact way you work, wherever that happens to be.</p>" }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Made to order" },
+        { "type": "textarea", "id": "body", "label": "Body", "default": "Nothing sits on a shelf. Each board is printed for one person — you." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About",
+      "blocks": [
+        { "type": "value", "settings": { "title": "Made to order", "body": "Nothing sits on a shelf. Each board is printed for one person — you." } },
+        { "type": "value", "settings": { "title": "By hand", "body": "Printed and assembled in small batches, checked one at a time." } },
+        { "type": "value", "settings": { "title": "For anywhere", "body": "Designed for the couch, the hammock, the tray table — anywhere a desk isn't." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

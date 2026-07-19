@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "about": {
+      "type": "about",
+      "settings": {},
+      "blocks": {
+        "v1": { "type": "value", "settings": { "title": "Made to order", "body": "Nothing sits on a shelf. Each board is printed for one person — you." } },
+        "v2": { "type": "value", "settings": { "title": "By hand", "body": "Printed and assembled in small batches, checked one at a time." } },
+        "v3": { "type": "value", "settings": { "title": "For anywhere", "body": "Designed for the couch, the hammock, the tray table — anywhere a desk isn't." } }
+      },
+      "block_order": ["v1", "v2", "v3"]
+    }
+  },
+  "order": ["about"]
+}

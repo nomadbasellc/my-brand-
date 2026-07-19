@@ -1,7 +1,8 @@
 {% comment %}
-  NOMADBASE hero. Text on the left, product media on the right.
-  Media priority: video setting > image setting > placeholder.
-  Swap the image for a video later with zero layout changes.
+  NOMADBASE hero. Copy on the left, a large "floating" product on the right
+  with a soft light behind it. Media priority: video > image > default render.
+  The asset edges are feathered so a render with a background melts into the page;
+  for the cleanest look, supply a transparent PNG (or a video).
 {% endcomment %}
 
 <div class="nb-hero full-width">
@@ -33,9 +34,9 @@
 
     <div class="nb-hero__media">
       {% if section.settings.video != blank %}
-        {{ section.settings.video | video_tag: image_size: '1100x', loop: true, autoplay: true, muted: true, controls: false, class: 'nb-hero__asset' }}
+        {{ section.settings.video | video_tag: image_size: '1200x', loop: true, autoplay: true, muted: true, controls: false, class: 'nb-hero__asset' }}
       {% elsif section.settings.image != blank %}
-        {{ section.settings.image | image_url: width: 1400 | image_tag: class: 'nb-hero__asset', widths: '600, 900, 1200, 1400', sizes: '(max-width: 900px) 100vw, 50vw', alt: section.settings.heading }}
+        {{ section.settings.image | image_url: width: 1600 | image_tag: class: 'nb-hero__asset', widths: '700, 1000, 1300, 1600', sizes: '(max-width: 900px) 100vw, 60vw', alt: section.settings.heading }}
       {% else %}
         <img
           class="nb-hero__asset"
@@ -55,35 +56,25 @@
     position: relative;
     overflow: hidden;
   }
-  .nb-hero::before {
-    content: "";
-    position: absolute;
-    inset: -20% 40% auto -10%;
-    height: 60%;
-    background: var(--nb-gradient);
-    filter: blur(140px);
-    opacity: 0.22;
-    z-index: 0;
-    pointer-events: none;
-  }
   .nb-hero__grid {
     position: relative;
     z-index: 1;
     display: grid;
-    grid-template-columns: 1.05fr 1fr;
+    grid-template-columns: 0.92fr 1.18fr;
     align-items: center;
-    gap: clamp(2rem, 5vw, 4.5rem);
-    padding-block: clamp(3rem, 7vw, 6rem);
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    padding-block: clamp(3.5rem, 8vw, 7rem);
   }
   .nb-hero__eyebrow {
     margin-bottom: 1.5rem;
   }
   .nb-hero__title {
-    font-size: clamp(2.75rem, 7vw, 5.5rem);
+    font-size: clamp(1.85rem, 3.4vw, 2.9rem);
+    max-width: 15ch;
   }
   .nb-hero__lead {
-    margin-top: 1.75rem;
-    max-width: 44ch;
+    margin-top: 1.5rem;
+    max-width: 42ch;
   }
   .nb-hero__actions {
     display: flex;
@@ -91,37 +82,39 @@
     gap: 0.75rem;
     margin-top: 2.25rem;
   }
+
+  /* Media: large floating product on a soft light */
   .nb-hero__media {
     position: relative;
-    aspect-ratio: 4 / 3;
-    border-radius: var(--nb-radius-lg);
-    overflow: hidden;
-    background: var(--nb-surface);
-    border: 1px solid var(--nb-line);
-  }
-  .nb-hero__asset {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .nb-hero__placeholder {
-    position: absolute;
-    inset: 0;
     display: grid;
     place-items: center;
+    min-height: 340px;
   }
-  .nb-hero__placeholder-svg {
-    width: 100%;
-    height: 100%;
-    opacity: 0.35;
-  }
-  .nb-hero__placeholder-note {
+  .nb-hero__media::before {
+    content: "";
     position: absolute;
-    font-family: var(--nb-mono);
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    font-size: 0.7rem;
-    color: var(--nb-faint);
+    z-index: 0;
+    width: 78%;
+    aspect-ratio: 1;
+    left: 50%;
+    top: 48%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(134, 176, 184, 0.4), rgba(134, 176, 184, 0.12) 42%, transparent 68%);
+    filter: blur(50px);
+    pointer-events: none;
+  }
+  .nb-hero__asset {
+    position: relative;
+    z-index: 1;
+    width: 122%;
+    max-width: 122%;
+    height: auto;
+    margin-inline: -11%;
+    object-fit: contain;
+    /* Feather the rectangular edges so a render's background melts into the page */
+    -webkit-mask-image: radial-gradient(ellipse 74% 74% at 50% 50%, #000 56%, transparent 82%);
+    mask-image: radial-gradient(ellipse 74% 74% at 50% 50%, #000 56%, transparent 82%);
+    filter: drop-shadow(0 34px 64px rgba(0, 0, 0, 0.55));
   }
 
   @media (max-width: 900px) {
@@ -130,7 +123,15 @@
     }
     .nb-hero__media {
       order: -1;
-      aspect-ratio: 16 / 10;
+      min-height: 0;
+    }
+    .nb-hero__asset {
+      width: 108%;
+      max-width: 108%;
+      margin-inline: -4%;
+    }
+    .nb-hero__title {
+      max-width: 20ch;
     }
   }
 {% endstylesheet %}
@@ -161,7 +162,7 @@
       "type": "text",
       "id": "primary_text",
       "label": "Primary button text",
-      "default": "Build yours — from $100"
+      "default": "Build yours"
     },
     {
       "type": "url",
@@ -172,7 +173,7 @@
       "type": "text",
       "id": "secondary_text",
       "label": "Secondary button text",
-      "default": "See it move"
+      "default": "See how it works"
     },
     {
       "type": "url",
@@ -186,7 +187,7 @@
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Product image"
+      "label": "Product image (transparent PNG looks best)"
     },
     {
       "type": "video",

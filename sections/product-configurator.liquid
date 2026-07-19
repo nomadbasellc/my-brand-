@@ -1,76 +1,84 @@
 {% comment %}
-  NOMADBASE embedded product configurator.
-  If a product is connected, renders an in-page product experience: media that
-  swaps per variant, option selectors (e.g. colour), live price, and add-to-cart.
-  If no product is connected yet, shows the Curated / Custom tier cards.
+  NOMADBASE embedded PDP. Connect a product to get an in-page product block:
+  variant-swapping media, option selectors (e.g. colour), live price, and a
+  "Buy it now" button that adds the variant and goes straight to checkout
+  (skipping the cart). Until a product is connected, shows a short prompt.
 {% endcomment %}
 
 {% assign product = section.settings.product %}
 
-<div class="nb-cfg full-width nb-scheme nb-scheme--{{ section.settings.color_scheme }} nb-section">
-  <div class="nb-container nb-cfg__head">
+<div id="shop" class="nb-pdp full-width nb-scheme nb-scheme--{{ section.settings.color_scheme }} nb-section">
+  <div class="nb-container nb-pdp__head">
     {% if section.settings.eyebrow != blank %}
       <p class="nb-eyebrow">{{ section.settings.eyebrow }}</p>
     {% endif %}
     {% if section.settings.heading != blank %}
-      <h2 class="nb-h2 nb-cfg__title">{{ section.settings.heading }}</h2>
+      <h2 class="nb-h2 nb-pdp__title">{{ section.settings.heading }}</h2>
     {% endif %}
     {% if section.settings.intro != blank %}
-      <p class="nb-lead nb-cfg__intro">{{ section.settings.intro }}</p>
+      <p class="nb-lead nb-pdp__intro">{{ section.settings.intro }}</p>
     {% endif %}
   </div>
 
   {% if product != blank %}
     {% assign current = product.selected_or_first_available_variant %}
-    <div class="nb-container nb-cfg__grid" data-nb-cfg>
-      <div class="nb-cfg__media">
-        {% if current.featured_image or product.featured_image %}
-          <img
-            class="nb-cfg__img"
-            data-nb-image
-            src="{{ current.featured_image | default: product.featured_image | image_url: width: 1200 }}"
-            alt="{{ product.title | escape }}"
-            width="1200"
-            height="900"
-          >
-        {% else %}
-          <img class="nb-cfg__img" data-nb-image src="{{ 'nomadbase-product-hero.jpg' | asset_url }}" alt="{{ product.title | escape }}" width="1536" height="1024">
-        {% endif %}
+    <div class="nb-container nb-pdp__grid" data-nb-pdp>
+      <div class="nb-pdp__media">
+        <img
+          class="nb-pdp__img"
+          data-nb-image
+          src="{{ current.featured_image | default: product.featured_image | image_url: width: 1400 }}"
+          alt="{{ product.title | escape }}"
+          width="1400"
+          height="1050"
+        >
       </div>
 
-      <div class="nb-cfg__panel">
-        <p class="nb-cfg__price" data-nb-price>{{ current.price | money }}</p>
+      <div class="nb-pdp__panel">
+        <h3 class="nb-pdp__name">{{ product.title }}</h3>
+        <p class="nb-pdp__price" data-nb-price>{{ current.price | money }}</p>
 
-        {% form 'product', product, class: 'nb-cfg__form' %}
+        {% form 'product', product, class: 'nb-pdp__form' %}
           {% for option in product.options_with_values %}
-            <fieldset class="nb-cfg__option">
-              <legend class="nb-cfg__option-label">{{ option.name }}</legend>
-              <div class="nb-cfg__values">
-                {% for value in option.values %}
-                  <label class="nb-cfg__opt">
-                    <input
-                      type="radio"
-                      name="option{{ option.position }}"
-                      value="{{ value | escape }}"
-                      data-position="{{ option.position }}"
-                      {% if option.selected_value == value %}checked{% endif %}
-                    >
-                    <span>{{ value }}</span>
-                  </label>
-                {% endfor %}
-              </div>
-            </fieldset>
+            {% unless option.name == 'Title' and option.values.size == 1 %}
+              <fieldset class="nb-pdp__option">
+                <legend class="nb-pdp__option-label">{{ option.name }}</legend>
+                <div class="nb-pdp__values">
+                  {% for value in option.values %}
+                    <label class="nb-pdp__opt">
+                      <input
+                        type="radio"
+                        name="option{{ option.position }}"
+                        value="{{ value | escape }}"
+                        data-position="{{ option.position }}"
+                        {% if option.selected_value == value %}checked{% endif %}
+                      >
+                      <span>{{ value }}</span>
+                    </label>
+                  {% endfor %}
+                </div>
+              </fieldset>
+            {% endunless %}
           {% endfor %}
 
           <input type="hidden" name="id" value="{{ current.id }}" data-nb-id>
 
-          <button type="submit" class="nb-btn nb-btn--primary nb-cfg__add" data-nb-add {% unless current.available %}disabled{% endunless %}>
-            {% if current.available %}Add to cart{% else %}Sold out{% endif %}
-          </button>
+          <div class="nb-pdp__actions">
+            <button type="button" class="nb-btn nb-btn--primary nb-pdp__buy" data-nb-buy {% unless current.available %}disabled{% endunless %}>
+              {% if current.available %}Buy it now{% else %}Sold out{% endif %}
+            </button>
+            <button type="submit" class="nb-btn nb-btn--ghost nb-pdp__add" data-nb-add {% unless current.available %}disabled{% endunless %}>
+              Add to cart
+            </button>
+          </div>
         {% endform %}
 
         {% if section.settings.note != blank %}
-          <p class="nb-cfg__note">{{ section.settings.note }}</p>
+          <p class="nb-pdp__note">{{ section.settings.note }}</p>
+        {% endif %}
+
+        {% if product.description != blank %}
+          <div class="nb-pdp__desc rte">{{ product.description }}</div>
         {% endif %}
       </div>
     </div>
@@ -83,76 +91,72 @@
             "options": {{ v.options | json }},
             "available": {{ v.available }},
             "price": {{ v.price | money | json }},
-            "image": {% if v.featured_image %}{{ v.featured_image | image_url: width: 1200 | json }}{% else %}""{% endif %}
+            "image": {% if v.featured_image %}{{ v.featured_image | image_url: width: 1400 | json }}{% else %}""{% endif %}
           }{%- unless forloop.last -%},{%- endunless -%}
         {%- endfor -%}
       ]
     </script>
   {% else %}
-    {% comment %} Fallback: tier cards until a product is connected {% endcomment %}
-    <div class="nb-container nb-cfg__tiers">
-      <div class="nb-cfg__tier">
-        <p class="nb-cfg__tier-name">{{ section.settings.curated_name }}</p>
-        <p class="nb-cfg__tier-price">{{ section.settings.curated_price }}<span>/ made to order</span></p>
-        <p class="nb-cfg__tier-desc">{{ section.settings.curated_desc }}</p>
-        {% if section.settings.curated_url != blank %}
-          <a class="nb-btn nb-btn--ghost nb-cfg__tier-btn" href="{{ section.settings.curated_url }}">{{ section.settings.curated_cta }}</a>
-        {% endif %}
-      </div>
-      <div class="nb-cfg__tier nb-cfg__tier--featured">
-        <span class="nb-cfg__tier-badge">Build your own</span>
-        <p class="nb-cfg__tier-name">{{ section.settings.custom_name }}</p>
-        <p class="nb-cfg__tier-price">{{ section.settings.custom_price }}<span>/ made to order</span></p>
-        <p class="nb-cfg__tier-desc">{{ section.settings.custom_desc }}</p>
-        {% if section.settings.custom_url != blank %}
-          <a class="nb-btn nb-btn--primary nb-cfg__tier-btn" href="{{ section.settings.custom_url }}">{{ section.settings.custom_cta }}</a>
-        {% endif %}
+    <div class="nb-container nb-pdp__empty">
+      <img class="nb-pdp__empty-img" src="{{ 'nomadbase-product-hero.jpg' | asset_url }}" alt="NOMADBASE lapboard" width="1536" height="1024">
+      <div class="nb-pdp__empty-copy">
+        <p class="nb-eyebrow">Almost ready</p>
+        <p class="nb-pdp__empty-title">Connect a product to open checkout.</p>
+        <p class="nb-lead">Create your NOMADBASE product in Shopify with a colour option, then link it here in the theme editor. This block becomes a live, buy-it-now product — straight to checkout, no cart detour.</p>
       </div>
     </div>
   {% endif %}
 </div>
 
 {% stylesheet %}
-  .nb-cfg__head {
-    max-width: 60ch;
+  .nb-pdp__head {
+    max-width: 58ch;
     margin-bottom: clamp(2.5rem, 5vw, 4rem);
   }
-  .nb-cfg__title {
+  .nb-pdp__title {
     margin-top: 1rem;
   }
-  .nb-cfg__intro {
+  .nb-pdp__intro {
     margin-top: 1.25rem;
   }
 
-  .nb-cfg__grid {
+  .nb-pdp__grid {
     display: grid;
-    grid-template-columns: 1.15fr 1fr;
+    grid-template-columns: 1.2fr 1fr;
     gap: clamp(2rem, 5vw, 4rem);
     align-items: center;
   }
-  .nb-cfg__media {
+  .nb-pdp__media {
+    position: relative;
     border-radius: var(--nb-radius-lg);
     overflow: hidden;
     background: var(--nb-surface-2);
     border: 1px solid var(--nb-line);
     aspect-ratio: 4 / 3;
   }
-  .nb-cfg__img {
+  .nb-pdp__img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-  .nb-cfg__price {
-    font-weight: 800;
-    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-    margin: 0 0 1.75rem;
+  .nb-pdp__name {
+    font-weight: 700;
+    font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+    letter-spacing: -0.01em;
+    margin: 0 0 0.5rem;
   }
-  .nb-cfg__option {
+  .nb-pdp__price {
+    font-weight: 700;
+    font-size: clamp(1.4rem, 2.4vw, 1.85rem);
+    margin: 0 0 1.75rem;
+    color: var(--nb-muted);
+  }
+  .nb-pdp__option {
     border: 0;
     padding: 0;
     margin: 0 0 1.5rem;
   }
-  .nb-cfg__option-label {
+  .nb-pdp__option-label {
     font-family: var(--nb-mono);
     text-transform: uppercase;
     letter-spacing: 0.16em;
@@ -161,17 +165,17 @@
     padding: 0;
     margin-bottom: 0.75rem;
   }
-  .nb-cfg__values {
+  .nb-pdp__values {
     display: flex;
     flex-wrap: wrap;
     gap: 0.6rem;
   }
-  .nb-cfg__opt input {
+  .nb-pdp__opt input {
     position: absolute;
     opacity: 0;
     pointer-events: none;
   }
-  .nb-cfg__opt span {
+  .nb-pdp__opt span {
     display: inline-flex;
     align-items: center;
     padding: 0.65rem 1.1rem;
@@ -182,97 +186,67 @@
     cursor: pointer;
     transition: border-color 0.15s ease, background 0.15s ease;
   }
-  .nb-cfg__opt input:checked + span {
+  .nb-pdp__opt input:checked + span {
     border-color: var(--nb-teal);
     background: color-mix(in srgb, var(--nb-teal) 16%, transparent);
   }
-  .nb-cfg__opt input:focus-visible + span {
+  .nb-pdp__opt input:focus-visible + span {
     outline: 2px solid var(--nb-teal);
     outline-offset: 2px;
   }
-  .nb-cfg__add {
+  .nb-pdp__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
     margin-top: 0.5rem;
-    width: 100%;
   }
-  .nb-cfg__add[disabled] {
+  .nb-pdp__buy {
+    flex: 1 1 auto;
+  }
+  .nb-pdp__actions [disabled] {
     opacity: 0.5;
     cursor: not-allowed;
   }
-  .nb-cfg__note {
+  .nb-pdp__note {
     margin-top: 1rem;
     color: var(--nb-muted);
     font-size: 0.85rem;
   }
+  .nb-pdp__desc {
+    margin-top: 1.5rem;
+    color: var(--nb-muted);
+    line-height: 1.6;
+    border-top: 1px solid var(--nb-line);
+    padding-top: 1.5rem;
+  }
 
-  /* Tier fallback */
-  .nb-cfg__tiers {
+  /* Empty state */
+  .nb-pdp__empty {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.25rem;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
   }
-  .nb-cfg__tier {
-    position: relative;
-    border: 1px solid var(--nb-line);
-    border-radius: var(--nb-radius-lg);
-    padding: clamp(1.75rem, 4vw, 2.5rem);
-    background: var(--nb-surface);
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  .nb-cfg__tier--featured {
-    border-color: var(--nb-teal);
-  }
-  .nb-cfg__tier-badge {
-    position: absolute;
-    top: 1.25rem;
-    right: 1.25rem;
-    font-family: var(--nb-mono);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-size: 0.62rem;
-    font-weight: 700;
-    padding: 0.3rem 0.55rem;
-    border-radius: 6px;
-    background: var(--nb-fill);
-    color: #fff;
-  }
-  .nb-cfg__tier-name {
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-    margin: 0;
-  }
-  .nb-cfg__tier-price {
-    font-weight: 800;
-    font-size: clamp(2.25rem, 5vw, 3rem);
-    margin: 0.25rem 0;
-    display: flex;
-    align-items: baseline;
-    gap: 0.5rem;
-  }
-  .nb-cfg__tier-price span {
-    font-family: var(--nb-mono);
-    font-size: 0.72rem;
-    font-weight: 400;
-    letter-spacing: 0.08em;
-    color: var(--nb-muted);
-  }
-  .nb-cfg__tier-desc {
-    color: var(--nb-muted);
-    line-height: 1.5;
-    margin: 0.25rem 0 1.25rem;
-  }
-  .nb-cfg__tier-btn {
-    margin-top: auto;
+  .nb-pdp__empty-img {
     width: 100%;
+    height: auto;
+    border-radius: var(--nb-radius-lg);
+    border: 1px solid var(--nb-line);
+  }
+  .nb-pdp__empty-title {
+    font-weight: 700;
+    font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+    letter-spacing: -0.01em;
+    margin: 1rem 0 1rem;
   }
 
   @media (max-width: 860px) {
-    .nb-cfg__grid {
+    .nb-pdp__grid,
+    .nb-pdp__empty {
       grid-template-columns: 1fr;
     }
-    .nb-cfg__media {
+    .nb-pdp__media,
+    .nb-pdp__empty-img {
       order: -1;
     }
   }
@@ -280,7 +254,7 @@
 
 {% javascript %}
   (function () {
-    function initConfigurator(root) {
+    function initPdp(root) {
       var dataEl = root.querySelector('[data-nb-variants]');
       if (!dataEl) return;
       var variants;
@@ -291,9 +265,10 @@
       }
       var idInput = root.querySelector('[data-nb-id]');
       var priceEl = root.querySelector('[data-nb-price]');
+      var buyBtn = root.querySelector('[data-nb-buy]');
       var addBtn = root.querySelector('[data-nb-add]');
       var imageEl = root.querySelector('[data-nb-image]');
-      var radios = root.querySelectorAll('input[type="radio"]');
+      var form = root.querySelector('form');
 
       function selectedValues() {
         return Array.prototype.slice
@@ -306,9 +281,10 @@
           });
       }
 
-      function update() {
+      function currentVariant() {
         var vals = selectedValues();
-        var match = variants.find(function (v) {
+        if (!vals.length) return variants[0];
+        return variants.find(function (v) {
           return (
             v.options.length === vals.length &&
             v.options.every(function (o, i) {
@@ -316,30 +292,55 @@
             })
           );
         });
+      }
+
+      function setDisabled(btn, state, label) {
+        if (!btn) return;
+        btn.disabled = state;
+        if (label) btn.textContent = label;
+      }
+
+      function update() {
+        var match = currentVariant();
         if (!match) {
-          if (addBtn) {
-            addBtn.disabled = true;
-            addBtn.textContent = 'Unavailable';
-          }
+          setDisabled(buyBtn, true, 'Unavailable');
+          setDisabled(addBtn, true);
           return;
         }
         if (idInput) idInput.value = match.id;
         if (priceEl) priceEl.textContent = match.price;
         if (imageEl && match.image) imageEl.src = match.image;
-        if (addBtn) {
-          addBtn.disabled = !match.available;
-          addBtn.textContent = match.available ? 'Add to cart' : 'Sold out';
-        }
+        setDisabled(buyBtn, !match.available, match.available ? 'Buy it now' : 'Sold out');
+        setDisabled(addBtn, !match.available);
       }
 
-      radios.forEach(function (r) {
+      function buyNow() {
+        var match = currentVariant();
+        if (!match || !match.available) return;
+        setDisabled(buyBtn, true, 'Redirecting…');
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: [{ id: match.id, quantity: 1 }] })
+        })
+          .then(function () {
+            window.location.href = '/checkout';
+          })
+          .catch(function () {
+            setDisabled(buyBtn, false, 'Buy it now');
+          });
+      }
+
+      root.querySelectorAll('input[type="radio"]').forEach(function (r) {
         r.addEventListener('change', update);
       });
+      if (buyBtn) buyBtn.addEventListener('click', buyNow);
+
       update();
     }
 
     function initAll() {
-      document.querySelectorAll('[data-nb-cfg]').forEach(initConfigurator);
+      document.querySelectorAll('[data-nb-pdp]').forEach(initPdp);
     }
 
     if (document.readyState !== 'loading') {
@@ -364,22 +365,11 @@
       ],
       "default": "dark"
     },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Two ways to get one" },
-    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Pick a look, or build your own." },
-    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Every board is made to order either way. The only difference is how much of it you decide." },
-    { "type": "product", "id": "product", "label": "Connected product (enables live configurator)" },
-    { "type": "text", "id": "note", "label": "Note under add-to-cart", "default": "Made to order — ships in ~2 weeks." },
-    { "type": "header", "content": "Tier cards (shown until a product is connected)" },
-    { "type": "text", "id": "curated_name", "label": "Curated name", "default": "Curated" },
-    { "type": "text", "id": "curated_price", "label": "Curated price", "default": "$100" },
-    { "type": "textarea", "id": "curated_desc", "label": "Curated description", "default": "Color and finish combinations we've already dialed in. Pick one, we make it, it ships." },
-    { "type": "text", "id": "curated_cta", "label": "Curated button", "default": "Shop the palettes" },
-    { "type": "url", "id": "curated_url", "label": "Curated URL" },
-    { "type": "text", "id": "custom_name", "label": "Custom name", "default": "Custom" },
-    { "type": "text", "id": "custom_price", "label": "Custom price", "default": "$125" },
-    { "type": "textarea", "id": "custom_desc", "label": "Custom description", "default": "Your color, your material, your finish, your hand. Configure every plate and we print it just for you." },
-    { "type": "text", "id": "custom_cta", "label": "Custom button", "default": "Open the configurator" },
-    { "type": "url", "id": "custom_url", "label": "Custom URL" }
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Yours to configure" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Build your board." },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Pick your color, we make it, it ships. Every board is printed to order — no shelf of finished units, just yours." },
+    { "type": "product", "id": "product", "label": "Connected product" },
+    { "type": "text", "id": "note", "label": "Note under buttons", "default": "Made to order — ships in ~2 weeks. Free shipping over $59." }
   ],
   "presets": [
     { "name": "Product configurator" }

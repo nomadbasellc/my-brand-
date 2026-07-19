@@ -6,7 +6,7 @@
   Each feature is a section block; add a per-feature render in the editor.
 {% endcomment %}
 
-<div class="nb-features full-width nb-scheme nb-scheme--{{ section.settings.color_scheme }} nb-section">
+<div id="features" class="nb-features full-width nb-scheme nb-scheme--{{ section.settings.color_scheme }} nb-section">
   <div class="nb-container nb-features__head">
     {% if section.settings.eyebrow != blank %}
       <p class="nb-eyebrow">{{ section.settings.eyebrow }}</p>
@@ -135,11 +135,10 @@
     color: var(--nb-label);
   }
   .nb-frow__title {
-    font-weight: 800;
-    text-transform: uppercase;
+    font-weight: 700;
     letter-spacing: -0.015em;
-    line-height: 1.02;
-    font-size: clamp(1.8rem, 3.5vw, 2.9rem);
+    line-height: 1.15;
+    font-size: clamp(1.35rem, 2.2vw, 1.75rem);
     margin: 0 0 1rem;
     color: var(--nb-text);
   }

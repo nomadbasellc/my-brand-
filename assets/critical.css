@@ -158,13 +158,23 @@ body {
 /* Full-bleed sections use this inner wrapper for consistent gutters + max width */
 .nb-container {
   width: 100%;
-  max-width: var(--page-width);
+  max-width: 1240px;
   margin-inline: auto;
   padding-inline: var(--nb-gutter);
 }
 
 .nb-section {
   padding-block: var(--nb-section-y);
+  scroll-margin-top: 5rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 /* Typography primitives */
@@ -177,18 +187,16 @@ body {
   margin: 0;
 }
 .nb-display {
-  font-weight: 800;
-  line-height: 0.98;
+  font-weight: 700;
+  line-height: 1.06;
   letter-spacing: -0.02em;
-  text-transform: uppercase;
   margin: 0;
 }
 .nb-h2 {
-  font-weight: 800;
-  line-height: 1;
+  font-weight: 700;
+  line-height: 1.12;
   letter-spacing: -0.02em;
-  text-transform: uppercase;
-  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
   margin: 0;
 }
 .nb-lead {
