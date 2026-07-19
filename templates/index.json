@@ -13,7 +13,6 @@
       "type": "hero",
       "settings": {
         "style": "refined",
-        "show_specs": false,
         "layout": "stacked",
         "eyebrow": "",
         "heading": "Take your whole setup off the wall.",
@@ -21,7 +20,16 @@
         "primary_text": "Get Yours",
         "primary_url": "",
         "secondary_text": "",
-        "secondary_url": ""
+        "secondary_url": "",
+        "show_specs": false,
+        "stat1_value": "~12h",
+        "stat1_label": "Print time per board",
+        "stat2_value": "1×1",
+        "stat2_label": "Printed & assembled by hand",
+        "stat3_value": "0°",
+        "stat3_label": "Flat surface required",
+        "stat4_value": "∞",
+        "stat4_label": "Color & finish combos"
       }
     },
     "usp": {
