@@ -22,7 +22,7 @@
       "settings": {},
       "blocks": {
         "u1": { "type": "usp", "settings": { "icon": "return", "title": "30-day returns", "subtitle": "Love it or send it back" } },
-        "u2": { "type": "usp", "settings": { "icon": "ship", "title": "Free shipping over $59", "subtitle": "Flat rate under that" } },
+        "u2": { "type": "usp", "settings": { "icon": "ship", "title": "Free shipping on all orders", "subtitle": "No minimum" } },
         "u3": { "type": "usp", "settings": { "icon": "handmade", "title": "Made by hand", "subtitle": "Printed one at a time" } },
         "u4": { "type": "usp", "settings": { "icon": "shield", "title": "1-year warranty", "subtitle": "We stand behind every board" } }
       },
