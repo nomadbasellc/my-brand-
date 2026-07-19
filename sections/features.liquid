@@ -34,6 +34,8 @@
                 sizes: '(max-width: 900px) 100vw, 55vw',
                 alt: block.settings.title
             }}
+          {% elsif block.settings.image_asset != blank %}
+            <img class="nb-frow__img" src="{{ block.settings.image_asset | asset_url }}" alt="{{ block.settings.title }}" width="1100" height="880" loading="lazy">
           {% else %}
             <div class="nb-frow__ph">
               <span class="nb-frow__ph-index">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
@@ -226,6 +228,7 @@
       "name": "Feature",
       "settings": [
         { "type": "image_picker", "id": "image", "label": "Render / photo" },
+        { "type": "text", "id": "image_asset", "label": "Image asset filename (e.g. clamp.jpg)" },
         { "type": "text", "id": "label", "label": "Label", "default": "Locks any board" },
         { "type": "text", "id": "title", "label": "Title", "default": "Clamps, not a cutout" },
         { "type": "textarea", "id": "body", "label": "Body", "default": "Adjustable locks grip your keyboard instead of a fixed slot. 60% to full-size, mechanical or membrane — held tight even when the surface tilts." }
