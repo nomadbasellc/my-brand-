@@ -17,16 +17,22 @@
         "badge": "",
         "message": "Free shipping on all orders · 30-day free returns",
         "link_text": "",
+        "link_url": "",
         "bg_style": "gradient"
       }
     },
     "header": {
       "type": "header",
-      "settings": {}
+      "settings": {
+        "menu": "",
+        "cta_text": "Get Yours",
+        "cta_url": "",
+        "customer_account_menu": "customer-account-main-menu"
+      }
     }
   },
   "order": [
     "announcement",
     "header"
-  ],
+  ]
 }

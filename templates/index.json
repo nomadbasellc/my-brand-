@@ -12,99 +12,428 @@
     "hero": {
       "type": "hero",
       "settings": {
+        "layout": "stacked",
         "eyebrow": "",
+        "heading": "Take your whole setup off the wall.",
+        "subheading": "A modular lapboard that clamps your keyboard and pins your mouse with magnets — so nothing slides, even when the surface isn't flat. A real desk, wherever you are.",
         "primary_text": "Get Yours",
-        "secondary_text": ""
+        "primary_url": "",
+        "secondary_text": "",
+        "secondary_url": ""
       }
     },
     "usp": {
       "type": "usp-bar",
-      "settings": {},
       "blocks": {
-        "u1": { "type": "usp", "settings": { "icon": "return", "title": "30-day returns", "subtitle": "Love it or send it back" } },
-        "u2": { "type": "usp", "settings": { "icon": "ship", "title": "Free shipping on all orders", "subtitle": "No minimum" } },
-        "u3": { "type": "usp", "settings": { "icon": "handmade", "title": "Made by hand", "subtitle": "Printed one at a time" } },
-        "u4": { "type": "usp", "settings": { "icon": "shield", "title": "1-year warranty", "subtitle": "We stand behind every board" } }
+        "u1": {
+          "type": "usp",
+          "settings": {
+            "icon": "return",
+            "title": "30-day returns",
+            "subtitle": "Love it or send it back"
+          }
+        },
+        "u2": {
+          "type": "usp",
+          "settings": {
+            "icon": "ship",
+            "title": "Free shipping on all orders",
+            "subtitle": "No minimum"
+          }
+        },
+        "u3": {
+          "type": "usp",
+          "settings": {
+            "icon": "handmade",
+            "title": "Made by hand",
+            "subtitle": "Printed one at a time"
+          }
+        },
+        "u4": {
+          "type": "usp",
+          "settings": {
+            "icon": "shield",
+            "title": "1-year warranty",
+            "subtitle": "We stand behind every board"
+          }
+        }
       },
-      "block_order": ["u1", "u2", "u3", "u4"]
+      "block_order": [
+        "u1",
+        "u2",
+        "u3",
+        "u4"
+      ],
+      "settings": {}
     },
     "features": {
       "type": "features",
-      "settings": {},
       "blocks": {
-        "f1": { "type": "feature", "settings": { "image_asset": "clamp.jpg", "label": "Locks any board", "title": "Clamps, not a cutout", "body": "Adjustable locks grip your keyboard instead of a fixed slot. 60% to full-size, mechanical or membrane — held tight even when the surface tilts." } },
-        "f2": { "type": "feature", "settings": { "image_asset": "mousepad.jpg", "label": "Magnetic hold", "title": "The mouse stays put too", "body": "A slim magnet puck rides under your mouse so it won't slide off an angled board. Tune the pull from 'rests there' to 'locked down.'" } },
-        "f4": { "type": "feature", "settings": { "image_asset": "extensors.jpg", "label": "Built your way", "title": "Modular plates", "body": "Right-handed, left-handed, or extended — same kit, rearranged. The mouse side goes wherever your hand does." } },
-        "f5": { "type": "feature", "settings": { "image_asset": "handle.jpg", "label": "Handle = mount", "title": "Carry it, then hang it", "body": "One part does double duty: a grip to move it and a hook to store it. Wall-mounted when idle, your space stays clear." } },
-        "f7": { "type": "feature", "settings": { "image_asset": "custom.jpg", "label": "Made to order", "title": "Yours, down to the finish", "body": "Choose your color, material, and finish. Every board is configured and printed just for you — no shelf of identical units." } }
+        "f1": {
+          "type": "feature",
+          "settings": {
+            "image_asset": "clamp.jpg",
+            "label": "Locks any board",
+            "title": "Clamps, not a cutout",
+            "body": "Adjustable locks grip your keyboard instead of a fixed slot. 60% to full-size, mechanical or membrane — held tight even when the surface tilts."
+          }
+        },
+        "f2": {
+          "type": "feature",
+          "settings": {
+            "image_asset": "mousepad.jpg",
+            "label": "Magnetic hold",
+            "title": "The mouse stays put too",
+            "body": "A slim magnet puck rides under your mouse so it won't slide off an angled board. Tune the pull from 'rests there' to 'locked down.'"
+          }
+        },
+        "f4": {
+          "type": "feature",
+          "settings": {
+            "image_asset": "extensors.jpg",
+            "label": "Built your way",
+            "title": "Modular plates",
+            "body": "Right-handed, left-handed, or extended — same kit, rearranged. The mouse side goes wherever your hand does."
+          }
+        },
+        "f5": {
+          "type": "feature",
+          "settings": {
+            "image_asset": "handle.jpg",
+            "label": "Handle = mount",
+            "title": "Carry it, then hang it",
+            "body": "One part does double duty: a grip to move it and a hook to store it. Wall-mounted when idle, your space stays clear."
+          }
+        },
+        "f7": {
+          "type": "feature",
+          "settings": {
+            "image_asset": "custom.jpg",
+            "label": "Made to order",
+            "title": "Yours, down to the finish",
+            "body": "Choose your color, material, and finish. Every board is configured and printed just for you — no shelf of identical units."
+          }
+        }
       },
-      "block_order": ["f1", "f2", "f4", "f5", "f7"]
+      "block_order": [
+        "f1",
+        "f2",
+        "f4",
+        "f5",
+        "f7"
+      ],
+      "settings": {
+        "color_scheme": "light",
+        "eyebrow": "What makes it work",
+        "heading": "Solid where there is no desk.",
+        "intro": "A normal lapboard is just a flat sheet — tilt it and your keyboard creeps, your mouse slides off. Nomadbase clamps everything to one frame, so it holds anywhere a desk isn't."
+      }
     },
     "keyboard": {
       "type": "keyboard-compat",
-      "settings": { "sizes": "", "footnote": "" },
       "blocks": {
-        "b1": { "type": "brand", "settings": { "logo_asset": "logo-keychron.png", "name": "Keychron" } },
-        "b2": { "type": "brand", "settings": { "logo_asset": "logo-logitech.png", "name": "Logitech" } },
-        "b3": { "type": "brand", "settings": { "logo_asset": "logo-corsair.png", "name": "Corsair" } },
-        "b4": { "type": "brand", "settings": { "logo_asset": "logo-razer.png", "name": "Razer" } },
-        "b5": { "type": "brand", "settings": { "logo_asset": "logo-steelseries.png", "name": "SteelSeries" } },
-        "b6": { "type": "brand", "settings": { "logo_asset": "logo-hyperx.png", "name": "HyperX" } },
-        "b7": { "type": "brand", "settings": { "logo_asset": "logo-ducky.png", "name": "Ducky" } },
-        "b8": { "type": "brand", "settings": { "logo_asset": "logo-redragon.png", "name": "Redragon" } },
-        "b9": { "type": "brand", "settings": { "logo_asset": "logo-aula.png", "name": "AULA" } }
+        "b1": {
+          "type": "brand",
+          "settings": {
+            "logo_asset": "logo-keychron.png",
+            "name": "Keychron"
+          }
+        },
+        "b2": {
+          "type": "brand",
+          "settings": {
+            "logo_asset": "logo-logitech.png",
+            "name": "Logitech"
+          }
+        },
+        "b3": {
+          "type": "brand",
+          "settings": {
+            "logo_asset": "logo-corsair.png",
+            "name": "Corsair"
+          }
+        },
+        "b4": {
+          "type": "brand",
+          "settings": {
+            "logo_asset": "logo-razer.png",
+            "name": "Razer"
+          }
+        },
+        "b5": {
+          "type": "brand",
+          "settings": {
+            "logo_asset": "logo-steelseries.png",
+            "name": "SteelSeries"
+          }
+        },
+        "b6": {
+          "type": "brand",
+          "settings": {
+            "logo_asset": "logo-hyperx.png",
+            "name": "HyperX"
+          }
+        },
+        "b7": {
+          "type": "brand",
+          "settings": {
+            "logo_asset": "logo-ducky.png",
+            "name": "Ducky"
+          }
+        },
+        "b8": {
+          "type": "brand",
+          "settings": {
+            "logo_asset": "logo-redragon.png",
+            "name": "Redragon"
+          }
+        },
+        "b9": {
+          "type": "brand",
+          "settings": {
+            "logo_asset": "logo-aula.png",
+            "name": "AULA"
+          }
+        }
       },
-      "block_order": ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9"]
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b6",
+        "b7",
+        "b8",
+        "b9"
+      ],
+      "settings": {
+        "color_scheme": "dark",
+        "eyebrow": "Fits your board",
+        "heading": "Made for the keyboard you already love.",
+        "body": "The clamp grips any board from 60% to full-size — mechanical or membrane, wired or wireless. If it sits on a desk, it locks to Nomadbase.",
+        "sizes": "",
+        "brands_label": "Tested with boards from",
+        "footnote": ""
+      }
     },
     "how": {
       "type": "how-to",
-      "settings": {},
       "blocks": {
-        "s1": { "type": "step", "settings": { "title": "Lives on a hook", "body": "The handle doubles as a wall mount. Off your desk, out of the way, charged and ready." } },
-        "s2": { "type": "step", "settings": { "title": "Everything comes", "body": "One handle, one motion. Board, keys, mouse, and the little stuff that always goes missing." } },
-        "s3": { "type": "step", "settings": { "title": "Drop in anywhere", "body": "Lap, couch, hammock — tilt it any way you like. Magnets hold the mouse so nothing slides off the edge." } },
-        "s4": { "type": "step", "settings": { "title": "Back on the hook", "body": "Hang it up and your desk, lap, or table is instantly clear again. No teardown." } }
+        "s1": {
+          "type": "step",
+          "settings": {
+            "title": "Lives on a hook",
+            "body": "The handle doubles as a wall mount. Off your desk, out of the way, charged and ready."
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "title": "Everything comes",
+            "body": "One handle, one motion. Board, keys, mouse, and the little stuff that always goes missing."
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "title": "Drop in anywhere",
+            "body": "Lap, couch, hammock — tilt it any way you like. Magnets hold the mouse so nothing slides off the edge."
+          }
+        },
+        "s4": {
+          "type": "step",
+          "settings": {
+            "title": "Back on the hook",
+            "body": "Hang it up and your desk, lap, or table is instantly clear again. No teardown."
+          }
+        }
       },
-      "block_order": ["s1", "s2", "s3", "s4"]
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "settings": {
+        "color_scheme": "light",
+        "eyebrow": "Off the wall, into anywhere",
+        "heading": "One object. Grab it and go.",
+        "intro": "Your keyboard, mouse, dongles and battery packs live on one board. It hangs on the wall between sessions, then comes with you in a single lift."
+      }
     },
     "usecases": {
       "type": "use-cases",
-      "settings": {},
       "blocks": {
-        "c1": { "type": "use_case", "settings": { "image_asset": "use-couch.jpg", "label": "On the couch", "sub": "Feet up, real keyboard down." } },
-        "c2": { "type": "use_case", "settings": { "image_asset": "use-carry.jpg", "label": "Grab and go", "sub": "One handle, out the door." } },
-        "c3": { "type": "use_case", "settings": { "image_asset": "use-family.jpg", "label": "The whole couch", "sub": "Room for everyone." } },
-        "c4": { "type": "use_case", "settings": { "image_asset": "use-bed.jpg", "label": "Work from bed", "sub": "Propped up, locked in." } }
+        "c1": {
+          "type": "use_case",
+          "settings": {
+            "image_asset": "use-couch.jpg",
+            "label": "On the couch",
+            "sub": "Feet up, real keyboard down."
+          }
+        },
+        "c2": {
+          "type": "use_case",
+          "settings": {
+            "image_asset": "use-carry.jpg",
+            "label": "Grab and go",
+            "sub": "One handle, out the door."
+          }
+        },
+        "c3": {
+          "type": "use_case",
+          "settings": {
+            "image_asset": "use-family.jpg",
+            "label": "The whole couch",
+            "sub": "Room for everyone."
+          }
+        },
+        "c4": {
+          "type": "use_case",
+          "settings": {
+            "image_asset": "use-bed.jpg",
+            "label": "Work from bed",
+            "sub": "Propped up, locked in."
+          }
+        }
       },
-      "block_order": ["c1", "c2", "c3", "c4"]
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4"
+      ],
+      "settings": {
+        "color_scheme": "dark",
+        "eyebrow": "Works here",
+        "heading": "A workstation wherever you land."
+      }
     },
     "configurator": {
       "type": "product-configurator",
-      "settings": {}
+      "settings": {
+        "color_scheme": "light",
+        "eyebrow": "Yours to configure",
+        "heading": "Build your board.",
+        "intro": "Pick your color, we make it, it ships. Every board is printed to order — no shelf of finished units, just yours.",
+        "product": "",
+        "note": "Made to order — ships in ~2 weeks. Free shipping on all orders."
+      }
     },
     "reviews": {
       "type": "reviews",
-      "settings": {},
       "blocks": {
-        "r1": { "type": "review", "settings": { "rating": 5, "quote": "Wrote half a launch from a hammock. The mouse didn't move once.", "author": "Alex R.", "detail": "Remote founder" } },
-        "r2": { "type": "review", "settings": { "rating": 5, "quote": "I fly weekly. A real keyboard on the tray table, then it hangs by the door at home. Sold.", "author": "Priya M.", "detail": "Consultant" } },
-        "r3": { "type": "review", "settings": { "rating": 5, "quote": "The clamp holding my TKL on a couch shouldn't work this well. It does.", "author": "Dan K.", "detail": "Developer" } }
+        "r1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Wrote half a launch from a hammock. The mouse didn't move once.",
+            "author": "Alex R.",
+            "detail": "Remote founder"
+          }
+        },
+        "r2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "I fly weekly. A real keyboard on the tray table, then it hangs by the door at home. Sold.",
+            "author": "Priya M.",
+            "detail": "Consultant"
+          }
+        },
+        "r3": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "The clamp holding my TKL on a couch shouldn't work this well. It does.",
+            "author": "Dan K.",
+            "detail": "Developer"
+          }
+        }
       },
-      "block_order": ["r1", "r2", "r3"]
+      "block_order": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "settings": {
+        "color_scheme": "light",
+        "eyebrow": "From the field",
+        "heading": "Working from places desks can't reach."
+      }
     },
     "faq": {
       "type": "faq",
-      "settings": {},
       "blocks": {
-        "q1": { "type": "qa", "settings": { "question": "How long until it ships?", "answer": "Every board is printed to order, so there's a short wait — usually about two weeks. You're not getting one off a shelf; you're getting yours." } },
-        "q2": { "type": "qa", "settings": { "question": "Will my keyboard fit?", "answer": "Almost certainly. The clamp is adjustable from 60% to full-size and isn't brand-specific — mechanical or membrane, wired or wireless." } },
-        "q3": { "type": "qa", "settings": { "question": "How does the mouse stay put?", "answer": "A slim magnet puck rides under your mouse and pulls to the board. You can tune the strength from 'rests there' to 'locked down' for fast flicks." } },
-        "q4": { "type": "qa", "settings": { "question": "What's your return policy?", "answer": "30 days. If it doesn't work for how you work, send it back for a full refund." } },
-        "q5": { "type": "qa", "settings": { "question": "Curated vs Custom — what's the difference?", "answer": "Curated is a color and finish combo we've already dialed in. Custom lets you choose color, material, finish, hand, and plate layout. Both are made to order." } },
-        "q6": { "type": "qa", "settings": { "question": "Is it covered by a warranty?", "answer": "Yes — one year against defects. We make each board by hand and stand behind it." } }
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "question": "How long until it ships?",
+            "answer": "Every board is printed to order, so there's a short wait — usually about two weeks. You're not getting one off a shelf; you're getting yours."
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "question": "Will my keyboard fit?",
+            "answer": "Almost certainly. The clamp is adjustable from 60% to full-size and isn't brand-specific — mechanical or membrane, wired or wireless."
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "question": "How does the mouse stay put?",
+            "answer": "A slim magnet puck rides under your mouse and pulls to the board. You can tune the strength from 'rests there' to 'locked down' for fast flicks."
+          }
+        },
+        "q4": {
+          "type": "qa",
+          "settings": {
+            "question": "What's your return policy?",
+            "answer": "30 days. If it doesn't work for how you work, send it back for a full refund."
+          }
+        },
+        "q5": {
+          "type": "qa",
+          "settings": {
+            "question": "Curated vs Custom — what's the difference?",
+            "answer": "Curated is a color and finish combo we've already dialed in. Custom lets you choose color, material, finish, hand, and plate layout. Both are made to order."
+          }
+        },
+        "q6": {
+          "type": "qa",
+          "settings": {
+            "question": "Is it covered by a warranty?",
+            "answer": "Yes — one year against defects. We make each board by hand and stand behind it."
+          }
+        }
       },
-      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6"]
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6"
+      ],
+      "settings": {
+        "color_scheme": "light",
+        "eyebrow": "Good questions",
+        "heading": "Before you build one.",
+        "support_text": "Still unsure? Reach out — a real person who makes the boards will answer."
+      }
     }
   },
-  "order": ["hero", "usp", "features", "keyboard", "how", "usecases", "configurator", "reviews", "faq"]
+  "order": [
+    "hero",
+    "usp",
+    "features",
+    "keyboard",
+    "how",
+    "usecases",
+    "configurator",
+    "reviews",
+    "faq"
+  ]
 }
