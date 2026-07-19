@@ -1,11 +1,12 @@
 {% comment %}
-  Nomadbase hero. Two layouts via the "layout" setting:
-    - stacked: copy + buttons on top, large product below (centered)
-    - split:   copy left, product right (two columns)
+  Nomadbase hero.
+  - layout: stacked (product below) or split (product beside)
+  - style: refined or bold (techy) — bold adds a signal accent, mono/sharp
+    button with a hover tick, heavier headline, and a spec-stats strip
   Media priority: video > image > default transparent render.
 {% endcomment %}
 
-<div class="nb-hero nb-hero--{{ section.settings.layout }} full-width">
+<div class="nb-hero nb-hero--{{ section.settings.layout }} nb-hero--style-{{ section.settings.style }} full-width">
   <div class="nb-container nb-hero__grid">
     <div class="nb-hero__copy">
       {% if section.settings.eyebrow != blank %}
@@ -20,8 +21,8 @@
 
       <div class="nb-hero__actions">
         {% if section.settings.primary_text != blank %}
-          <a class="nb-btn nb-btn--primary" href="{{ section.settings.primary_url | default: '#' }}">
-            {{ section.settings.primary_text }}
+          <a class="nb-btn nb-btn--primary nb-hero__cta" href="{{ section.settings.primary_url | default: '#' }}">
+            <span>{{ section.settings.primary_text }}</span>
           </a>
         {% endif %}
         {% if section.settings.secondary_text != blank %}
@@ -49,6 +50,23 @@
       {% endif %}
     </div>
   </div>
+
+  {% if section.settings.show_specs %}
+    <div class="nb-container nb-hero__specs">
+      {% for i in (1..4) %}
+        {% assign v = 'stat' | append: i | append: '_value' %}
+        {% assign l = 'stat' | append: i | append: '_label' %}
+        {% assign val = section.settings[v] %}
+        {% assign lab = section.settings[l] %}
+        {% if val != blank %}
+          <div class="nb-hero__spec">
+            <span class="nb-hero__spec-val">{{ val }}</span>
+            <span class="nb-hero__spec-label">{{ lab }}</span>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
 </div>
 
 {% stylesheet %}
@@ -85,7 +103,7 @@
     object-fit: contain;
   }
 
-  /* ---- Split layout (copy left, product right) ---- */
+  /* ---- Split layout ---- */
   .nb-hero--split {
     background:
       radial-gradient(58% 72% at 72% 42%, rgba(150, 184, 191, 0.22), rgba(120, 160, 168, 0.06) 42%, transparent 66%),
@@ -116,7 +134,7 @@
     margin-inline: -11%;
   }
 
-  /* ---- Stacked layout (copy on top, product below) ---- */
+  /* ---- Stacked layout ---- */
   .nb-hero--stacked {
     background:
       radial-gradient(52% 46% at 50% 74%, rgba(150, 184, 191, 0.24), rgba(120, 160, 168, 0.06) 45%, transparent 68%),
@@ -156,6 +174,79 @@
     max-width: 112%;
   }
 
+  /* ---- Spec-stats strip ---- */
+  .nb-hero__specs {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--nb-line);
+    margin-top: clamp(2rem, 5vw, 3.5rem);
+  }
+  .nb-hero__spec {
+    padding: clamp(1rem, 2.5vw, 1.5rem) 0;
+    padding-inline-start: clamp(1rem, 2vw, 1.5rem);
+    border-inline-start: 1px solid var(--nb-line);
+  }
+  .nb-hero__spec:first-child {
+    border-inline-start: 0;
+    padding-inline-start: 0;
+  }
+  .nb-hero__spec-val {
+    display: block;
+    font-family: var(--nb-mono);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .nb-hero__spec-label {
+    display: block;
+    font-family: var(--nb-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.64rem;
+    color: var(--nb-muted);
+    margin-top: 0.55rem;
+  }
+
+  /* =========================================================
+     BOLD (techy) style — layered on top of the above
+     ========================================================= */
+  .nb-hero--style-bold {
+    --nb-signal: #35e0c4;
+  }
+  .nb-hero--style-bold .nb-hero__title {
+    font-weight: 800;
+    letter-spacing: -0.035em;
+  }
+  /* Signal-accent, mono, sharp-cornered CTA with a hover tick */
+  .nb-hero--style-bold .nb-hero__cta {
+    background: var(--nb-signal);
+    color: #05130f;
+    border-radius: 4px;
+    font-family: var(--nb-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    padding-inline: 1.35rem;
+  }
+  .nb-hero--style-bold .nb-hero__cta::after {
+    content: "→";
+    margin-inline-start: 0.15rem;
+    transition: transform 0.15s ease;
+  }
+  .nb-hero--style-bold .nb-hero__cta:hover {
+    opacity: 1;
+    box-shadow: 0 0 0 1px var(--nb-signal), 0 0 24px rgba(53, 224, 196, 0.35);
+  }
+  .nb-hero--style-bold .nb-hero__cta:hover::after {
+    transform: translateX(4px);
+  }
+  .nb-hero--style-bold .nb-hero__spec-val {
+    color: var(--nb-signal);
+  }
+
   @media (max-width: 900px) {
     .nb-hero--split .nb-hero__grid {
       grid-template-columns: 1fr;
@@ -177,12 +268,32 @@
       max-width: 118%;
     }
   }
+  @media (max-width: 620px) {
+    .nb-hero__specs {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+    }
+    .nb-hero__spec:nth-child(3) {
+      border-inline-start: 0;
+      padding-inline-start: 0;
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
 {
   "name": "Hero",
   "settings": [
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Design style",
+      "options": [
+        { "value": "bold", "label": "Bold (techy)" },
+        { "value": "refined", "label": "Refined" }
+      ],
+      "default": "bold"
+    },
     {
       "type": "select",
       "id": "layout",
@@ -193,60 +304,32 @@
       ],
       "default": "stacked"
     },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Take your whole setup off the wall." },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "A modular lapboard that clamps your keyboard and pins your mouse with magnets — so nothing slides, even when the surface isn't flat. A real desk, wherever you are." },
+    { "type": "text", "id": "primary_text", "label": "Primary button text", "default": "Get Yours" },
+    { "type": "url", "id": "primary_url", "label": "Primary button URL" },
+    { "type": "text", "id": "secondary_text", "label": "Secondary button text", "default": "" },
+    { "type": "url", "id": "secondary_url", "label": "Secondary button URL" },
     {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow",
-      "default": ""
+      "type": "header",
+      "content": "Spec strip"
     },
-    {
-      "type": "textarea",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Take your whole setup off the wall."
-    },
-    {
-      "type": "textarea",
-      "id": "subheading",
-      "label": "Subheading",
-      "default": "A modular lapboard that clamps your keyboard and pins your mouse with magnets — so nothing slides, even when the surface isn't flat. A real desk, wherever you are."
-    },
-    {
-      "type": "text",
-      "id": "primary_text",
-      "label": "Primary button text",
-      "default": "Get Yours"
-    },
-    {
-      "type": "url",
-      "id": "primary_url",
-      "label": "Primary button URL"
-    },
-    {
-      "type": "text",
-      "id": "secondary_text",
-      "label": "Secondary button text",
-      "default": ""
-    },
-    {
-      "type": "url",
-      "id": "secondary_url",
-      "label": "Secondary button URL"
-    },
+    { "type": "checkbox", "id": "show_specs", "label": "Show spec strip", "default": true },
+    { "type": "text", "id": "stat1_value", "label": "Stat 1 value", "default": "~12h" },
+    { "type": "text", "id": "stat1_label", "label": "Stat 1 label", "default": "Print time per board" },
+    { "type": "text", "id": "stat2_value", "label": "Stat 2 value", "default": "1×1" },
+    { "type": "text", "id": "stat2_label", "label": "Stat 2 label", "default": "Printed & assembled by hand" },
+    { "type": "text", "id": "stat3_value", "label": "Stat 3 value", "default": "0°" },
+    { "type": "text", "id": "stat3_label", "label": "Stat 3 label", "default": "Flat surface required" },
+    { "type": "text", "id": "stat4_value", "label": "Stat 4 value", "default": "∞" },
+    { "type": "text", "id": "stat4_label", "label": "Stat 4 label", "default": "Color & finish combos" },
     {
       "type": "header",
       "content": "Media"
     },
-    {
-      "type": "image_picker",
-      "id": "image",
-      "label": "Product image (transparent PNG looks best)"
-    },
-    {
-      "type": "video",
-      "id": "video",
-      "label": "Product video (overrides image)"
-    }
+    { "type": "image_picker", "id": "image", "label": "Product image (transparent PNG looks best)" },
+    { "type": "video", "id": "video", "label": "Product video (overrides image)" }
   ],
   "presets": [
     { "name": "Hero" }
