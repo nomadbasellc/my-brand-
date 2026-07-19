@@ -43,7 +43,7 @@
     },
     "keyboard": {
       "type": "keyboard-compat",
-      "settings": {},
+      "settings": { "sizes": "", "footnote": "" },
       "blocks": {
         "b1": { "type": "brand", "settings": { "logo_asset": "logo-keychron.png", "name": "Keychron" } },
         "b2": { "type": "brand", "settings": { "logo_asset": "logo-logitech.png", "name": "Logitech" } },
