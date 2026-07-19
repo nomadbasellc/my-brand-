@@ -72,14 +72,12 @@
       "type": "use-cases",
       "settings": {},
       "blocks": {
-        "c1": { "type": "use_case", "settings": { "label": "On the couch", "sub": "Feet up, real keyboard down." } },
-        "c2": { "type": "use_case", "settings": { "label": "In a hammock", "sub": "Tilt it — the mouse holds." } },
-        "c3": { "type": "use_case", "settings": { "label": "On a plane tray", "sub": "A real desk at 30,000 ft." } },
-        "c4": { "type": "use_case", "settings": { "label": "Passenger seat", "sub": "Ship it on the drive." } },
-        "c5": { "type": "use_case", "settings": { "label": "In bed", "sub": "Propped up, locked in." } },
-        "c6": { "type": "use_case", "settings": { "label": "Packed cafe", "sub": "No table? No problem." } }
+        "c1": { "type": "use_case", "settings": { "image_asset": "use-couch.jpg", "label": "On the couch", "sub": "Feet up, real keyboard down." } },
+        "c2": { "type": "use_case", "settings": { "image_asset": "use-carry.jpg", "label": "Grab and go", "sub": "One handle, out the door." } },
+        "c3": { "type": "use_case", "settings": { "image_asset": "use-family.jpg", "label": "The whole couch", "sub": "Room for everyone." } },
+        "c4": { "type": "use_case", "settings": { "image_asset": "use-bed.jpg", "label": "Work from bed", "sub": "Propped up, locked in." } }
       },
-      "block_order": ["c1", "c2", "c3", "c4", "c5", "c6"]
+      "block_order": ["c1", "c2", "c3", "c4"]
     },
     "configurator": {
       "type": "product-configurator",

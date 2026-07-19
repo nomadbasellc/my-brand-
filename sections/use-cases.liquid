@@ -31,6 +31,8 @@
           <div class="nb-uc__media">
             {% if block.settings.image != blank %}
               {{ block.settings.image | image_url: width: 800 | image_tag: class: 'nb-uc__img', loading: 'lazy', widths: '400, 600, 800', sizes: '(max-width: 700px) 80vw, 33vw', alt: block.settings.label }}
+            {% elsif block.settings.image_asset != blank %}
+              <img class="nb-uc__img" src="{{ block.settings.image_asset | asset_url }}" alt="{{ block.settings.label }}" width="1200" height="800" loading="lazy">
             {% else %}
               <div class="nb-uc__ph">
                 <img class="nb-uc__ph-mark" src="{{ 'nomadbase-symbol.svg' | asset_url }}" alt="" aria-hidden="true" width="56" height="60">
@@ -107,7 +109,7 @@
   }
   .nb-uc__media {
     position: relative;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 4 / 3;
     border-radius: var(--nb-radius-lg);
     overflow: hidden;
     background: var(--nb-surface-2);
@@ -222,6 +224,7 @@
       "name": "Use case",
       "settings": [
         { "type": "image_picker", "id": "image", "label": "Lifestyle photo" },
+        { "type": "text", "id": "image_asset", "label": "Image asset filename (e.g. use-couch.jpg)" },
         { "type": "text", "id": "label", "label": "Label", "default": "On the couch" },
         { "type": "text", "id": "sub", "label": "Sub-label", "default": "Feet up, real keyboard down." }
       ]
