@@ -35,6 +35,8 @@
         <div class="nb-kbc__logo" {{ block.shopify_attributes }}>
           {% if block.settings.logo != blank %}
             {{ block.settings.logo | image_url: width: 300 | image_tag: class: 'nb-kbc__logo-img', loading: 'lazy', alt: block.settings.name }}
+          {% elsif block.settings.logo_asset != blank %}
+            <img class="nb-kbc__logo-img" src="{{ block.settings.logo_asset | asset_url }}" alt="{{ block.settings.name }}" loading="lazy">
           {% else %}
             <span class="nb-kbc__logo-name">{{ block.settings.name }}</span>
           {% endif %}
@@ -88,31 +90,36 @@
     margin: 0 0 1.25rem;
   }
   .nb-kbc__logos {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1px;
-    background: var(--nb-line);
-    border: 1px solid var(--nb-line);
-    border-radius: var(--nb-radius-lg);
-    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(1.75rem, 4vw, 3rem) clamp(2.25rem, 5vw, 4rem);
+    max-width: 64rem;
+    margin-inline: auto;
   }
   .nb-kbc__logo {
-    background: var(--nb-bg);
-    min-height: 96px;
-    display: grid;
-    place-items: center;
-    padding: 1.25rem;
-    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
   .nb-kbc__logo-name {
     font-weight: 600;
     font-size: 0.98rem;
     color: var(--nb-muted);
   }
+  /* Logos share a uniform canvas, so a fixed height renders them all the
+     same size. object-fit keeps them crisp and centered. */
   .nb-kbc__logo-img {
-    max-height: 40px;
+    height: 34px;
     width: auto;
-    opacity: 0.85;
+    max-width: 150px;
+    object-fit: contain;
+    opacity: 0.72;
+    transition: opacity 0.15s ease;
+  }
+  .nb-kbc__logo:hover .nb-kbc__logo-img {
+    opacity: 1;
   }
   .nb-kbc__footnote {
     text-align: center;
@@ -150,6 +157,7 @@
       "name": "Brand",
       "settings": [
         { "type": "image_picker", "id": "logo", "label": "Logo (optional)" },
+        { "type": "text", "id": "logo_asset", "label": "Logo asset filename (e.g. logo-keychron.png)" },
         { "type": "text", "id": "name", "label": "Brand name", "default": "Keychron" }
       ]
     }

@@ -45,16 +45,17 @@
       "type": "keyboard-compat",
       "settings": {},
       "blocks": {
-        "b1": { "type": "brand", "settings": { "name": "Keychron" } },
-        "b2": { "type": "brand", "settings": { "name": "Apple Magic Keyboard" } },
-        "b3": { "type": "brand", "settings": { "name": "Logitech" } },
-        "b4": { "type": "brand", "settings": { "name": "NuPhy" } },
-        "b5": { "type": "brand", "settings": { "name": "Ducky" } },
-        "b6": { "type": "brand", "settings": { "name": "Royal Kludge" } },
-        "b7": { "type": "brand", "settings": { "name": "Corsair" } },
-        "b8": { "type": "brand", "settings": { "name": "HHKB" } }
+        "b1": { "type": "brand", "settings": { "logo_asset": "logo-keychron.png", "name": "Keychron" } },
+        "b2": { "type": "brand", "settings": { "logo_asset": "logo-logitech.png", "name": "Logitech" } },
+        "b3": { "type": "brand", "settings": { "logo_asset": "logo-corsair.png", "name": "Corsair" } },
+        "b4": { "type": "brand", "settings": { "logo_asset": "logo-razer.png", "name": "Razer" } },
+        "b5": { "type": "brand", "settings": { "logo_asset": "logo-steelseries.png", "name": "SteelSeries" } },
+        "b6": { "type": "brand", "settings": { "logo_asset": "logo-hyperx.png", "name": "HyperX" } },
+        "b7": { "type": "brand", "settings": { "logo_asset": "logo-ducky.png", "name": "Ducky" } },
+        "b8": { "type": "brand", "settings": { "logo_asset": "logo-redragon.png", "name": "Redragon" } },
+        "b9": { "type": "brand", "settings": { "logo_asset": "logo-aula.png", "name": "AULA" } }
       },
-      "block_order": ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8"]
+      "block_order": ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9"]
     },
     "how": {
       "type": "how-to",
