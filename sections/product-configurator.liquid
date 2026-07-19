@@ -1,5 +1,5 @@
 {% comment %}
-  NOMADBASE embedded PDP. Connect a product to get an in-page product block:
+  Nomadbase embedded PDP. Connect a product to get an in-page product block:
   variant-swapping media, option selectors (e.g. colour), live price, and a
   "Buy it now" button that adds the variant and goes straight to checkout
   (skipping the cart). Until a product is connected, shows a short prompt.
@@ -65,7 +65,7 @@
 
           <div class="nb-pdp__actions">
             <button type="button" class="nb-btn nb-btn--primary nb-pdp__buy" data-nb-buy {% unless current.available %}disabled{% endunless %}>
-              {% if current.available %}Buy it now{% else %}Sold out{% endif %}
+              {% if current.available %}Get Yours{% else %}Sold out{% endif %}
             </button>
             <button type="submit" class="nb-btn nb-btn--ghost nb-pdp__add" data-nb-add {% unless current.available %}disabled{% endunless %}>
               Add to cart
@@ -98,11 +98,11 @@
     </script>
   {% else %}
     <div class="nb-container nb-pdp__empty">
-      <img class="nb-pdp__empty-img" src="{{ 'nomadbase-product-hero.png' | asset_url }}" alt="NOMADBASE lapboard" width="1500" height="699">
+      <img class="nb-pdp__empty-img" src="{{ 'nomadbase-product-hero.png' | asset_url }}" alt="Nomadbase lapboard" width="1500" height="699">
       <div class="nb-pdp__empty-copy">
         <p class="nb-eyebrow">Almost ready</p>
         <p class="nb-pdp__empty-title">Connect a product to open checkout.</p>
-        <p class="nb-lead">Create your NOMADBASE product in Shopify with a colour option, then link it here in the theme editor. This block becomes a live, buy-it-now product — straight to checkout, no cart detour.</p>
+        <p class="nb-lead">Create your Nomadbase product in Shopify with a colour option, then link it here in the theme editor. This block becomes a live, buy-it-now product — straight to checkout, no cart detour.</p>
       </div>
     </div>
   {% endif %}
@@ -312,7 +312,7 @@
         if (idInput) idInput.value = match.id;
         if (priceEl) priceEl.textContent = match.price;
         if (imageEl && match.image) imageEl.src = match.image;
-        setDisabled(buyBtn, !match.available, match.available ? 'Buy it now' : 'Sold out');
+        setDisabled(buyBtn, !match.available, match.available ? 'Get Yours' : 'Sold out');
         setDisabled(addBtn, !match.available);
       }
 
@@ -329,7 +329,7 @@
             window.location.href = '/checkout';
           })
           .catch(function () {
-            setDisabled(buyBtn, false, 'Buy it now');
+            setDisabled(buyBtn, false, 'Get Yours');
           });
       }
 
