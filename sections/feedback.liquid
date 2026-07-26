@@ -1,0 +1,290 @@
+{% comment %}
+  Nomadbase beta feedback form. Uses Shopify's native contact form, so every
+  answer arrives in the store's contact email as a labelled field — no
+  third-party service. Rating questions are radio pill groups; the rest are
+  text/textarea. Questions are fixed here; copy around them is editable.
+{% endcomment %}
+
+<div
+  id="feedback"
+  class="nb-feedback full-width nb-scheme nb-scheme--{{ section.settings.color_scheme }} nb-section"
+>
+  <div class="nb-container nb-feedback__inner">
+    <header class="nb-feedback__head">
+      {% if section.settings.eyebrow != blank %}
+        <p class="nb-eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h1 class="nb-h2 nb-feedback__title">{{ section.settings.heading }}</h1>
+      {% endif %}
+      {% if section.settings.intro != blank %}
+        <p class="nb-lead nb-feedback__intro">{{ section.settings.intro }}</p>
+      {% endif %}
+    </header>
+
+    {% form 'contact', id: 'nb-feedback-form', class: 'nb-feedback__form' %}
+      {% if form.posted_successfully? %}
+        <div class="nb-feedback__thanks" role="status">
+          <p class="nb-eyebrow">Got it</p>
+          <p class="nb-feedback__thanks-msg">{{ section.settings.thankyou_text }}</p>
+        </div>
+      {% else %}
+        {% if form.errors %}
+          <div class="nb-feedback__errors" role="alert">
+            {{ form.errors | default_errors }}
+          </div>
+        {% endif %}
+
+        {% comment %} Who — so you know whose board this is {% endcomment %}
+        <div class="nb-field-row">
+          <div class="nb-field">
+            <label class="nb-label" for="nb-name">Your name</label>
+            <input class="nb-input" type="text" id="nb-name" name="contact[name]" value="{{ form.name }}" required>
+          </div>
+          <div class="nb-field">
+            <label class="nb-label" for="nb-email">Email</label>
+            <input class="nb-input" type="email" id="nb-email" name="contact[email]" value="{{ form.email }}" required>
+          </div>
+        </div>
+
+        {% comment %} 1 — usage {% endcomment %}
+        <div class="nb-field">
+          <label class="nb-label" for="nb-usage">1. How have you been using the board?</label>
+          <p class="nb-hint">Couch, bed, desk, travel, standing… and what you'd normally use instead.</p>
+          <input class="nb-input" type="text" id="nb-usage" name="contact[1. How they use it]" placeholder="e.g. mostly on the couch in the evenings">
+        </div>
+
+        {% comment %} 2 — first impression {% endcomment %}
+        <div class="nb-field">
+          <label class="nb-label" for="nb-first">2. First impression when you unboxed and used it?</label>
+          <textarea class="nb-input nb-textarea" id="nb-first" name="contact[2. First impression]" rows="3" placeholder="Anything that surprised you — good or bad."></textarea>
+        </div>
+
+        {% comment %} 3 — comfort rating + note {% endcomment %}
+        <fieldset class="nb-field nb-rating">
+          <legend class="nb-label">3. Comfort over a long session</legend>
+          <p class="nb-hint">1 = uncomfortable, 5 = I forget it's there.</p>
+          {% render 'nb-scale', name: 'contact[3. Comfort 1-5]', min: 1, max: 5 %}
+          <textarea class="nb-input nb-textarea" name="contact[3. Comfort notes]" rows="2" placeholder="Heat, stability, angle, wrists / neck / posture?"></textarea>
+        </fieldset>
+
+        {% comment %} 4 — build quality {% endcomment %}
+        <fieldset class="nb-field nb-rating">
+          <legend class="nb-label">4. Build &amp; material quality</legend>
+          <p class="nb-hint">1 = feels cheap, 5 = feels premium. Does the size/weight feel right?</p>
+          {% render 'nb-scale', name: 'contact[4. Build quality 1-5]', min: 1, max: 5 %}
+          <textarea class="nb-input nb-textarea" name="contact[4. Build notes]" rows="2" placeholder="Too big, too small, too heavy? Finish?"></textarea>
+        </fieldset>
+
+        {% comment %} 5 — portability {% endcomment %}
+        <fieldset class="nb-field nb-rating">
+          <legend class="nb-label">5. Portability</legend>
+          <p class="nb-hint">1 = a hassle to move, 5 = grab and go.</p>
+          {% render 'nb-scale', name: 'contact[5. Portability 1-5]', min: 1, max: 5 %}
+        </fieldset>
+
+        {% comment %} 6 — one change {% endcomment %}
+        <div class="nb-field">
+          <label class="nb-label" for="nb-change">6. The one thing you'd change first?</label>
+          <textarea class="nb-input nb-textarea" id="nb-change" name="contact[6. One thing to change]" rows="3" placeholder="If you could only fix one thing…"></textarea>
+        </div>
+
+        {% comment %} 7 — recommend + price {% endcomment %}
+        <fieldset class="nb-field nb-rating">
+          <legend class="nb-label">7. Would you recommend it?</legend>
+          <p class="nb-hint">0 = never, 10 = already told someone.</p>
+          {% render 'nb-scale', name: 'contact[7. Recommend 0-10]', min: 0, max: 10 %}
+        </fieldset>
+        <div class="nb-field">
+          <label class="nb-label" for="nb-price">What price feels right for it?</label>
+          <input class="nb-input" type="text" id="nb-price" name="contact[7. Fair price]" placeholder="e.g. $120">
+        </div>
+
+        {% comment %} open mic {% endcomment %}
+        <div class="nb-field">
+          <label class="nb-label" for="nb-extra">Anything else I should know? <span class="nb-optional">(optional)</span></label>
+          <textarea class="nb-input nb-textarea" id="nb-extra" name="contact[8. Anything else]" rows="3"></textarea>
+        </div>
+
+        {% comment %} body is required by the contact form; keep it satisfied {% endcomment %}
+        <input type="hidden" name="contact[body]" value="Beta lapboard feedback submission">
+
+        <button type="submit" class="nb-btn nb-btn--primary nb-feedback__submit">
+          {{ section.settings.submit_label }}
+        </button>
+        <p class="nb-feedback__privacy">{{ section.settings.privacy_text }}</p>
+      {% endif %}
+    {% endform %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .nb-feedback__inner {
+    max-width: 760px;
+  }
+  .nb-feedback__title {
+    margin-top: 0.75rem;
+  }
+  .nb-feedback__intro {
+    margin-top: 1.25rem;
+    max-width: 60ch;
+  }
+  .nb-feedback__form {
+    margin-top: clamp(2rem, 5vw, 3.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .nb-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+  }
+  .nb-field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+  .nb-label {
+    font-weight: 700;
+    font-size: 1.02rem;
+    line-height: 1.35;
+    color: var(--nb-text);
+  }
+  .nb-optional {
+    font-weight: 400;
+    color: var(--nb-faint);
+  }
+  .nb-hint {
+    color: var(--nb-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: -0.15rem 0 0.35rem;
+  }
+  .nb-input {
+    width: 100%;
+    font: inherit;
+    color: var(--nb-text);
+    background: var(--nb-surface);
+    border: 1px solid var(--nb-line-strong);
+    border-radius: var(--style-border-radius-inputs, 8px);
+    padding: 0.85rem 1rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .nb-input::placeholder {
+    color: var(--nb-faint);
+  }
+  .nb-input:focus {
+    outline: none;
+    border-color: var(--nb-teal);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--nb-teal) 25%, transparent);
+  }
+  .nb-textarea {
+    resize: vertical;
+    line-height: 1.5;
+  }
+  .nb-scale {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.25rem 0 0.35rem;
+  }
+  .nb-scale__opt {
+    position: relative;
+  }
+  .nb-scale__opt input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    cursor: pointer;
+    margin: 0;
+  }
+  .nb-scale__opt span {
+    display: grid;
+    place-items: center;
+    min-width: 2.75rem;
+    height: 2.75rem;
+    padding: 0 0.5rem;
+    border: 1px solid var(--nb-line-strong);
+    border-radius: var(--style-border-radius-inputs, 8px);
+    font-weight: 700;
+    color: var(--nb-muted);
+    transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+  }
+  .nb-scale__opt input:hover + span {
+    border-color: var(--nb-teal-light);
+  }
+  .nb-scale__opt input:focus-visible + span {
+    outline: 2px solid var(--nb-teal);
+    outline-offset: 2px;
+  }
+  .nb-scale__opt input:checked + span {
+    background: var(--nb-teal);
+    border-color: var(--nb-teal);
+    color: #fff;
+  }
+  .nb-feedback__submit {
+    align-self: flex-start;
+    margin-top: 0.5rem;
+  }
+  .nb-feedback__privacy {
+    color: var(--nb-faint);
+    font-size: 0.85rem;
+    margin-top: -1rem;
+  }
+  .nb-feedback__errors,
+  .nb-feedback__thanks {
+    border: 1px solid var(--nb-line-strong);
+    border-radius: var(--style-border-radius-inputs, 8px);
+    padding: 1.25rem 1.5rem;
+  }
+  .nb-feedback__errors {
+    border-color: color-mix(in srgb, crimson 50%, var(--nb-line-strong));
+    color: var(--nb-text);
+  }
+  .nb-feedback__thanks {
+    margin-top: clamp(2rem, 5vw, 3.5rem);
+    background: color-mix(in srgb, var(--nb-teal) 10%, transparent);
+    border-color: var(--nb-teal);
+  }
+  .nb-feedback__thanks-msg {
+    margin-top: 0.5rem;
+    font-size: 1.15rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 560px) {
+    .nb-field-row {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Feedback form",
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        { "value": "light", "label": "Light" },
+        { "value": "dark", "label": "Dark" }
+      ],
+      "default": "dark"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Beta feedback" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "You're one of six. Tell me everything." },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "You're holding one of the first NOMADBASE boards to leave the workshop. Your honest read — the good and the annoying — shapes what the next batch becomes. Takes about five minutes." },
+    { "type": "text", "id": "submit_label", "label": "Submit button label", "default": "Send feedback" },
+    { "type": "textarea", "id": "privacy_text", "label": "Privacy note", "default": "Goes straight to me — nothing public, no marketing list." },
+    { "type": "textarea", "id": "thankyou_text", "label": "Thank-you message", "default": "Thank you — this is exactly what I need. If anything else comes to mind after using it a while longer, just reply to my email." }
+  ],
+  "presets": [{ "name": "Feedback form" }]
+}
+{% endschema %}

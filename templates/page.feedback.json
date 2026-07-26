@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "feedback": {
+      "type": "feedback",
+      "settings": {}
+    }
+  },
+  "order": ["feedback"]
+}
