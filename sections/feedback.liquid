@@ -13,6 +13,7 @@
   id="feedback"
   class="nb-feedback full-width nb-scheme nb-scheme--{{ section.settings.color_scheme }} nb-section"
   data-multistep
+  data-require="{{ section.settings.require_answers }}"
 >
   <div class="nb-container nb-feedback__inner">
     {% form 'contact', id: 'nb-feedback-form', class: 'nb-feedback__form' %}
@@ -627,6 +628,8 @@
       }
 
       function validate(step) {
+        // When answers aren't required (QA mode), never block navigation.
+        if (root.getAttribute('data-require') !== 'true') return true;
         // Native fields.
         var fields = step.querySelectorAll('input, textarea, select');
         for (var i = 0; i < fields.length; i++) {
@@ -702,6 +705,13 @@
         { "value": "dark", "label": "Dark" }
       ],
       "default": "light"
+    },
+    {
+      "type": "checkbox",
+      "id": "require_answers",
+      "label": "Require an answer on each step",
+      "default": false,
+      "info": "Off for internal QA — navigate freely between steps. Turn on before sending to testers."
     },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "User testing feedback" },
     { "type": "textarea", "id": "heading", "label": "Heading", "default": "Help us shape NomadBase." },
