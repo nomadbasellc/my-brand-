@@ -238,7 +238,7 @@
         </div>
 
         {% comment %} contact form requires a body; keep it satisfied {% endcomment %}
-        <input type="hidden" name="contact[body]" value="NOMADBASE beta lapboard feedback">
+        <input type="hidden" name="contact[body]" value="NomadBase beta lapboard feedback">
 
         <div class="nb-nav">
           <button type="button" class="nb-btn nb-btn--ghost" data-back hidden>Back</button>
@@ -532,6 +532,27 @@
     .nb-field-row {
       grid-template-columns: 1fr;
     }
+    /* Number scales (1–5, 0–10): even grid that fills the row instead of
+       wrapping raggedly. auto-fit collapses to exactly the item count. */
+    .nb-scale:not(.nb-scale--wide) {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(2.5rem, 1fr));
+    }
+    .nb-scale:not(.nb-scale--wide) .nb-scale__opt span {
+      min-width: 0;
+      width: 100%;
+    }
+    /* Choice / multi-select pills: two per row; a lone last one spans full. */
+    .nb-scale--wide {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .nb-scale--wide .nb-scale__opt span {
+      width: 100%;
+    }
+    .nb-scale--wide .nb-scale__opt:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     .nb-feedback.is-enhanced .nb-step.is-active {
@@ -683,8 +704,8 @@
       "default": "light"
     },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "User testing feedback" },
-    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Help us shape NOMADBASE." },
-    { "type": "textarea", "id": "intro", "label": "Welcome message", "default": "Before NOMADBASE goes to the world, it goes to you. You're holding one of the first boards to ever leave our workshop — and your honest take will shape the product every future customer receives. This isn't a survey we send to everyone; it's a short, guided walkthrough for the small group we trust to get it right. A few questions at a time, about five minutes. Thank you for building this with us." },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Help us shape NomadBase." },
+    { "type": "textarea", "id": "intro", "label": "Welcome message", "default": "Before NomadBase goes to the world, it goes to you. You're holding one of the first boards to ever leave our workshop — and your honest take will shape the product every future customer receives. This isn't a survey we send to everyone; it's a short, guided walkthrough for the small group we trust to get it right. A few questions at a time, about five minutes. Thank you for building this with us." },
     { "type": "text", "id": "submit_label", "label": "Submit button label", "default": "Send feedback" },
     { "type": "textarea", "id": "privacy_text", "label": "Privacy note", "default": "Goes straight to us — nothing public, no marketing list." },
     { "type": "textarea", "id": "thankyou_text", "label": "Thank-you message", "default": "Thank you — this is exactly what we needed. If anything else comes to mind after living with it a while longer, just reply to our email." }
