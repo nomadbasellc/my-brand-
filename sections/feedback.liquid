@@ -42,7 +42,6 @@
 
         <div class="nb-progress">
           <div class="nb-progress__track"><div class="nb-progress__fill"></div></div>
-          <p class="nb-progress__label"></p>
         </div>
 
         {% comment %} ---------- STEP 1 — First impressions & quality ---------- {% endcomment %}
@@ -255,7 +254,7 @@
 
 {% stylesheet %}
   .nb-feedback__inner {
-    max-width: 720px;
+    max-width: 880px;
   }
   .nb-feedback__title {
     margin-top: 0.75rem;
@@ -285,14 +284,6 @@
     border-radius: 999px;
     background: var(--nb-teal);
     transition: width 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
-  }
-  .nb-progress__label {
-    margin: 0.65rem 0 0;
-    font-family: var(--nb-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--nb-muted);
   }
 
   /* Steps */
@@ -563,7 +554,6 @@
       var nextBtn = root.querySelector('[data-next]');
       var submitBtn = root.querySelector('[data-submit]');
       var fill = root.querySelector('.nb-progress__fill');
-      var label = root.querySelector('.nb-progress__label');
       var intro = root.querySelector('.nb-feedback__intro');
 
       // Keep the hidden "where used" field in sync with the checkboxes.
@@ -597,7 +587,6 @@
         if (nextBtn) nextBtn.hidden = isLast;
         if (submitBtn) submitBtn.hidden = !isLast;
         if (fill) fill.style.width = ((i + 1) / steps.length * 100) + '%';
-        if (label) label.textContent = 'Step ' + (i + 1) + ' of ' + steps.length + ' — ' + (steps[i].getAttribute('data-title') || '');
         if (intro) intro.hidden = i !== 0;
       }
 
@@ -686,10 +675,10 @@
         { "value": "light", "label": "Light" },
         { "value": "dark", "label": "Dark" }
       ],
-      "default": "dark"
+      "default": "light"
     },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "For our first six" },
-    { "type": "textarea", "id": "heading", "label": "Heading", "default": "You're one of six." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "User testing feedback" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Help us shape NOMADBASE." },
     { "type": "textarea", "id": "intro", "label": "Welcome message", "default": "Before NOMADBASE goes to the world, it goes to you. You're holding one of the first boards to ever leave our workshop — and your honest take will shape the product every future customer receives. This isn't a survey we send to everyone; it's a short, guided walkthrough for the small group we trust to get it right. A few questions at a time, about five minutes. Thank you for building this with us." },
     { "type": "text", "id": "submit_label", "label": "Submit button label", "default": "Send feedback" },
     { "type": "textarea", "id": "privacy_text", "label": "Privacy note", "default": "Goes straight to us — nothing public, no marketing list." },
