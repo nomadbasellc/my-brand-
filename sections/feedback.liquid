@@ -258,27 +258,28 @@
         {% comment %} contact form requires a body; keep it satisfied {% endcomment %}
         <input type="hidden" name="contact[body]" value="NomadBase beta lapboard feedback">
       </div>
+    {% endif %}
 
-      <div class="nb-actionbar">
-        <div class="nb-actionbar__inner">
-          <div class="nb-nav">
+    {% comment %} Whole footer (action bar + logo strip) sticks to the bottom. {% endcomment %}
+    <div class="nb-feedbar">
+      {% unless form.posted_successfully? %}
+        <div class="nb-actionbar">
+          <div class="nb-actionbar__inner nb-nav">
             <button type="button" class="nb-btn nb-btn--ghost" data-back hidden>Back</button>
             <span class="nb-nav__spacer"></span>
             <button type="button" class="nb-btn nb-btn--primary" data-next hidden>Next</button>
             <button type="submit" class="nb-btn nb-btn--primary" data-submit>{{ section.settings.submit_label }}</button>
           </div>
-          <p class="nb-feedback__privacy">{{ section.settings.privacy_text }}</p>
+        </div>
+      {% endunless %}
+      <div class="nb-feedfoot nb-scheme nb-scheme--dark">
+        <div class="nb-feedfoot__bar nb-container">
+          <img class="nb-feedfoot__logo" src="{{ 'new-nomadbase-logo.png' | asset_url }}" alt="{{ shop.name }}" width="800" height="126">
         </div>
       </div>
-    {% endif %}
+    </div>
   {% endform %}
 </div>
-
-<footer class="nb-feedfoot full-width nb-scheme nb-scheme--dark">
-  <div class="nb-feedfoot__bar nb-container">
-    <img class="nb-feedfoot__logo" src="{{ 'new-nomadbase-logo.png' | asset_url }}" alt="{{ shop.name }}" width="800" height="126">
-  </div>
-</footer>
 
 {% stylesheet %}
   .nb-feedback__inner {
@@ -290,7 +291,16 @@
   .template-page-feedback .nb-foot {
     display: none;
   }
-  /* Fill the viewport so the action bar pins to the bottom of the screen. */
+  /* Strip the site header down to just the logo on this page. */
+  .template-page-feedback .nb-anno,
+  .template-page-feedback .nb-header__nav,
+  .template-page-feedback .nb-header__actions {
+    display: none;
+  }
+  .template-page-feedback .nb-header__inner {
+    justify-content: center;
+  }
+  /* Fill the viewport so the footer pins to the bottom of the screen. */
   .nb-feedback {
     min-height: 100vh;
     min-height: 100dvh;
@@ -307,15 +317,17 @@
     flex: 1 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    padding-block: clamp(2rem, 5vw, 3.5rem) 1rem;
+    gap: 1.5rem;
+    padding-block: clamp(1.5rem, 4vw, 2.25rem) 2.75rem;
   }
-  /* Sticky bottom action bar — full width, buttons aligned to content. */
-  .nb-actionbar {
+  /* Whole footer (action bar + dark logo strip) sticks to the screen bottom. */
+  .nb-feedbar {
     position: sticky;
     bottom: 0;
     z-index: 40;
     margin-top: auto;
+  }
+  .nb-actionbar {
     background: var(--nb-bg);
     border-top: 1px solid var(--nb-line);
   }
@@ -324,22 +336,13 @@
     margin-inline: auto;
     padding-inline: var(--nb-gutter);
     padding-block: 0.85rem;
-  }
-  .nb-actionbar .nb-nav {
     margin-top: 0;
   }
-  .nb-actionbar .nb-feedback__privacy {
-    margin-top: 0.55rem;
-    margin-bottom: 0;
-  }
   /* Dark logo strip in place of the theme footer. */
-  .nb-feedfoot {
-    border-top: 1px solid var(--nb-line);
-  }
   .nb-feedfoot__bar {
     display: flex;
     justify-content: center;
-    padding-block: clamp(2rem, 5vw, 3rem);
+    padding-block: 1rem;
   }
   .nb-feedfoot__logo {
     height: 1.5rem;
@@ -357,7 +360,7 @@
   /* Progress */
   .nb-progress {
     display: none;
-    margin-top: clamp(2rem, 5vw, 3rem);
+    margin-top: 0;
   }
   .nb-feedback.is-enhanced .nb-progress {
     display: block;
@@ -384,8 +387,8 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 1.75rem;
-    margin-top: clamp(1.75rem, 4vw, 2.5rem);
+    gap: 1.5rem;
+    margin-top: 0;
   }
   .nb-feedback.is-enhanced .nb-step {
     display: none;
@@ -502,9 +505,17 @@
     color: var(--nb-muted);
     transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
   }
-  .nb-scale--wide span {
+  /* Choice / multi-select pills: equal-width columns at every screen size
+     (auto-fit gives 3-across on desktop, 2+1 equal cells on mobile — never
+     one option wider than the others). */
+  .nb-scale--wide {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+  }
+  .nb-scale--wide .nb-scale__opt span {
     min-width: 0;
-    padding: 0 1.1rem;
+    width: 100%;
+    padding: 0 1rem;
     font-size: 0.95rem;
   }
   .nb-scale__opt input:hover + span {
@@ -581,7 +592,6 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-top: clamp(2rem, 5vw, 3rem);
   }
   /* The .nb-btn class sets display:inline-flex, which would otherwise
      override the [hidden] attribute — keep hidden nav buttons hidden. */
@@ -631,17 +641,6 @@
     .nb-scale:not(.nb-scale--wide) .nb-scale__opt span {
       min-width: 0;
       width: 100%;
-    }
-    /* Choice / multi-select pills: two per row; a lone last one spans full. */
-    .nb-scale--wide {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-    }
-    .nb-scale--wide .nb-scale__opt span {
-      width: 100%;
-    }
-    .nb-scale--wide .nb-scale__opt:last-child:nth-child(odd) {
-      grid-column: 1 / -1;
     }
   }
   @media (prefers-reduced-motion: reduce) {
