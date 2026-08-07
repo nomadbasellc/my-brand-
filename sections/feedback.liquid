@@ -1,27 +1,20 @@
 {% comment %}
-  Nomadbase beta feedback form. Uses Shopify's native contact form, so every
-  answer arrives in the store's contact email as a labelled field — no
-  third-party service. Rating questions are radio pill groups; the rest are
-  text/textarea. Questions are fixed here; copy around them is editable.
+  NOMADBASE beta feedback — a guided, multi-step form for the small group of
+  first testers. One category per screen, required-per-step validation, number
+  pill ratings, and a price slider. Everything submits at the end through
+  Shopify's native contact form, so each answer arrives as a labelled line in
+  the store's contact email — no third-party service.
+
+  Progressive enhancement: with JS off, every step renders stacked as one long
+  form and still submits. With JS on, it becomes the stepped experience.
 {% endcomment %}
 
 <div
   id="feedback"
   class="nb-feedback full-width nb-scheme nb-scheme--{{ section.settings.color_scheme }} nb-section"
+  data-multistep
 >
   <div class="nb-container nb-feedback__inner">
-    <header class="nb-feedback__head">
-      {% if section.settings.eyebrow != blank %}
-        <p class="nb-eyebrow">{{ section.settings.eyebrow }}</p>
-      {% endif %}
-      {% if section.settings.heading != blank %}
-        <h1 class="nb-h2 nb-feedback__title">{{ section.settings.heading }}</h1>
-      {% endif %}
-      {% if section.settings.intro != blank %}
-        <p class="nb-lead nb-feedback__intro">{{ section.settings.intro }}</p>
-      {% endif %}
-    </header>
-
     {% form 'contact', id: 'nb-feedback-form', class: 'nb-feedback__form' %}
       {% if form.posted_successfully? %}
         <div class="nb-feedback__thanks" role="status">
@@ -29,89 +22,231 @@
           <p class="nb-feedback__thanks-msg">{{ section.settings.thankyou_text }}</p>
         </div>
       {% else %}
+        <header class="nb-feedback__head">
+          {% if section.settings.eyebrow != blank %}
+            <p class="nb-eyebrow">{{ section.settings.eyebrow }}</p>
+          {% endif %}
+          {% if section.settings.heading != blank %}
+            <h1 class="nb-h2 nb-feedback__title">{{ section.settings.heading }}</h1>
+          {% endif %}
+          {% if section.settings.intro != blank %}
+            <p class="nb-lead nb-feedback__intro">{{ section.settings.intro }}</p>
+          {% endif %}
+        </header>
+
         {% if form.errors %}
           <div class="nb-feedback__errors" role="alert">
             {{ form.errors | default_errors }}
           </div>
         {% endif %}
 
-        {% comment %} Who — so you know whose board this is {% endcomment %}
-        <div class="nb-field-row">
+        <div class="nb-progress">
+          <div class="nb-progress__track"><div class="nb-progress__fill"></div></div>
+          <p class="nb-progress__label"></p>
+        </div>
+
+        {% comment %} ---------- STEP 1 — First impressions & quality ---------- {% endcomment %}
+        <div class="nb-step" data-title="First impressions &amp; quality">
+          <p class="nb-step__count">Step 1</p>
+          <h2 class="nb-step__title" tabindex="-1">First impressions &amp; quality</h2>
+
           <div class="nb-field">
-            <label class="nb-label" for="nb-name">Your name</label>
-            <input class="nb-input" type="text" id="nb-name" name="contact[name]" value="{{ form.name }}" required>
+            <span class="nb-label">Out of the box, does it feel like a premium, finished product?</span>
+            <p class="nb-hint">1 = feels cheap · 5 = feels premium</p>
+            {% render 'nb-scale', name: 'contact[1.1 Premium feel]', min: 1, max: 5, required: true, aria: 'Premium feel, 1 to 5' %}
           </div>
+
           <div class="nb-field">
-            <label class="nb-label" for="nb-email">Email</label>
-            <input class="nb-input" type="email" id="nb-email" name="contact[email]" value="{{ form.email }}" required>
+            <span class="nb-label">Do the size and weight feel right?</span>
+            <div class="nb-scale nb-scale--wide" role="radiogroup" aria-label="Size and weight">
+              <label class="nb-scale__opt"><input type="radio" name="contact[1.2 Size &amp; weight]" value="Too light" required><span>Too light</span></label>
+              <label class="nb-scale__opt"><input type="radio" name="contact[1.2 Size &amp; weight]" value="Just right"><span>Just right</span></label>
+              <label class="nb-scale__opt"><input type="radio" name="contact[1.2 Size &amp; weight]" value="Too heavy"><span>Too heavy</span></label>
+            </div>
+            <textarea class="nb-input nb-textarea" name="contact[1.2 Size note]" rows="2" placeholder="Optional — anything about the feel in hand?"></textarea>
+          </div>
+
+          <div class="nb-field">
+            <label class="nb-label" for="nb-flaws">Any flaws, rough edges, or anything that makes you question how it'll hold up?</label>
+            <textarea class="nb-input nb-textarea" id="nb-flaws" name="contact[1.3 Flaws / durability]" rows="3" placeholder="Be honest — this is exactly what we need to catch." required></textarea>
           </div>
         </div>
 
-        {% comment %} 1 — usage {% endcomment %}
-        <div class="nb-field">
-          <label class="nb-label" for="nb-usage">1. How have you been using the board?</label>
-          <p class="nb-hint">Couch, bed, desk, travel, standing… and what you'd normally use instead.</p>
-          <input class="nb-input" type="text" id="nb-usage" name="contact[1. How they use it]" placeholder="e.g. mostly on the couch in the evenings">
+        {% comment %} ---------- STEP 2 — Assembly & setup ---------- {% endcomment %}
+        <div class="nb-step" data-title="Assembly &amp; setup">
+          <p class="nb-step__count">Step 2</p>
+          <h2 class="nb-step__title" tabindex="-1">Assembly &amp; setup</h2>
+
+          <div class="nb-field">
+            <span class="nb-label">How easy was it to get set up and ready to use?</span>
+            <p class="nb-hint">1 = a struggle · 5 = effortless</p>
+            {% render 'nb-scale', name: 'contact[2.1 Setup ease]', min: 1, max: 5, required: true, aria: 'Setup ease, 1 to 5' %}
+          </div>
+
+          <div class="nb-field">
+            <span class="nb-label">Did the board fit your keyboard well and hold it securely?</span>
+            <div class="nb-scale nb-scale--wide" role="radiogroup" aria-label="Keyboard fit">
+              <label class="nb-scale__opt"><input type="radio" name="contact[2.2 Keyboard fit]" value="Fit perfectly" required><span>Fit perfectly</span></label>
+              <label class="nb-scale__opt"><input type="radio" name="contact[2.2 Keyboard fit]" value="Fit with some fuss"><span>Fit with some fuss</span></label>
+              <label class="nb-scale__opt"><input type="radio" name="contact[2.2 Keyboard fit]" value="Didn't fit well"><span>Didn't fit well</span></label>
+            </div>
+          </div>
+
+          <div class="nb-field">
+            <label class="nb-label" for="nb-kbd">Which keyboard do you use?</label>
+            <input class="nb-input" type="text" id="nb-kbd" name="contact[2.2 Keyboard model]" placeholder="e.g. Keychron K8, Apple Magic Keyboard" required>
+          </div>
+
+          <div class="nb-field">
+            <span class="nb-label">Did the magnetic mouse system work the way you expected?</span>
+            <p class="nb-hint">1 = not at all · 5 = exactly as expected</p>
+            {% render 'nb-scale', name: 'contact[2.3 Mouse system]', min: 1, max: 5, required: true, aria: 'Mouse system, 1 to 5' %}
+          </div>
+
+          <div class="nb-field">
+            <label class="nb-label" for="nb-instructions">Were the setup instructions clear?</label>
+            <textarea class="nb-input nb-textarea" id="nb-instructions" name="contact[2.4 Instructions]" rows="2" placeholder="What was clear, what wasn't?" required></textarea>
+          </div>
         </div>
 
-        {% comment %} 2 — first impression {% endcomment %}
-        <div class="nb-field">
-          <label class="nb-label" for="nb-first">2. First impression when you unboxed and used it?</label>
-          <textarea class="nb-input nb-textarea" id="nb-first" name="contact[2. First impression]" rows="3" placeholder="Anything that surprised you — good or bad."></textarea>
+        {% comment %} ---------- STEP 3 — Everyday use ---------- {% endcomment %}
+        <div class="nb-step" data-title="Everyday use">
+          <p class="nb-step__count">Step 3</p>
+          <h2 class="nb-step__title" tabindex="-1">Everyday use</h2>
+
+          <div class="nb-field" data-required-group data-usage-group>
+            <span class="nb-label">Where and how have you been using it?</span>
+            <p class="nb-hint">Choose all that apply.</p>
+            <input type="hidden" name="contact[3.1 Where used]">
+            <div class="nb-scale nb-scale--wide nb-checks">
+              <label class="nb-scale__opt"><input type="checkbox" value="Couch"><span>Couch</span></label>
+              <label class="nb-scale__opt"><input type="checkbox" value="Bed"><span>Bed</span></label>
+              <label class="nb-scale__opt"><input type="checkbox" value="Desk / table"><span>Desk / table</span></label>
+              <label class="nb-scale__opt"><input type="checkbox" value="Travel"><span>Travel</span></label>
+              <label class="nb-scale__opt"><input type="checkbox" value="Standing"><span>Standing</span></label>
+              <label class="nb-scale__opt"><input type="checkbox" value="Other"><span>Other</span></label>
+            </div>
+          </div>
+
+          <div class="nb-field">
+            <span class="nb-label">How comfortable is it over a long session?</span>
+            <p class="nb-hint">1 = uncomfortable · 5 = I forget it's there</p>
+            {% render 'nb-scale', name: 'contact[3.2 Comfort]', min: 1, max: 5, required: true, aria: 'Comfort, 1 to 5' %}
+          </div>
+
+          <div class="nb-field">
+            <span class="nb-label">How stable does it feel on a lap or soft surface?</span>
+            <p class="nb-hint">1 = tippy · 5 = rock solid</p>
+            {% render 'nb-scale', name: 'contact[3.3 Stability]', min: 1, max: 5, required: true, aria: 'Stability, 1 to 5' %}
+          </div>
+
+          <div class="nb-field">
+            <label class="nb-label" for="nb-replaced">Has it replaced your usual setup, or do you still reach for something else?</label>
+            <textarea class="nb-input nb-textarea" id="nb-replaced" name="contact[3.4 Replaced setup]" rows="3" placeholder="What did it replace — or what still wins?" required></textarea>
+          </div>
         </div>
 
-        {% comment %} 3 — comfort rating + note {% endcomment %}
-        <fieldset class="nb-field nb-rating">
-          <legend class="nb-label">3. Comfort over a long session</legend>
-          <p class="nb-hint">1 = uncomfortable, 5 = I forget it's there.</p>
-          {% render 'nb-scale', name: 'contact[3. Comfort 1-5]', min: 1, max: 5 %}
-          <textarea class="nb-input nb-textarea" name="contact[3. Comfort notes]" rows="2" placeholder="Heat, stability, angle, wrists / neck / posture?"></textarea>
-        </fieldset>
+        {% comment %} ---------- STEP 4 — Price & value ---------- {% endcomment %}
+        <div class="nb-step" data-title="Price &amp; value">
+          <p class="nb-step__count">Step 4</p>
+          <h2 class="nb-step__title" tabindex="-1">Price &amp; value</h2>
 
-        {% comment %} 4 — build quality {% endcomment %}
-        <fieldset class="nb-field nb-rating">
-          <legend class="nb-label">4. Build &amp; material quality</legend>
-          <p class="nb-hint">1 = feels cheap, 5 = feels premium. Does the size/weight feel right?</p>
-          {% render 'nb-scale', name: 'contact[4. Build quality 1-5]', min: 1, max: 5 %}
-          <textarea class="nb-input nb-textarea" name="contact[4. Build notes]" rows="2" placeholder="Too big, too small, too heavy? Finish?"></textarea>
-        </fieldset>
+          <div class="nb-field">
+            <span class="nb-label">Knowing what you know now, what would you expect to pay for it?</span>
+            <p class="nb-hint">Drag the slider to your number.</p>
+            <div class="nb-slider" data-slider-wrap>
+              <output class="nb-slider__val" data-slider-out data-touched="false">Drag to set your price</output>
+              <input
+                class="nb-slider__input"
+                type="range"
+                min="0"
+                max="150"
+                step="5"
+                value="0"
+                name="contact[4.1 Would pay in USD]"
+                aria-label="Price you'd expect to pay, 0 to 150 dollars"
+                data-slider
+              >
+              <div class="nb-slider__scale"><span>$0</span><span>$150</span></div>
+            </div>
+          </div>
 
-        {% comment %} 5 — portability {% endcomment %}
-        <fieldset class="nb-field nb-rating">
-          <legend class="nb-label">5. Portability</legend>
-          <p class="nb-hint">1 = a hassle to move, 5 = grab and go.</p>
-          {% render 'nb-scale', name: 'contact[5. Portability 1-5]', min: 1, max: 5 %}
-        </fieldset>
-
-        {% comment %} 6 — one change {% endcomment %}
-        <div class="nb-field">
-          <label class="nb-label" for="nb-change">6. The one thing you'd change first?</label>
-          <textarea class="nb-input nb-textarea" id="nb-change" name="contact[6. One thing to change]" rows="3" placeholder="If you could only fix one thing…"></textarea>
+          <div class="nb-field">
+            <span class="nb-label">How likely are you to recommend it to a friend?</span>
+            <p class="nb-hint">0 = never · 10 = already told someone</p>
+            {% render 'nb-scale', name: 'contact[4.2 Recommend 0-10]', min: 0, max: 10, required: true, aria: 'Recommend, 0 to 10' %}
+          </div>
         </div>
 
-        {% comment %} 7 — recommend + price {% endcomment %}
-        <fieldset class="nb-field nb-rating">
-          <legend class="nb-label">7. Would you recommend it?</legend>
-          <p class="nb-hint">0 = never, 10 = already told someone.</p>
-          {% render 'nb-scale', name: 'contact[7. Recommend 0-10]', min: 0, max: 10 %}
-        </fieldset>
-        <div class="nb-field">
-          <label class="nb-label" for="nb-price">What price feels right for it?</label>
-          <input class="nb-input" type="text" id="nb-price" name="contact[7. Fair price]" placeholder="e.g. $120">
+        {% comment %} ---------- STEP 5 — Open feedback ---------- {% endcomment %}
+        <div class="nb-step" data-title="Open feedback">
+          <p class="nb-step__count">Step 5</p>
+          <h2 class="nb-step__title" tabindex="-1">Open feedback</h2>
+
+          <div class="nb-field">
+            <label class="nb-label" for="nb-unexpected">Did anything happen that you weren't expecting — good or bad?</label>
+            <textarea class="nb-input nb-textarea" id="nb-unexpected" name="contact[5.1 Unexpected]" rows="3" placeholder="A pleasant surprise, or something that caught you off guard." required></textarea>
+          </div>
+
+          <div class="nb-field">
+            <label class="nb-label" for="nb-change">If you could change one thing first, what would it be?</label>
+            <textarea class="nb-input nb-textarea" id="nb-change" name="contact[5.2 One thing to change]" rows="3" required></textarea>
+          </div>
+
+          <div class="nb-field">
+            <label class="nb-label" for="nb-love">What do you love most about it?</label>
+            <textarea class="nb-input nb-textarea" id="nb-love" name="contact[5.3 Love most]" rows="3" required></textarea>
+          </div>
+
+          <div class="nb-field">
+            <label class="nb-label" for="nb-anything">Anything else we should know? <span class="nb-optional">(optional)</span></label>
+            <textarea class="nb-input nb-textarea" id="nb-anything" name="contact[5.4 Anything else]" rows="3"></textarea>
+          </div>
         </div>
 
-        {% comment %} open mic {% endcomment %}
-        <div class="nb-field">
-          <label class="nb-label" for="nb-extra">Anything else I should know? <span class="nb-optional">(optional)</span></label>
-          <textarea class="nb-input nb-textarea" id="nb-extra" name="contact[8. Anything else]" rows="3"></textarea>
+        {% comment %} ---------- STEP 6 — About you ---------- {% endcomment %}
+        <div class="nb-step" data-title="About you">
+          <p class="nb-step__count">Step 6</p>
+          <h2 class="nb-step__title" tabindex="-1">About you</h2>
+          <p class="nb-hint nb-step__note">We saved this for last on purpose — your feedback mattered more than your info.</p>
+
+          <div class="nb-field-row">
+            <div class="nb-field">
+              <label class="nb-label" for="nb-name">Your name</label>
+              <input class="nb-input" type="text" id="nb-name" name="contact[name]" value="{{ form.name }}" required>
+            </div>
+            <div class="nb-field">
+              <label class="nb-label" for="nb-email">Email</label>
+              <input class="nb-input" type="email" id="nb-email" name="contact[email]" value="{{ form.email }}" required>
+            </div>
+          </div>
+
+          <div class="nb-field">
+            <span class="nb-label">Can we follow up with you about your answers?</span>
+            <div class="nb-scale nb-scale--wide" role="radiogroup" aria-label="Can we follow up">
+              <label class="nb-scale__opt"><input type="radio" name="contact[6.3 Can follow up]" value="Yes"><span>Yes</span></label>
+              <label class="nb-scale__opt"><input type="radio" name="contact[6.3 Can follow up]" value="No"><span>No</span></label>
+            </div>
+          </div>
+
+          <div class="nb-field">
+            <span class="nb-label">Okay to quote you in a testimonial?</span>
+            <div class="nb-scale nb-scale--wide" role="radiogroup" aria-label="Okay to quote you">
+              <label class="nb-scale__opt"><input type="radio" name="contact[6.4 Can quote]" value="Yes"><span>Yes</span></label>
+              <label class="nb-scale__opt"><input type="radio" name="contact[6.4 Can quote]" value="No"><span>No</span></label>
+            </div>
+          </div>
         </div>
 
-        {% comment %} body is required by the contact form; keep it satisfied {% endcomment %}
-        <input type="hidden" name="contact[body]" value="Beta lapboard feedback submission">
+        {% comment %} contact form requires a body; keep it satisfied {% endcomment %}
+        <input type="hidden" name="contact[body]" value="NOMADBASE beta lapboard feedback">
 
-        <button type="submit" class="nb-btn nb-btn--primary nb-feedback__submit">
-          {{ section.settings.submit_label }}
-        </button>
+        <div class="nb-nav">
+          <button type="button" class="nb-btn nb-btn--ghost" data-back hidden>Back</button>
+          <span class="nb-nav__spacer"></span>
+          <button type="button" class="nb-btn nb-btn--primary" data-next hidden>Next</button>
+          <button type="submit" class="nb-btn nb-btn--primary" data-submit>{{ section.settings.submit_label }}</button>
+        </div>
         <p class="nb-feedback__privacy">{{ section.settings.privacy_text }}</p>
       {% endif %}
     {% endform %}
@@ -120,7 +255,7 @@
 
 {% stylesheet %}
   .nb-feedback__inner {
-    max-width: 760px;
+    max-width: 720px;
   }
   .nb-feedback__title {
     margin-top: 0.75rem;
@@ -129,16 +264,85 @@
     margin-top: 1.25rem;
     max-width: 60ch;
   }
-  .nb-feedback__form {
-    margin-top: clamp(2rem, 5vw, 3.5rem);
+
+  /* Progress */
+  .nb-progress {
+    display: none;
+    margin-top: clamp(2rem, 5vw, 3rem);
+  }
+  .nb-feedback.is-enhanced .nb-progress {
+    display: block;
+  }
+  .nb-progress__track {
+    height: 4px;
+    border-radius: 999px;
+    background: var(--nb-line);
+    overflow: hidden;
+  }
+  .nb-progress__fill {
+    height: 100%;
+    width: 0;
+    border-radius: 999px;
+    background: var(--nb-teal);
+    transition: width 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .nb-progress__label {
+    margin: 0.65rem 0 0;
+    font-family: var(--nb-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--nb-muted);
+  }
+
+  /* Steps */
+  .nb-step {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.75rem;
+    margin-top: clamp(1.75rem, 4vw, 2.5rem);
   }
+  .nb-feedback.is-enhanced .nb-step {
+    display: none;
+  }
+  .nb-feedback.is-enhanced .nb-step.is-active {
+    display: flex;
+    animation: nb-step-in 0.3s ease;
+  }
+  @keyframes nb-step-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .nb-step__count {
+    margin: 0;
+    font-family: var(--nb-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--nb-teal-light);
+  }
+  .nb-step__title {
+    font-weight: 800;
+    font-size: clamp(1.35rem, 2.2vw, 1.7rem);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: -1.1rem 0 0;
+    padding: 0;
+    outline: none;
+  }
+  .nb-step__note {
+    margin-top: -1.1rem;
+  }
+
+  /* Fields */
   .nb-field {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.6rem;
     border: 0;
     padding: 0;
     margin: 0;
@@ -152,7 +356,7 @@
   .nb-label {
     font-weight: 700;
     font-size: 1.02rem;
-    line-height: 1.35;
+    line-height: 1.4;
     color: var(--nb-text);
   }
   .nb-optional {
@@ -163,7 +367,7 @@
     color: var(--nb-muted);
     font-size: 0.9rem;
     line-height: 1.5;
-    margin: -0.15rem 0 0.35rem;
+    margin: -0.3rem 0 0.15rem;
   }
   .nb-input {
     width: 100%;
@@ -187,11 +391,13 @@
     resize: vertical;
     line-height: 1.5;
   }
+
+  /* Pills (shared by ratings, choices, checkboxes) */
   .nb-scale {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin: 0.25rem 0 0.35rem;
+    margin: 0.15rem 0 0;
   }
   .nb-scale__opt {
     position: relative;
@@ -215,6 +421,11 @@
     color: var(--nb-muted);
     transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
   }
+  .nb-scale--wide span {
+    min-width: 0;
+    padding: 0 1.1rem;
+    font-size: 0.95rem;
+  }
   .nb-scale__opt input:hover + span {
     border-color: var(--nb-teal-light);
   }
@@ -227,27 +438,91 @@
     border-color: var(--nb-teal);
     color: #fff;
   }
-  .nb-feedback__submit {
-    align-self: flex-start;
+
+  /* Price slider */
+  .nb-slider {
+    margin-top: 0.35rem;
+  }
+  .nb-slider__val {
+    display: inline-block;
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+    color: var(--nb-text);
+    margin-bottom: 0.5rem;
+  }
+  .nb-slider__val[data-touched="false"] {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--nb-faint);
+  }
+  .nb-slider__input {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--nb-line-strong);
+    outline: none;
+  }
+  .nb-slider__input:focus-visible {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--nb-teal) 25%, transparent);
+  }
+  .nb-slider__input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--nb-teal);
+    border: 3px solid var(--nb-bg);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+  }
+  .nb-slider__input::-moz-range-thumb {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--nb-teal);
+    border: 3px solid var(--nb-bg);
+    cursor: pointer;
+  }
+  .nb-slider__scale {
+    display: flex;
+    justify-content: space-between;
     margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--nb-faint);
+  }
+
+  /* Navigation */
+  .nb-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: clamp(2rem, 5vw, 3rem);
+  }
+  .nb-nav__spacer {
+    flex: 1;
   }
   .nb-feedback__privacy {
     color: var(--nb-faint);
     font-size: 0.85rem;
-    margin-top: -1rem;
+    margin-top: 1rem;
   }
+
+  /* Errors + thanks */
   .nb-feedback__errors,
   .nb-feedback__thanks {
     border: 1px solid var(--nb-line-strong);
     border-radius: var(--style-border-radius-inputs, 8px);
     padding: 1.25rem 1.5rem;
+    margin-top: 1.5rem;
   }
   .nb-feedback__errors {
     border-color: color-mix(in srgb, crimson 50%, var(--nb-line-strong));
-    color: var(--nb-text);
   }
   .nb-feedback__thanks {
-    margin-top: clamp(2rem, 5vw, 3.5rem);
     background: color-mix(in srgb, var(--nb-teal) 10%, transparent);
     border-color: var(--nb-teal);
   }
@@ -262,7 +537,142 @@
       grid-template-columns: 1fr;
     }
   }
+  @media (prefers-reduced-motion: reduce) {
+    .nb-feedback.is-enhanced .nb-step.is-active {
+      animation: none;
+    }
+    .nb-progress__fill {
+      transition: none;
+    }
+  }
 {% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    document.querySelectorAll('.nb-feedback[data-multistep]').forEach(function (root) {
+      var form = root.querySelector('form');
+      if (!form) return;
+      var steps = Array.prototype.slice.call(root.querySelectorAll('.nb-step'));
+      if (steps.length < 2) return;
+
+      root.classList.add('is-enhanced');
+      form.setAttribute('novalidate', 'novalidate');
+
+      var idx = 0;
+      var backBtn = root.querySelector('[data-back]');
+      var nextBtn = root.querySelector('[data-next]');
+      var submitBtn = root.querySelector('[data-submit]');
+      var fill = root.querySelector('.nb-progress__fill');
+      var label = root.querySelector('.nb-progress__label');
+      var intro = root.querySelector('.nb-feedback__intro');
+
+      // Keep the hidden "where used" field in sync with the checkboxes.
+      root.querySelectorAll('[data-usage-group]').forEach(function (group) {
+        var hidden = group.querySelector('input[type="hidden"]');
+        var boxes = group.querySelectorAll('input[type="checkbox"]');
+        boxes.forEach(function (box) {
+          box.addEventListener('change', function () {
+            var vals = [];
+            boxes.forEach(function (b) { if (b.checked) vals.push(b.value); });
+            if (hidden) hidden.value = vals.join(', ');
+          });
+        });
+      });
+
+      // Price slider: reflect the value, and remember it was touched.
+      root.querySelectorAll('[data-slider]').forEach(function (slider) {
+        var out = slider.parentNode.querySelector('[data-slider-out]');
+        slider.addEventListener('input', function () {
+          if (out) {
+            out.textContent = '$' + slider.value;
+            out.setAttribute('data-touched', 'true');
+          }
+        });
+      });
+
+      function renderStep(i) {
+        steps.forEach(function (s, n) { s.classList.toggle('is-active', n === i); });
+        var isLast = i === steps.length - 1;
+        if (backBtn) backBtn.hidden = i === 0;
+        if (nextBtn) nextBtn.hidden = isLast;
+        if (submitBtn) submitBtn.hidden = !isLast;
+        if (fill) fill.style.width = ((i + 1) / steps.length * 100) + '%';
+        if (label) label.textContent = 'Step ' + (i + 1) + ' of ' + steps.length + ' — ' + (steps[i].getAttribute('data-title') || '');
+        if (intro) intro.hidden = i !== 0;
+      }
+
+      function goTo(i, focus) {
+        idx = Math.max(0, Math.min(i, steps.length - 1));
+        renderStep(idx);
+        if (focus !== false) {
+          var heading = steps[idx].querySelector('.nb-step__title');
+          root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (heading) heading.focus({ preventScroll: true });
+        }
+      }
+
+      function validate(step) {
+        // Native fields.
+        var fields = step.querySelectorAll('input, textarea, select');
+        for (var i = 0; i < fields.length; i++) {
+          if (!fields[i].checkValidity()) { fields[i].reportValidity(); return false; }
+        }
+        // Required checkbox groups (at least one).
+        var groups = step.querySelectorAll('[data-required-group]');
+        for (var g = 0; g < groups.length; g++) {
+          if (groups[g].querySelectorAll('input[type="checkbox"]:checked').length === 0) {
+            var first = groups[g].querySelector('input[type="checkbox"]');
+            if (first) {
+              first.setCustomValidity('Please choose at least one option.');
+              first.reportValidity();
+              first.addEventListener('change', function () { this.setCustomValidity(''); }, { once: true });
+            }
+            return false;
+          }
+        }
+        // Required slider (must be dragged).
+        var out = step.querySelector('[data-slider-out]');
+        if (out && out.getAttribute('data-touched') === 'false') {
+          var slider = step.querySelector('[data-slider]');
+          if (slider) slider.focus();
+          return false;
+        }
+        return true;
+      }
+
+      if (nextBtn) nextBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (validate(steps[idx])) goTo(idx + 1);
+      });
+      if (backBtn) backBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        goTo(idx - 1);
+      });
+
+      // Enter advances instead of submitting, except inside textareas / last step.
+      form.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && idx !== steps.length - 1) {
+          e.preventDefault();
+          if (validate(steps[idx])) goTo(idx + 1);
+        }
+      });
+
+      // Final sweep on submit: validate every step, jump to the first bad one.
+      form.addEventListener('submit', function (e) {
+        for (var i = 0; i < steps.length; i++) {
+          steps.forEach(function (s, n) { s.classList.toggle('is-active', n === i); });
+          if (!validate(steps[i])) {
+            e.preventDefault();
+            goTo(i);
+            return;
+          }
+        }
+      });
+
+      goTo(0, false);
+    });
+  })();
+{% endjavascript %}
 
 {% schema %}
 {
@@ -278,12 +688,12 @@
       ],
       "default": "dark"
     },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Beta feedback" },
-    { "type": "textarea", "id": "heading", "label": "Heading", "default": "You're one of six. Tell me everything." },
-    { "type": "textarea", "id": "intro", "label": "Intro", "default": "You're holding one of the first NOMADBASE boards to leave the workshop. Your honest read — the good and the annoying — shapes what the next batch becomes. Takes about five minutes." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "For our first six" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "You're one of six." },
+    { "type": "textarea", "id": "intro", "label": "Welcome message", "default": "Before NOMADBASE goes to the world, it goes to you. You're holding one of the first boards to ever leave our workshop — and your honest take will shape the product every future customer receives. This isn't a survey we send to everyone; it's a short, guided walkthrough for the small group we trust to get it right. A few questions at a time, about five minutes. Thank you for building this with us." },
     { "type": "text", "id": "submit_label", "label": "Submit button label", "default": "Send feedback" },
-    { "type": "textarea", "id": "privacy_text", "label": "Privacy note", "default": "Goes straight to me — nothing public, no marketing list." },
-    { "type": "textarea", "id": "thankyou_text", "label": "Thank-you message", "default": "Thank you — this is exactly what I need. If anything else comes to mind after using it a while longer, just reply to my email." }
+    { "type": "textarea", "id": "privacy_text", "label": "Privacy note", "default": "Goes straight to us — nothing public, no marketing list." },
+    { "type": "textarea", "id": "thankyou_text", "label": "Thank-you message", "default": "Thank you — this is exactly what we needed. If anything else comes to mind after living with it a while longer, just reply to our email." }
   ],
   "presets": [{ "name": "Feedback form" }]
 }

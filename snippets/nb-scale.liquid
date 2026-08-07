@@ -1,19 +1,27 @@
 {% doc %}
   Renders a horizontal radio "pill" rating scale for the feedback form.
 
-  @param {string} name - The form field name (e.g. "contact[Comfort 1-5]")
+  @param {string} name - The form field name (e.g. "contact[3.2 Comfort]")
   @param {number} min - First value in the scale (inclusive)
   @param {number} max - Last value in the scale (inclusive)
+  @param {string} [aria] - Accessible label for the radio group
+  @param {boolean} [required] - Whether an answer is required
 
   @example
-  {% render 'nb-scale', name: 'contact[Comfort 1-5]', min: 1, max: 5 %}
+  {% render 'nb-scale', name: 'contact[3.2 Comfort]', min: 1, max: 5, required: true %}
 {% enddoc %}
 
-<div class="nb-scale" role="radiogroup">
+<div class="nb-scale" role="radiogroup"{% if aria %} aria-label="{{ aria }}"{% endif %}>
   {% assign field_id = name | handleize %}
   {% for i in (min..max) %}
     <label class="nb-scale__opt">
-      <input type="radio" name="{{ name }}" value="{{ i }}" id="{{ field_id }}-{{ i }}">
+      <input
+        type="radio"
+        name="{{ name }}"
+        value="{{ i }}"
+        id="{{ field_id }}-{{ i }}"
+        {% if required and forloop.first %}required{% endif %}
+      >
       <span>{{ i }}</span>
     </label>
   {% endfor %}
