@@ -126,7 +126,12 @@
               <label class="nb-scale__opt"><input type="checkbox" value="Desk / table"><span>Desk / table</span></label>
               <label class="nb-scale__opt"><input type="checkbox" value="Travel"><span>Travel</span></label>
               <label class="nb-scale__opt"><input type="checkbox" value="Standing"><span>Standing</span></label>
-              <label class="nb-scale__opt"><input type="checkbox" value="Other"><span>Other</span></label>
+              <label class="nb-scale__opt"><input type="checkbox" value="Gaming"><span>Gaming</span></label>
+              <label class="nb-scale__opt"><input type="checkbox" value="Other" data-other><span>Other</span></label>
+            </div>
+            <div class="nb-otherdesc" data-other-desc hidden>
+              <label class="nb-label" for="nb-other-desc">Other — please describe</label>
+              <input class="nb-input" type="text" id="nb-other-desc" name="contact[3.1 Other — describe]" placeholder="Where else have you used it?">
             </div>
           </div>
 
@@ -162,15 +167,15 @@
                 class="nb-slider__input"
                 type="range"
                 min="0"
-                max="150"
+                max="200"
                 step="5"
                 value="0"
                 name="contact[4.1 Would pay in USD]"
-                aria-label="Price you'd expect to pay, 0 to 150 dollars"
+                aria-label="Price you'd expect to pay, 0 to 200 dollars"
                 data-slider
                 data-prefix="$"
               >
-              <div class="nb-slider__scale"><span>$0</span><span>$150</span></div>
+              <div class="nb-slider__scale"><span>$0</span><span>$200</span></div>
             </div>
           </div>
 
@@ -348,6 +353,15 @@
     height: 1.5rem;
     width: auto;
     display: block;
+  }
+  .nb-otherdesc {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+  .nb-otherdesc[hidden] {
+    display: none;
   }
   .nb-feedback__title {
     margin-top: 0.75rem;
@@ -672,16 +686,31 @@
       var intro = root.querySelector('.nb-feedback__intro');
 
       // Keep the hidden "where used" field in sync with the checkboxes.
+      var requireAnswers = root.getAttribute('data-require') === 'true';
       root.querySelectorAll('[data-usage-group]').forEach(function (group) {
         var hidden = group.querySelector('input[type="hidden"]');
         var boxes = group.querySelectorAll('input[type="checkbox"]');
+        var other = group.querySelector('[data-other]');
+        var desc = group.querySelector('[data-other-desc]');
+        var descInput = desc ? desc.querySelector('input') : null;
+        function syncOther() {
+          if (!desc) return;
+          var show = other && other.checked;
+          desc.hidden = !show;
+          if (descInput) {
+            descInput.required = show && requireAnswers;
+            if (!show) descInput.value = '';
+          }
+        }
         boxes.forEach(function (box) {
           box.addEventListener('change', function () {
             var vals = [];
             boxes.forEach(function (b) { if (b.checked) vals.push(b.value); });
             if (hidden) hidden.value = vals.join(', ');
+            syncOther();
           });
         });
+        syncOther();
       });
 
       // Price slider: reflect the value, and remember it was touched.
@@ -801,7 +830,7 @@
       "type": "checkbox",
       "id": "require_answers",
       "label": "Require an answer on each step",
-      "default": false,
+      "default": true,
       "info": "Off for internal QA — navigate freely between steps. Turn on before sending to testers."
     },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "User testing feedback" },
